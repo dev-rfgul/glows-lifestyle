@@ -44,34 +44,52 @@ const Carousel = () => {
             name: "Product A",
             price: "$299",
             description: "High-quality product with great features and performance.",
-            img: "./images/carousel-image-1.jpg",
+            img: "./images/carousel/carousel-image-1.jpg",
         },
         {
             name: "Product B",
             price: "$399",
             description: "Amazing features for the price. A must-have!",
-            img: "./images/carousel-image-2.png",
+            img: "./images//carousel/carousel-image-2.jpg",
         },
         {
             name: "Product C",
             price: "$499",
             description: "Perfect blend of quality and design. Get it before it's gone!",
-            img: "./images/carousel-image-3.jpeg",
+            img: "./images/carousel/carousel-image-3.jpg",
+        },
+        {
+            name: "Product C",
+            price: "$499",
+            description: "Perfect blend of quality and design. Get it before it's gone!",
+            img: "./images/carousel/carousel-image-4.jpg",
+        },
+        {
+            name: "Product C",
+            price: "$499",
+            description: "Perfect blend of quality and design. Get it before it's gone!",
+            img: "./images/carousel/carousel-image-5.jpg",
+        },
+        {
+            name: "Product C",
+            price: "$499",
+            description: "Perfect blend of quality and design. Get it before it's gone!",
+            img: "./images/carousel/carousel-image-6.jpg",
         },
     ];
 
     return (
-        <div className="carousel-container w-full md:w-3/4 mx-auto mt-10">
+        <div className="carousel-container w-full md:w-3/4 mx-auto ">
             <Slider {...settings}>
                 {data.map((item, index) => (
                     <div key={index} className="carousel-item bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-                        <div className="relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[600px]">
+                        <div className="relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[700px]">
                             <img
                                 src={item.img}
                                 alt={item.name}
                                 className="w-full h-full object-cover"
                             />
-                      
+
                         </div>
                     </div>
                 ))}

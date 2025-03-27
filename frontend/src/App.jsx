@@ -12,6 +12,7 @@ import EditProduct from './components/EditProduct'
 import AllProducts from './components/AllProducts'
 import { SuccessPayment, CancelPayment } from './components/Success';
 import AdminOrdersPage from './components/AdminOrdersPage'
+import Launch from './components/Launch'
 
 // changed the url to the deployed url of the backend
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
   return (
     <>
       <div className='overflow-hidden'>
+        {/* <Launch /> */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/signup' element={<Signup />} />
