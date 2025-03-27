@@ -15,9 +15,9 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <StrictMode >
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter >
         <Navbar />
         <Elements stripe={stripePromise}>
           <App />

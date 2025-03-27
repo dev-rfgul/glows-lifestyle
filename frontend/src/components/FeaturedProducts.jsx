@@ -345,7 +345,7 @@ console.log(products)
     };
 
     return (
-        <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen p-6">
+        <div className="bg-blue-100 min-h-screen  p-6">
             <div className="container mx-auto">
                 {/* Header and Search Section */}
                 <div className="mb-8">

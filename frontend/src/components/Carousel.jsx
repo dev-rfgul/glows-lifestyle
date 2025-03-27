@@ -176,7 +176,7 @@ const Carousel = () => {
     // Color selection component
     const ColorSelector = ({ colors }) => {
         return (
-            <div className="flex items-center space-x-2 mt-2">
+            <div className="flex items-center space-x-2 mt-2 ">
                 {colors.map((color, index) => (
                     <button
                         key={index}
@@ -190,7 +190,7 @@ const Carousel = () => {
     };
 
     return (
-        <div className="relative carousel-container w-full md:w-11/12 lg:w-4/5 mx-auto my-16 px-4">
+        <div className=" relative carousel-container w-full md:w-11/12 lg:w-4/5 mx-auto my-16 px-4">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">Featured Products</h2>
             
             <div className="slider-wrapper">

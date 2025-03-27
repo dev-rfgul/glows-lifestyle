@@ -25,7 +25,7 @@ const App = () => {
 
   return (
     <>
-      <div className='overflow-hidden  '>
+      <div className='overflow-hidden bg-blue-100'>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/signup' element={<Signup />} />
