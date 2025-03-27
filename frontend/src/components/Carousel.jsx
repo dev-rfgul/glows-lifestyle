@@ -44,13 +44,13 @@ const Carousel = () => {
             name: "Product A",
             price: "$299",
             description: "High-quality product with great features and performance.",
-            img: "./images/carousel-image-1.png",
+            img: "./images/carousel-image-1.jpg",
         },
         {
             name: "Product B",
             price: "$399",
             description: "Amazing features for the price. A must-have!",
-            img: "./images/carousel-image-2.jpeg",
+            img: "./images/carousel-image-2.png",
         },
         {
             name: "Product C",
@@ -65,18 +65,13 @@ const Carousel = () => {
             <Slider {...settings}>
                 {data.map((item, index) => (
                     <div key={index} className="carousel-item bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
-                        <div className="relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[800px]">
+                        <div className="relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[600px]">
                             <img
                                 src={item.img}
                                 alt={item.name}
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-                            <div className="absolute bottom-4 left-6 text-white z-10">
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">{item.name}</h3>
-                                <p className="text-sm sm:text-lg">{item.price}</p>
-                                <p className="text-xs sm:text-sm mt-2 hidden md:block">{item.description}</p>
-                            </div>
+                      
                         </div>
                     </div>
                 ))}

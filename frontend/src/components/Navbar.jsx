@@ -231,7 +231,7 @@ const Navbar = () => {
                 <div className="hidden md:flex items-center space-x-6">
                     {/* User Account */}
                     <div className="flex items-center space-x-2 group">
-                        <FontAwesomeIcon icon={faUser} className="text-black text-lg group-hover:text-lime-500 transition-colors" />
+                        <FontAwesomeIcon icon={faUser} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
                         <div>
                             <Link
                                 to="/profile"
@@ -263,7 +263,7 @@ const Navbar = () => {
 
                     {/* Wishlist Icon */}
                     <Link to="/wishlist" className="relative group">
-                        <FontAwesomeIcon icon={faHeart} className="text-black text-lg group-hover:text-lime-500 transition-colors" />
+                        <FontAwesomeIcon icon={faHeart} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
                         <span className="absolute -top-2 -right-2 bg-lime-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center transition-all group-hover:scale-110">
                             {wishlistItems.length}
                         </span>
@@ -271,7 +271,7 @@ const Navbar = () => {
 
                     {/* Cart Icon */}
                     <Link to="/cart" className="relative group">
-                        <FontAwesomeIcon icon={faShoppingCart} className="text-black text-lg group-hover:text-lime-500 transition-colors" />
+                        <FontAwesomeIcon icon={faShoppingCart} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
                         <span className="absolute -top-2 -right-2 bg-lime-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center transition-all group-hover:scale-110">
                             {cartLength}
                         </span>

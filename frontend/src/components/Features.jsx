@@ -37,8 +37,8 @@ export default function FeatureSection() {
                 </div>
 
                 {/* Tabby Banner Section */}
-                <div className="mt-12 bg-white rounded-lg shadow-sm p-8 text-center">
-                    <img src="./images/featured.png" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
+                <div className="mt-12 bg-white h-full w-full rounded-lg shadow-sm p-8 text-center">
+                    <img src="./images/image.png" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
                 </div>
 
                 {/* Centered Image */}
@@ -47,7 +47,7 @@ export default function FeatureSection() {
                 </div>
 
                 <div className="mt-12 bg-white rounded-lg shadow-sm p-8 text-center">
-                    <img src="./images/tabby-banner.jpeg" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
+                    <img src="./images/tabby-banner" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
                 </div>
             </div>
         </div>
