@@ -8,7 +8,7 @@ import FeatureSection from './components/Features'
 const Home = () => {
     return (
         < >
-        <div className='bg-blue-100'>
+        
             <Carousel />
             <Heading heading={"Explore"} subHeading={"Explore our wide range of products"} />
             
@@ -16,7 +16,7 @@ const Home = () => {
             <Heading heading={"Featured Products"} subHeading={"Check out our Featured Products"} />
             <FeaturedProducts />
             <FeatureSection />
-        </div>
+
         </>
     )
 }

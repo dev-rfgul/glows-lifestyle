@@ -126,6 +126,7 @@
 
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
     faUser,
     faHeart,
@@ -174,10 +175,10 @@ const Navbar = () => {
     ];
 
     return (
-        <header className={`bg-white ${isScrolled ? 'shadow-lg fixed top-0 left-0 right-0 z-50 animate-fadeDown' : 'shadow-md'} transition-all duration-300`}>
+        <header className={`bg-black text-blue-100 transition-all duration-300`}>
             {/* Banner Section */}
-            <div className="bg-yellow-50 italic text-black text-sm py-2 text-center">
-                <p>Free Express Shipping in UAE ~ 30 Days Guarantee!</p>
+            <div className="bg-black text-red-600 text-xl font-bold  italic text-black text-sm py-2 text-center border-b-2 border-white">
+                <p>Shop the Latest Trends , Your Favourite Styles , Delievered  </p>
             </div>
 
             <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -188,7 +189,7 @@ const Navbar = () => {
                 >
                     <img
                         className="w-36 md:w-48 h-auto object-contain"
-                        src="https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"
+                        src="./images/logo.png"
                         alt="Dewnor Logo"
                         loading="eager"
                     />
@@ -198,14 +199,14 @@ const Navbar = () => {
                 <div className="flex items-center space-x-4 md:hidden">
                     <button
                         aria-label="Search"
-                        className="text-black text-xl focus:outline-none p-2"
+                        className="text-white text-xl focus:outline-none p-2"
                         onClick={() => setSearchOpen(!searchOpen)}
                     >
                         <FontAwesomeIcon icon={faSearch} />
                     </button>
                     <button
                         aria-label={menuOpen ? "Close Menu" : "Open Menu"}
-                        className="text-black text-2xl focus:outline-none p-2"
+                        className="text-white text-2xl focus:outline-none p-2"
                         onClick={() => setMenuOpen(!menuOpen)}
                     >
                         <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
@@ -234,7 +235,7 @@ const Navbar = () => {
                         <div>
                             <Link
                                 to="/profile"
-                                className="text-gray-500 text-sm hover:text-lime-500 transition-colors"
+                                className="text-white text-sm hover:text-lime-500 transition-colors"
                             >
                                 My Account
                             </Link>
@@ -242,14 +243,14 @@ const Navbar = () => {
                                 <nav>
                                     <Link
                                         to="/signup"
-                                        className="text-black font-semibold text-sm hover:text-lime-500 transition-colors"
+                                        className="text-white font-semibold text-sm hover:text-lime-500 transition-colors"
                                     >
                                         Signup
                                     </Link>
                                     <span className="mx-2 text-gray-300">|</span>
                                     <Link
                                         to="/login"
-                                        className="text-black font-semibold text-sm hover:text-lime-500 transition-colors"
+                                        className="text-white font-semibold text-sm hover:text-lime-500 transition-colors"
                                     >
                                         Login
                                     </Link>
@@ -295,7 +296,7 @@ const Navbar = () => {
             )}
 
             {/* Navigation Menu */}
-            <nav className="bg-yellow-800">
+            <nav className="bg-black">
                 <div className="container mx-auto px-4">
                     <div
                         className={`flex flex-col md:flex-row md:justify-evenly space-y-4 md:space-y-0 md:space-x-8 w-full h-auto md:h-14 items-center transition-all duration-300 ${menuOpen ? "py-4" : "hidden md:flex"

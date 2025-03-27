@@ -488,14 +488,14 @@ const EarbudsProductDisplay = () => {
 
     const renderTechnicalSpecs = () => (
         <div className=" p-6 rounded-xl shadow-lg">
-            <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-black mb-4 flex items-center">
                 <FaBolt className="mr-2 text-blue-600" /> Technical Specifications
             </h3>
-            <div className="grid grid-cols-2 gap-4 text-blue-800">
+            <div className="grid grid-cols-2 gap-4 text-black">
                 {Object.entries(product.technicalSpecs).map(([key, value]) => (
                     <div key={key} className="bg-white p-3 rounded-lg shadow-md">
-                        <p className="text-sm text-blue-500 capitalize">{key.replace(/([A-Z])/g, ' $1')}</p>
-                        <p className="font-semibold">{value}</p>
+                        <p className="text-sm text-black font-bold capitalize">{key.replace(/([A-Z])/g, ' $1')}</p>
+                        <p className="">{value}</p>
                     </div>
                 ))}
             </div>
@@ -503,7 +503,7 @@ const EarbudsProductDisplay = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 py-12 px-4">
+        <div className="min-h-screen  py-12 px-4">
             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
                 {/* Product Visual Section */}
                 <motion.div 
@@ -512,7 +512,7 @@ const EarbudsProductDisplay = () => {
                     transition={{ duration: 0.5 }}
                     className="relative group"
                 >
-                    <div className="bg-gradient-to-br from-blue-100 to-white rounded-3xl p-8 relative overflow-hidden">
+                    <div className=" rounded-3xl p-8 relative overflow-hidden">
                         <motion.img 
                             src="https://www.rfgul.live/images/banner2-img.jpeg"  // Replace with actual image
                             alt="SonicWave Pro X1 Earbuds"
@@ -552,15 +552,15 @@ const EarbudsProductDisplay = () => {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.5 }}
                     >
-                        <h1 className="text-4xl font-black text-blue-900 mb-2">{product.name}</h1>
-                        <p className="text-xl text-blue-700 font-medium">{product.tagline}</p>
+                        <h1 className="text-4xl font-black text-black mb-2">{product.name}</h1>
+                        <p className="text-xl text-black font-medium">{product.tagline}</p>
                     </motion.div>
 
                     {/* Price Section */}
                     <div className="flex items-center space-x-4">
-                        <span className="text-3xl font-bold text-blue-900">${product.discountPrice}</span>
-                        <span className="text-xl text-gray-500 line-through">${product.price}</span>
-                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                        <span className="text-3xl font-bold text-black">${product.discountPrice}</span>
+                        <span className="text-xl text-gray-900 line-through">${product.price}</span>
+                        <span className="bg-green-100 text-gray-900 px-3 py-1 rounded-full">
                             Save ${(product.price - product.discountPrice).toFixed(2)}
                         </span>
                     </div>
@@ -568,42 +568,30 @@ const EarbudsProductDisplay = () => {
                     {/* Features */}
                     <div className="space-y-2">
                         {product.features.map((feature, index) => (
-                            <div key={index} className="flex items-center text-blue-800">
-                                <FaCheckCircle className="mr-2 text-blue-600" />
+                            <div key={index} className="flex items-center text-black">
+                                <FaCheckCircle className="mr-2 text-black" />
                                 <span>{feature}</span>
                             </div>
                         ))}
                     </div>
 
-                    {/* Audio Preview */}
-                    <div className="bg-blue-50 rounded-xl p-4 flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                            <FaHeadphones className="text-3xl text-blue-600" />
-                            <span className="font-medium text-blue-900">Sound Preview</span>
-                        </div>
-                        <button 
-                            onClick={() => setIsPreviewPlaying(!isPreviewPlaying)}
-                            className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 transition"
-                        >
-                            {isPreviewPlaying ? <FaPause /> : <FaPlay />}
-                        </button>
-                    </div>
+                  
 
                     {/* Quantity & Add to Cart */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-4">
-                            <span className="text-blue-800 font-medium">Quantity:</span>
+                            <span className="text-black font-medium">Quantity:</span>
                             <div className="flex items-center bg-blue-50 rounded-full">
                                 <button 
                                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                    className="px-4 py-2 text-blue-800 hover:bg-blue-100 rounded-l-full"
+                                    className="px-4 py-2 text-blue-800 hover:bg-gray-500 rounded-l-full"
                                 >
                                     -
                                 </button>
                                 <span className="px-4 py-2">{quantity}</span>
                                 <button 
                                     onClick={() => setQuantity(quantity + 1)}
-                                    className="px-4 py-2 text-blue-800 hover:bg-blue-100 rounded-r-full"
+                                    className="px-4 py-2 text-blue-800 hover:bg-gray-500 rounded-r-full"
                                 >
                                     +
                                 </button>
@@ -612,13 +600,13 @@ const EarbudsProductDisplay = () => {
 
                         <div className="grid grid-cols-2 gap-4">
                             <button 
-                                className="bg-blue-500 text-white py-4 rounded-xl hover:bg-blue-600 transition flex items-center justify-center space-x-2"
+                                className="bg-gray-100 border-2 border-black text-black py-4 rounded-xl hover:bg-blue-600 transition flex items-center justify-center space-x-2"
                             >
                                 <FaShoppingCart />
                                 <span>Add to Cart</span>
                             </button>
                             <button 
-                                className="bg-blue-900 text-white py-4 rounded-xl hover:bg-blue-800 transition"
+                                className="bg-black text-white py-4 rounded-xl hover:bg-blue-800 transition"
                             >
                                 Buy Now
                             </button>
@@ -634,8 +622,8 @@ const EarbudsProductDisplay = () => {
 
             {/* Product Description */}
             <div className="max-w-6xl mx-auto mt-16 bg-white p-8 rounded-2xl shadow-lg">
-                <h2 className="text-3xl font-bold text-blue-900 mb-6">Product Overview</h2>
-                <p className="text-blue-800 text-lg leading-relaxed">{product.description}</p>
+                <h2 className="text-3xl font-bold text-black mb-6">Product Overview</h2>
+                <p className="text-black text-lg leading-relaxed">{product.description}</p>
             </div>
         </div>
     );

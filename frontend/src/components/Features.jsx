@@ -20,7 +20,7 @@ const imgs=[
 
 export default function FeatureSection() {
     return (
-        <div className="bg-blue-100 py-12">
+        <div className="py-12">
             <div className="max-w-6xl mx-auto px-6">
                 {/* Features Section */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center mb-12">

@@ -160,9 +160,9 @@ const ProductCard = ({ product, loading }) => {
                 <button
                     onClick={() => addToCart(product._id)}
                     disabled={isAddingToCart || product.stock === 0}
-                    className={`w-full text-white text-sm px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${product.stock === 0
+                    className={`w-full text-black text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${product.stock === 0
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-gray-800 hover:bg-gray-700"
+                        : "bg-gray-100 border-2 border-black text-black hover:bg-black hover:text-white"
                         }`}
                 >
                     {isAddingToCart ? (
@@ -182,7 +182,7 @@ const ProductCard = ({ product, loading }) => {
                     disabled={isBuyingNow || product.stock === 0}
                     className={`w-full text-white text-sm px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${product.stock === 0
                         ? "bg-blue-300 cursor-not-allowed"
-                        : "bg-blue-500 hover:bg-blue-600"
+                        : "bg-black "
                         }`}
                 >
                     {isBuyingNow ? (

@@ -175,7 +175,7 @@ const Explore = () => {
     }
 
     return (
-        <div className="bg-blue-100 py-16 px-4 border-b-6 border-white">
+        <div className="py-16 px-4 border-b-6 border-white">
             <div className="max-w-6xl mx-auto">
                 {/* heading */}
                 <div className="flex flex-col sm:flex-row items-center justify-between mb-12">

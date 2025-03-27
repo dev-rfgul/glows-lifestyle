@@ -66,7 +66,7 @@ import { FaFacebook, FaInstagram, FaPinterest } from 'react-icons/fa';
 
 const Footer = () => {
     return (
-        <footer className="text-white bg-yellow-800 w-full py-10">
+        <footer className="text-white bg-black w-full py-10">
             <div className="max-w-6xl mx-auto px-6 md:px-20 lg:px-32">
                 {/* Main Content: Links and Social */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
