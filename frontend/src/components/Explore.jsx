@@ -8,13 +8,11 @@ const Explore = () => {
     const data = [
         {
             id: 1,
-            category: "Wallets",
+            category: "Earbuds",
             description: "Premium leather wallets with RFID protection",
             productCount: 24,
             images: [
-                "/images/explore/wallet-image-1.jpg",
-                "/images/explore/wallet-image-2.jpg",
-                "/images/explore/wallet-image-3.jpg",
+                "/images/explore/earbuds.gif",  
             ],
             featured: true,
             new: false,
@@ -23,13 +21,11 @@ const Explore = () => {
         },
         {
             id: 2,
-            category: "Gadgets",
+            category: "Smartwatches",
             description: "Innovative tech for modern lifestyle",
             productCount: 36,
             images: [
-                "/images/explore/gadget-image-1.jpg",
-                "/images/explore/gadget-image-3.jpg",
-                "/images/explore/gadget-image-2.jpg",
+                "/images/explore/smartwatch.webp",
             ],
             featured: true,
             new: true,
@@ -38,12 +34,11 @@ const Explore = () => {
         },
         {
             id: 3,
-            category: "Bags",
+            category: "HeadPhones",
             description: "Stylish & functional bags for every occasion",
             productCount: 18,
             images: [
-                "/images/explore/bag-image-1.jpg",
-                "/images/explore/bag-image-2.jpg",
+                "/images/explore/headphone.webp",
             ],
             featured: false,
             new: false,

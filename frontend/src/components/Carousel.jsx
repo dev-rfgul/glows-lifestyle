@@ -61,6 +61,7 @@ const Carousel = () => {
         "./images/carousel/carousel-image-3.jpg",
         "./images/carousel/carousel-image-6.jpg",
         "./images/carousel/carousel-image-9.jpg",
+        
     ]
 
     return (
