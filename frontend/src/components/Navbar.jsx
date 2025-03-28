@@ -167,11 +167,7 @@ const Navbar = () => {
 
     // Navbar menu items for better maintainability
     const navItems = [
-        { id: 1, title: "Leather Wallets-Hand Stitched", path: "/wallets" },
-        { id: 2, title: "Devices & Techs", path: "/devices" },
-        { id: 3, title: "Leather Bags", path: "/bags" },
-        { id: 4, title: "Store", path: "/store" },
-        { id: 5, title: "Contact Us", path: "/contact" },
+     
     ];
 
     return (
@@ -295,26 +291,6 @@ const Navbar = () => {
                 </div>
             )}
 
-            {/* Navigation Menu */}
-            <nav className="bg-black">
-                <div className="container mx-auto px-4">
-                    <div
-                        className={`flex flex-col md:flex-row md:justify-evenly space-y-4 md:space-y-0 md:space-x-8 w-full h-auto md:h-14 items-center transition-all duration-300 ${menuOpen ? "py-4" : "hidden md:flex"
-                            }`}
-                    >
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.id}
-                                to={item.path}
-                                className="text-white hover:text-lime-500 font-medium transition-colors relative group py-2 md:py-0"
-                            >
-                                {item.title}
-                                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-lime-500 transition-all duration-300 group-hover:w-full"></span>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </nav>
 
             {/* Mobile User Controls - Only visible when menu is open on mobile */}
             {menuOpen && (

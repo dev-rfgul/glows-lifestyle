@@ -6,20 +6,26 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Carousel = () => {
     const settings = {
-        centerMode: true,
+        centerMode: true,      // Enable center mode for better focus on the current slide
         infinite: true,
         autoplay: true,
-        autoplaySpeed: 3000,
+        autoplaySpeed: 2000,
         slidesToShow: 1,
         speed: 500,
         arrows: true,
         dots: true,
+        cssEase: 'ease-in-out',   // Smooth transition
+        fade: true,               // Enable fade transition
+        pauseOnHover: true,      // Pause autoplay on hover
+        focusOnSelect: true,     // Click to focus on a slide
+        lazyLoad: "ondemand",    // Lazy load for better performance
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 2,
                     centerPadding: "40px",
+                    dots: false,   // Hide dots on larger screens
                 },
             },
             {
@@ -27,6 +33,8 @@ const Carousel = () => {
                 settings: {
                     slidesToShow: 1,
                     centerPadding: "20px",
+                    arrows: false, // Hide arrows on smaller screens
+                    dots: true,
                 },
             },
             {
@@ -34,59 +42,36 @@ const Carousel = () => {
                 settings: {
                     slidesToShow: 1,
                     centerPadding: "10px",
+                    arrows: false,
+                    dots: true,
                 },
             },
         ],
+        prevArrow: <button className="custom-prev-arrow">Previous</button>, 
+        nextArrow: <button className="custom-next-arrow">Next</button>, 
     };
+    
 
     const data = [
-        {
-            name: "Product A",
-            price: "$299",
-            description: "High-quality product with great features and performance.",
-            img: "./images/carousel/carousel-image-1.jpg",
-        },
-        {
-            name: "Product B",
-            price: "$399",
-            description: "Amazing features for the price. A must-have!",
-            img: "./images//carousel/carousel-image-2.jpg",
-        },
-        {
-            name: "Product C",
-            price: "$499",
-            description: "Perfect blend of quality and design. Get it before it's gone!",
-            img: "./images/carousel/carousel-image-3.jpg",
-        },
-        {
-            name: "Product C",
-            price: "$499",
-            description: "Perfect blend of quality and design. Get it before it's gone!",
-            img: "./images/carousel/carousel-image-4.jpg",
-        },
-        {
-            name: "Product C",
-            price: "$499",
-            description: "Perfect blend of quality and design. Get it before it's gone!",
-            img: "./images/carousel/carousel-image-5.jpg",
-        },
-        {
-            name: "Product C",
-            price: "$499",
-            description: "Perfect blend of quality and design. Get it before it's gone!",
-            img: "./images/carousel/carousel-image-6.jpg",
-        },
-    ];
+        "./images/carousel/carousel-image-4.jpg",
+        "./images/carousel/carousel-image-1.jpg",
+        "./images/carousel/carousel-image-7.jpg",
+        "./images/carousel/carousel-image-2.jpg",
+        "./images/carousel/carousel-image-5.jpg",
+        "./images/carousel/carousel-image-8.jpg",
+        "./images/carousel/carousel-image-3.jpg",
+        "./images/carousel/carousel-image-6.jpg",
+        "./images/carousel/carousel-image-9.jpg",
+    ]
 
     return (
         <div className="carousel-container w-full md:w-3/4 mx-auto ">
             <Slider {...settings}>
-                {data.map((item, index) => (
+                {data.map((img, index) => (
                     <div key={index} className="carousel-item bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
                         <div className="relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[700px]">
                             <img
-                                src={item.img}
-                                alt={item.name}
+                                src={img}
                                 className="w-full h-full object-cover"
                             />
 
