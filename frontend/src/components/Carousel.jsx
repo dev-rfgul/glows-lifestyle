@@ -50,7 +50,6 @@ const Carousel = () => {
         prevArrow: <button className="custom-prev-arrow">Previous</button>, 
         nextArrow: <button className="custom-next-arrow">Next</button>, 
     };
-    
 
     const data = [
         "./images/carousel/carousel-image-4.jpg",
