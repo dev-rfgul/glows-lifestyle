@@ -14,14 +14,23 @@ const ProductCard = ({ product, loading }) => {
     const [toastType, setToastType] = useState("success"); // success or error
 
     useEffect(() => {
+        // const storedUser = localStorage.getItem("user");
+        // if (!storedUser) {
+        //     console.log("No user found in localStorage");
+        //     throw new Error("No user found in localStorage");
+        // }
+
+        // const user = JSON.parse(storedUser); // Convert string to object
+        // setUserId(user.id); // Update state but don't use it immediately
         const storedUser = localStorage.getItem("user");
         if (!storedUser) {
             console.log("No user found in localStorage");
-            throw new Error("No user found in localStorage");
+            return; // Avoid throwing an error
         }
 
         const user = JSON.parse(storedUser); // Convert string to object
-        setUserId(user.id); // Update state but don't use it immediately
+        setUserId(user?.id || ""); // Ensure safe state update
+
 
     }, []);
 
