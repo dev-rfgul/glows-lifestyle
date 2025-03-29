@@ -17,9 +17,9 @@ import Launch from './components/Launch'
 // changed the url to the deployed url of the backend
 const App = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
-
+console.log(user.role)
   // Ensure user is valid before accessing role
-  const role = user?.user?.role || null;
+  const role = user?.role || null;
   const isUserLoggedIn = !!user && !!role;
   // alert(isUserLoggedIn)
 

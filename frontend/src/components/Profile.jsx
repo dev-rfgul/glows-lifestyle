@@ -24,14 +24,15 @@ const UserProfile = () => {
             try {
                 const storedUser = localStorage.getItem("user");
                 if (!storedUser) {
+                    console.log("No user found in localStorage");
                     throw new Error("No user found in localStorage");
                 }
 
-                const parsedUser = JSON.parse(storedUser);
-                setUserId(parsedUser.user.id);
+                const user = JSON.parse(storedUser); // Convert string to object
+                setUserId(user.id); // Update state but don't use it immediately
 
                 const response = await fetch(
-                    `${import.meta.env.VITE_BACKEND_URL}/user/get-user/${parsedUser.user.id}`
+                    `${import.meta.env.VITE_BACKEND_URL}/user/get-user/${user.id}` // Use user.id directly
                 );
 
                 if (!response.ok) {
@@ -39,12 +40,12 @@ const UserProfile = () => {
                 }
 
                 const data = await response.json();
-                if (data.user.role === "admin") navigate("/admin")
-
-
-
-
                 setUserData(data.user);
+                console.log(data.user);
+
+                if (data.user.role === "admin") {
+                    navigate("/admin");
+                }
 
                 if (data.user.cart && data.user.cart.length > 0) {
                     await fetchCartProducts(data.user.cart);
@@ -58,7 +59,8 @@ const UserProfile = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, []); // Keep dependencies empty unless needed
+
 
     const fetchCartProducts = async (cartIds) => {
         if (!Array.isArray(cartIds) || cartIds.length === 0) {

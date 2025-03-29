@@ -24,11 +24,14 @@ const ProductGrid = () => {
         if (storedUser) {
             try {
                 const parsedUser = JSON.parse(storedUser);
-                setUserId(parsedUser.user.id);
+                console.log(parsedUser.id)
+                // Adjust based on the actual structure
+                setUserId(parsedUser.id ?? parsedUser.user?.id);
             } catch (error) {
                 console.error("Error parsing user data:", error);
             }
         }
+
     }, []);
 
     // Fetch categories
