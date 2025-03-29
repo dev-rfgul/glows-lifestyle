@@ -3,6 +3,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import cookieSession from 'cookie-session';
+import passport from './passport.js';
 
 
 // Load environment variables first
@@ -16,7 +18,8 @@ import adminRoutes from './routes/admin.routes.js';
 import paymentRoutes from './routes/payment.routes.js'
 import AnalyticsRoutes from './routes/analytics.routes.js'
 import { cloudinaryConnect } from './config/cloudinary.js';
-
+import passportSetup from './passport.js'
+import authRoutes from './routes/google-auth.routes.js'
 // Initialize app and services
 const app = express();
 
@@ -38,6 +41,15 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
+// for google authentication
+app.use(
+    cookieSession({
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        keys: [process.env.COOKIE_KEY],
+    })
+)
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 // Connect to database and services
@@ -70,6 +82,9 @@ app.use('/product', productRoutes);
 app.use('/admin', adminRoutes);
 app.use('/payment', paymentRoutes)
 app.use('/analytics', AnalyticsRoutes)
+app.use('/auth', authRoutes)
+
+
 
 
 // Start server with proper port fallback
