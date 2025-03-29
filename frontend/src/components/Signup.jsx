@@ -3,7 +3,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 const Signup = () => {
+
+    const { user, loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+    console.log(user)
     const navigate = useNavigate();
 
 
