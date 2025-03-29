@@ -5,6 +5,10 @@ const UserSchema = new mongoose.Schema({
         required: true,
         lowercase: true,
     },
+    picture:{
+        type:String,
+        default: "https://www.gravatar.com/avatar"
+    },
     role: {
         type: String,
         enum: ["admin", "user"],

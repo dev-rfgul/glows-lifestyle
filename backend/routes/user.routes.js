@@ -36,6 +36,23 @@ router.post('/signup', async (req, res) => {
     res.status(200).json({ message: 'User Created', user })
 })
 
+router.post('/auth0-login', async (req, res) => {
+    const { email, name, picture } = req.body;
+
+    try {
+        let user = await userModel.findOne({ email });
+
+        if (!user) {
+            user = new userModel({ email, name, picture });
+            await user.save();
+        }
+
+        res.json({ success: true, user });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error saving user", error });
+    }
+});
+
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -140,5 +157,9 @@ router.get('/get-user/:id', async (req, res) => {
         res.status(500).json({ message: "error while searching user", error: error })
     }
 })
+
+
+
+
 
 export default router;
