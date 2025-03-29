@@ -15,14 +15,14 @@ const ProductCard = ({ product, loading }) => {
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            try {
-                const parsedUser = JSON.parse(storedUser);
-                setUserId(parsedUser.user.id);
-            } catch (error) {
-                console.error("Error parsing user from localStorage:", error);
-            }
+        if (!storedUser) {
+            console.log("No user found in localStorage");
+            throw new Error("No user found in localStorage");
         }
+
+        const user = JSON.parse(storedUser); // Convert string to object
+        setUserId(user.id); // Update state but don't use it immediately
+
     }, []);
 
     const showNotification = (message, type = "success") => {

@@ -208,10 +208,9 @@ const UserProfile = () => {
             {/* User Info Section */}
 
             <div className="flex flex-col md:flex-row items-center md:space-x-8 border-b pb-6">
-                <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl md:text-5xl font-bold shadow-lg mb-4 md:mb-0">
-                    {userData?.name?.charAt(0)?.toUpperCase() || <FaUserCircle />}
-                </div>
+                <img className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl md:text-5xl font-bold shadow-lg mb-4 md:mb-0" src={userData.picture} alt="" />
                 <div className="text-center md:text-left flex-grow">
+
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-800">{userData.name}</h2>
                     <p className="text-lg text-gray-500 capitalize">{userData.role}</p>
                     <p className="text-sm text-gray-400 mt-1">{userData.email}</p>
