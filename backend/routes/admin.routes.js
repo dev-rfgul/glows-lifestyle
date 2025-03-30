@@ -198,10 +198,61 @@ app.get('/test', (req, res) => {
     res.send("The route is working");
 });
 
-// Product routes (Protected)
-app.post('/add-product', verifyAdmin, upload.array('image'), async (req, res) => {
+
+app.post('/add-product', verifyAdmin, async (req, res) => {
     try {
-        const { name, description, price, stock, size, SKU, category, tag } = req.body;
+        const {
+            name,
+            tagline,
+            price,
+            discountPrice,
+            colors,
+            features,
+            description,
+            technicalSpecs,
+            img
+        } = req.body;
+
+        // Validate required fields
+        if (!name || !price || !description) {
+            return res.status(400).json({ message: 'Name, price, and description are required fields' });
+        }
+
+        // Create new product document
+        const newProduct = new productModel({
+            name,
+            tagline,
+            price,
+            discountPrice,
+            colors,
+            features,
+            description,
+            technicalSpecs,
+            img
+        });
+
+        // Save product to database
+        const savedProduct = await newProduct.save();
+
+        // Return success response
+        res.status(201).json({
+            message: 'Product added successfully',
+            product: savedProduct
+        });
+
+    } catch (error) {
+        console.error('Product creation error:', error);
+        res.status(500).json({
+            message: 'Failed to add product',
+            error: error.message
+        });
+    }
+});
+
+// Product routes (Protected)
+app.post('/add-product2', verifyAdmin, upload.array('image'), async (req, res) => {
+    try {
+        const { name, tagline, price, discountPrice, description, stock, size, SKU, category, tag } = req.body;
 
         if (!name || !price || !stock) {
             return res.status(400).json({ message: 'Name, price, and stock are required' });
