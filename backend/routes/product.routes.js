@@ -23,7 +23,7 @@ app.get('/get-products', async (req, res) => {
     if (!products || products == 0) {
         return res.status(404).json({ message: "no product found" })
     }
-    res.status(200).json({ message: "product found successfully,", products: products })    
+    res.status(200).json({ message: "product found successfully,", products: products })
 })
 app.get('/get-product/:id', async (req, res) => {
     try {
@@ -32,7 +32,7 @@ app.get('/get-product/:id', async (req, res) => {
         if (!product) {
             return res.status(404).json({ message: "product not found" })
         }
-        res.json({ message: "Product found", product });
+        res.status(200).json({ message: "Product found", product });
     }
     catch (error) {
         res.status(500).json({ error: error.message });
