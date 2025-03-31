@@ -88,6 +88,7 @@ app.post('/remove-from-cart', async (req, res) => {
         // console.log(product)
         if (!product) {
             return res.status(404).json({ message: "Product not found" })
+            return res.status(404).json({ message: "Product not found" })
         }
         const user = await userModel.findById(userId);
         if (!user) {

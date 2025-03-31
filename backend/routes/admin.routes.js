@@ -204,7 +204,7 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
         const {
             name,
             tagline,
-            price, 
+            price,
             stock,
             discountPrice,
             colors,
@@ -215,8 +215,8 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
         } = req.body;
 
         // Validate required fields
-        if (!name || !price || !description) {
-            return res.status(400).json({ message: 'Name, price, and description are required fields' });
+        if (!name || !price || !description || !stock) {
+            return res.status(400).json({ message: 'Name, price, stock ,and description are required fields' });
         }
 
         // Create new product document
