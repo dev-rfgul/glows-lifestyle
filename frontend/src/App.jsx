@@ -141,6 +141,7 @@ import AllProducts from './components/AllProducts'
 import { SuccessPayment, CancelPayment } from './components/Success';
 import AdminOrdersPage from './components/AdminOrdersPage'
 import ProtectedRoute from './components/ProtectedRoute';
+import Checkout from './components/Checkout'
 
 const App = () => {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
@@ -157,6 +158,7 @@ const App = () => {
         <Route path='/profile' element={<Profile />} />
         <Route path='/all-products' element={<AllProducts />} />
         <Route path="/products/:category" element={<AllProducts />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment/success" element={<SuccessPayment />} />
         <Route path="/payment/cancel" element={<CancelPayment />} />
 

@@ -308,7 +308,7 @@ const Navbar = () => {
                         </div>
                         <span className="text-xs">Wishlist</span>
                     </Link>
-                    <Link to="/cart" className="flex flex-col items-center">
+                    <Link to="/profile" className="flex flex-col items-center">
                         <div className="relative">
                             <FontAwesomeIcon icon={faShoppingCart} className="text-black text-lg mb-1" />
                             <span className="absolute -top-2 -right-2 bg-lime-500 text-black text-xs rounded-full h-4 w-4 flex items-center justify-center">

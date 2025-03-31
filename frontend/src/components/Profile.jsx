@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { FaShoppingCart, FaUserCircle, FaTrash, FaSpinner } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -241,7 +241,7 @@ const UserProfile = () => {
                                     <div key={product._id} className="border rounded-xl shadow-md bg-white hover:shadow-lg transition-shadow overflow-hidden">
                                         <div className="h-48 overflow-hidden relative">
                                             <img
-                                                src={product.images?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"}
+                                                src={product.img?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"}
                                                 alt={product.name}
                                                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                                             />
@@ -265,22 +265,23 @@ const UserProfile = () => {
                                     <span className="text-xl font-semibold text-gray-800">Total:</span>
                                     <span className="text-2xl font-bold text-green-600">{cartTotal} د.إ</span>
                                 </div>
-
-                                <button
-                                    onClick={makePayment}
-                                    disabled={isProcessingPayment}
-                                    className={`w-full ${isProcessingPayment ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'} 
+                                <Link to="/checkout">
+                                    <button
+                                        // onClick={makePayment}
+                                        disabled={isProcessingPayment}
+                                        className={`w-full ${isProcessingPayment ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'} 
                                     text-white font-medium text-lg px-5 py-3 rounded-lg transition-colors flex items-center justify-center`}
-                                >
-                                    {isProcessingPayment ? (
-                                        <>
-                                            <FaSpinner className="animate-spin mr-2" />
-                                            Processing...
-                                        </>
-                                    ) : (
-                                        "Proceed to Checkout"
-                                    )}
-                                </button>
+                                    >
+                                        {isProcessingPayment ? (
+                                            <>
+                                                <FaSpinner className="animate-spin mr-2" />
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            "Proceed to Checkout"
+                                        )}
+                                    </button>
+                                </Link>
                             </div>
                         </>
                     ) : (

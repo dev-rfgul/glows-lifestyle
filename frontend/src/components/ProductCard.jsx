@@ -64,7 +64,7 @@ const ProductCard = ({ product, loading }) => {
             // If buying now, redirect to cart page
             if (buyNow) {
                 // You could also use dispatch to navigate via redux
-                window.location.href = '/cart';
+                window.location.href = '/profile';
             }
         } catch (error) {
             console.error("Error:", error.response?.data?.message || error.message);
@@ -189,7 +189,7 @@ const ProductCard = ({ product, loading }) => {
                 <button
                     onClick={() => addToCart(product._id, true)}
                     disabled={isBuyingNow || product.stock === 0}
-                    className={`w-full text-white text-sm px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${product.stock === 0
+                    className={`w-full text-white text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${product.stock === 0
                         ? "bg-blue-300 cursor-not-allowed"
                         : "bg-black "
                         }`}
