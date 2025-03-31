@@ -118,7 +118,7 @@ const ProductCard = ({ product, loading }) => {
             <Link to={`/product/${product._id}`} className="block">
                 <div className="relative group">
                     <img
-                        src={product.images[0]}
+                        src={product.img[0]}
                         alt={product.name}
                         className="w-full h-52 object-cover transition-all duration-300 group-hover:brightness-95"
                     />
@@ -137,12 +137,12 @@ const ProductCard = ({ product, loading }) => {
                             <span className="text-white text-lg font-bold">Out of Stock</span>
                         </div>
                     )}
-                    {product.images.length > 1 && (
+                    {product.img.length > 1 && (
                         <div className="absolute bottom-2 right-2 flex gap-1">
-                            {[...Array(Math.min(3, product.images.length))].map((_, i) => (
+                            {[...Array(Math.min(3, product.img.length))].map((_, i) => (
                                 <div key={i} className="w-2 h-2 rounded-full bg-white opacity-70"></div>
                             ))}
-                            {product.images.length > 3 && <div className="w-2 h-2 rounded-full bg-white opacity-70">+</div>}
+                            {product.img.length > 3 && <div className="w-2 h-2 rounded-full bg-white opacity-70">+</div>}
                         </div>
                     )}
                 </div>

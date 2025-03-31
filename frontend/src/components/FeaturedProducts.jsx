@@ -43,12 +43,13 @@ const ProductGrid = () => {
             try {
                 // You could add query params for filtering based on your filters state
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/product/get-products`);
-
+                
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.json();
+                console.log(data)
                 setProducts(data.products);
                 setError(null);
             } catch (error) {
