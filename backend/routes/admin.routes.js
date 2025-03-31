@@ -204,7 +204,8 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
         const {
             name,
             tagline,
-            price,
+            price, 
+            stock,
             discountPrice,
             colors,
             features,
@@ -223,6 +224,7 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
             name,
             tagline,
             price,
+            stock,
             discountPrice,
             colors,
             features,
