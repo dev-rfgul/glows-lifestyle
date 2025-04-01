@@ -51,7 +51,6 @@ app.post("/get-selected-products", async (req, res) => {
 
         const products = await productModel.find({ _id: { $in: objectIds } });
         // console.log("Fetched Products:", products);
-
         res.json(products);
     } catch (error) {
         console.error("Error fetching products:", error);
