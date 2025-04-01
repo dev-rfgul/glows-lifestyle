@@ -526,7 +526,8 @@ const PaymentInfoCard = () => {
         country: '',
         orderNotes: '',
         latitude: '',
-        longitude: ''
+        longitude: '',
+        orderProducts: [cartProducts]
     });
 
     const [errors, setErrors] = useState({});
@@ -572,14 +573,11 @@ const PaymentInfoCard = () => {
             if (!storedUser) {
                 throw new Error("No user found in localStorage");
             }
-
             const user = JSON.parse(storedUser);
             setUserId(user.id);
-
             const response = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/user/get-user/${user.id}`
             );
-
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 throw new Error(errorData.message || "Failed to fetch user data");
@@ -616,7 +614,6 @@ const PaymentInfoCard = () => {
             setCartProducts([]);
             return;
         }
-
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/product/get-selected-products`,
@@ -634,6 +631,7 @@ const PaymentInfoCard = () => {
             setError("Failed to load cart products");
         }
     };
+    console.log(cartProducts)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -767,7 +765,6 @@ const PaymentInfoCard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formErrors = validateForm(formData);
-
         if (Object.keys(formErrors).length > 0) {
             setErrors(formErrors);
             // Scroll to first error
@@ -785,7 +782,7 @@ const PaymentInfoCard = () => {
             const orderData = {
                 ...formData,
                 userId,
-                products: cartProducts.map(p => ({
+                orderdProducts: cartProducts.map(p => ({
                     productId: p._id,
                     quantity: p.quantity || 1,
                     price: p.price
@@ -793,7 +790,7 @@ const PaymentInfoCard = () => {
                 orderTotal,
                 orderDate: new Date().toISOString()
             };
-
+            console.log(orderData)
             const response = await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/user/checkout`,
                 orderData,
@@ -925,9 +922,6 @@ const PaymentInfoCard = () => {
                             )}
                         </div>
                     </div>
-
-
-
                     {/* Cash on Delivery Banner */}
                     <div className="bg-yellow-50 p-4 border-l-4 border-yellow-400">
                         <div className="flex">

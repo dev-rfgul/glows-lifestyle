@@ -148,6 +148,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { expressjwt } from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
+import mongoose from 'mongoose';
 
 import userModel from '../models/user.model.js';
 import checkoutModel from '../models/Checkout.model.js'
@@ -389,30 +390,62 @@ router.get('/get-user/:id', async (req, res) => {
     }
 });
 
-router.post('/checkout', async (req, res) => {
+// Route to create a new checkout
+router.post("/checkout", async (req, res) => {
     try {
-        const { name, email, phone, address, city, province, postalCode, country, orderNotes } = req.body;
-
-        console.log(req.body);
-
-        // Convert phone and postalCode to numbers
-        const newOrder = new checkoutModel({
+        const {
+            userId,
+            orderedProducts,
             name,
             email,
-            phone: Number(phone), // Convert phone to number
+            phone,
             address,
             city,
             province,
-            postalCode: Number(postalCode), // Convert postalCode to number
+            postalCode,
             country,
             orderNotes,
+            latitude,
+            longitude,
+            orderTotal,
+            orderDate,
+        } = req.body;
+
+        // Create a new Checkout document
+        const checkout = new checkoutModel({
+            userId: new mongoose.Types.ObjectId(userId),
+            orderedProducts,
+            name,
+            email,
+            phone,
+            address,
+            city,
+            province,
+            postalCode,
+            country,
+            orderNotes,
+            latitude,
+            longitude,
+            orderTotal,
+            orderDate: new Date(orderDate), // Convert to Date if not already
         });
 
-        await newOrder.save();
-        res.status(200).json({ message: "Order placed successfully", newOrder });
+        // Save the checkout data to the database
+        const savedCheckout = await checkout.save();
 
+        // Return a success response
+        res.status(201).json({
+            success: true,
+            message: "Checkout created successfully",
+            data: savedCheckout,
+        });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server error, could not create checkout",
+            error: error.message,
+        });
     }
 });
 

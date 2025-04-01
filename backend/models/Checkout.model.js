@@ -1,10 +1,25 @@
 import mongoose from "mongoose";
 
 const checkoutSchema = new mongoose.Schema({
-    userID: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    orderedProducts: [{
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true,
+        },
+        quantity: {
+            type: Number,
+            required: true,
+        },
+        price: {
+            type: Number,
+            required: true,
+        }
+    }],
     name: {
         type: String,
         required: true,
@@ -14,7 +29,7 @@ const checkoutSchema = new mongoose.Schema({
         required: true,
     },
     phone: {
-        type: Number,
+        type: String, // Changed to String for phone number
         required: true,
     },
     address: {
@@ -30,7 +45,7 @@ const checkoutSchema = new mongoose.Schema({
         required: true,
     },
     postalCode: {
-        type: Number,
+        type: String, // Changed to String for postal code
         required: true,
     },
     country: {
@@ -39,8 +54,25 @@ const checkoutSchema = new mongoose.Schema({
     },
     orderNotes: {
         type: String,
+        default: "", // Default empty string for orderNotes
     },
+    latitude: {
+        type: String,
+        default: "", // Optional field for latitude
+    },
+    longitude: {
+        type: String,
+        default: "", // Optional field for longitude
+    },
+    orderTotal: {
+        type: Number,
+        required: true, // Total order price
+    },
+    orderDate: {
+        type: Date,
+        required: true, // Date the order was placed
+        default: Date.now, // Default to current date if not provided
+    }
+});
 
-})
-
-export default mongoose.model('Checkout', checkoutSchema)
+export default mongoose.model('Checkout', checkoutSchema);
