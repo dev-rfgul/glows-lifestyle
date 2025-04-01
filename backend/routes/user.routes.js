@@ -92,7 +92,7 @@
 //             sameSite: "None", // Must match SameSite when cookie was set
 //             domain: ".onrender.com", // Ensure it's cleared across subdomains
 //         });
-        
+
 
 //         res.status(200).json({ message: 'Logout successfull' })
 //     } catch (error) {
@@ -150,20 +150,21 @@ import { expressjwt } from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
 
 import userModel from '../models/user.model.js';
+import checkoutModel from '../models/Checkout.model.js'
 
 const router = express.Router();
 
 // Auth0 JWT validation middleware
 const checkJwtAuth0 = expressjwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
-  }),
-  audience: process.env.AUTH0_AUDIENCE,
-  issuer: `https://${process.env.AUTH0_DOMAIN}/`,
-  algorithms: ['RS256']
+    secret: jwksRsa.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+    }),
+    audience: process.env.AUTH0_AUDIENCE,
+    issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+    algorithms: ['RS256']
 });
 
 // Test route
@@ -207,10 +208,10 @@ router.post('/auth0-login', async (req, res) => {
         if (!user) {
             // Create new user if doesn't exist
             // Note: We don't need password for Auth0 users
-            user = new userModel({ 
-                email, 
+            user = new userModel({
+                email,
                 name: name || email.split('@')[0], // Use part of email as name if not provided
-                picture: picture || "https://www.gravatar.com/avatar", 
+                picture: picture || "https://www.gravatar.com/avatar",
                 auth0Id: req.body.sub || `auth0|${Date.now()}`, // Use sub if available or generate a placeholder
                 authProvider: "auth0",
                 role: "user"
@@ -258,9 +259,9 @@ router.post('/auth0-login', async (req, res) => {
         });
     } catch (error) {
         console.error("Auth0 login error:", error);
-        res.status(500).json({ 
-            success: false, 
-            message: "Error processing Auth0 login", 
+        res.status(500).json({
+            success: false,
+            message: "Error processing Auth0 login",
             error: process.env.NODE_ENV === 'development' ? error.message : 'Server error'
         });
     }
@@ -278,8 +279,8 @@ router.post('/login', async (req, res) => {
 
         // If user was created with Auth0, prevent regular password login
         if (user.authProvider === 'auth0') {
-            return res.status(400).json({ 
-                message: 'This account uses Auth0 for authentication. Please login with Auth0.' 
+            return res.status(400).json({
+                message: 'This account uses Auth0 for authentication. Please login with Auth0.'
             });
         }
 
@@ -333,7 +334,7 @@ router.post('/logout', (req, res) => {
             sameSite: "None",
             domain: ".onrender.com",
         });
-        
+
         res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -385,6 +386,33 @@ router.get('/get-user/:id', async (req, res) => {
         res.status(200).json({ message: "User found", user });
     } catch (error) {
         res.status(500).json({ message: "Error while searching user", error: error });
+    }
+});
+
+router.post('/checkout', async (req, res) => {
+    try {
+        const { name, email, phone, address, city, province, postalCode, country, orderNotes } = req.body;
+
+        console.log(req.body);
+
+        // Convert phone and postalCode to numbers
+        const newOrder = new checkoutModel({
+            name,
+            email,
+            phone: Number(phone), // Convert phone to number
+            address,
+            city,
+            province,
+            postalCode: Number(postalCode), // Convert postalCode to number
+            country,
+            orderNotes,
+        });
+
+        await newOrder.save();
+        res.status(200).json({ message: "Order placed successfully", newOrder });
+
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 });
 

@@ -1,14 +1,14 @@
 // src/components/PaymentInfoCard.jsx
 import { useState, useEffect } from 'react';
-
+import axios from 'axios'
 const PaymentInfoCard = () => {
     const [formData, setFormData] = useState({
-        fullName: '',
+        name: '',
         email: '',
         phone: '',
         address: '',
         city: '',
-        state: '',
+        province: '',
         postalCode: '',
         country: '',
         orderNotes: '',
@@ -124,7 +124,7 @@ const PaymentInfoCard = () => {
                     ...prev,
                     address: [address.road, address.house_number].filter(Boolean).join(' ') || prev.address,
                     city: address.city || address.town || address.village || prev.city,
-                    state: address.state || prev.state,
+                    province: address.state || prev.state,
                     postalCode: address.postcode || prev.postalCode,
                     country: address.country || prev.country
                 }));
@@ -137,7 +137,7 @@ const PaymentInfoCard = () => {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.fullName.trim()) newErrors.fullName = 'Name is required';
+        if (!formData.name.trim()) newErrors.name = 'Name is required';
         if (!formData.email.trim()) {
             newErrors.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -154,7 +154,7 @@ const PaymentInfoCard = () => {
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formErrors = validateForm();
 
@@ -163,18 +163,25 @@ const PaymentInfoCard = () => {
             return;
         }
 
-        // Here you would typically send the data to your backend
-        console.log('Form submitted:', formData);
+        console.log(formData)
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/checkout`, formData)
+            console.log(response.data)
+
+        } catch (error) {
+            console.error(error)
+        }
+        // console.log('Form submitted:', formData);
         alert('Order information submitted successfully! We will contact you shortly.');
 
-        // Reset form after successful submission
+        // Reset form after successful submission`
         setFormData({
-            fullName: '',
+            name: '',
             email: '',
             phone: '',
             address: '',
             city: '',
-            state: '',
+            province: '',
             postalCode: '',
             country: '',
             orderNotes: '',
@@ -224,16 +231,16 @@ const PaymentInfoCard = () => {
                             </div>
 
                             <div className="col-span-2 md:col-span-1">
-                                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                                 <input
                                     type="text"
-                                    name="fullName"
-                                    id="fullName"
-                                    value={formData.fullName}
+                                    name="name"
+                                    id="name"
+                                    value={formData.name}
                                     onChange={handleChange}
-                                    className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none ${errors.fullName ? 'border-red-500' : 'border-gray-300'}`}
+                                    className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                                 />
-                                {errors.fullName && <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>}
+                                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                             </div>
 
                             <div className="col-span-2 md:col-span-1">
@@ -333,12 +340,12 @@ const PaymentInfoCard = () => {
                             </div>
 
                             <div className="col-span-2 md:col-span-1">
-                                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">State / Province</label>
+                                <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-1">State / Province</label>
                                 <input
                                     type="text"
-                                    name="state"
-                                    id="state"
-                                    value={formData.state}
+                                    name="province"
+                                    id="province"
+                                    value={formData.province}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                                 />
