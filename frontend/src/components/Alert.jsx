@@ -154,7 +154,6 @@ const AlertMessage = ({
                             <img src={logoUrl} alt="" className="w-14 h-14 object-contain" />
                         </div>
                     )}
-                    
                     {/* Message */}
                     <div className="flex-1">
                         <p className={`font-medium ${currentStyle.text}`}>{message}</p>

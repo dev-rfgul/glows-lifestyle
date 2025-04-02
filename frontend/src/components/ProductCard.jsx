@@ -8,20 +8,12 @@ const ProductCard = ({ product, loading }) => {
     // const dispatch = useDispatch();
     const [userId, setUserId] = useState(null);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
-    const [isBuyingNow, setIsBuyingNow] = useState(false);
+    const [isBuyingNow, setIsBuyingNow]  = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState("success"); // success or error
 
     useEffect(() => {
-        // const storedUser = localStorage.getItem("user");
-        // if (!storedUser) {
-        //     console.log("No user found in localStorage");
-        //     throw new Error("No user found in localStorage");
-        // }
-
-        // const user = JSON.parse(storedUser); // Convert string to object
-        // setUserId(user.id); // Update state but don't use it immediately
         const storedUser = localStorage.getItem("user");
         if (!storedUser) {
             console.log("No user found in localStorage");
@@ -42,6 +34,7 @@ const ProductCard = ({ product, loading }) => {
     };
 
     const addToCart = async (productId, buyNow = false) => {
+        console.log("Adding to cart:", productId);
         if (!userId) {
             showNotification("Please login to add items to cart", "error");
             return;
@@ -162,10 +155,8 @@ const ProductCard = ({ product, loading }) => {
                     <div className="flex items-center gap-2 mt-2 text-gray-600 text-sm">
                         {product.category && <span className="font-medium font-bold">{product.tagline}</span>}
                     </div>
-                 
                 </div>
             </Link>
-
             {/* Action Buttons */}
             <div className="p-4 flex flex-col gap-2">
                 <button
@@ -209,7 +200,6 @@ const ProductCard = ({ product, loading }) => {
                     )}
                 </button>
             </div>
-
             {/* Toast Notification */}
             {showToast && (
                 <div className={`fixed bottom-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 transition-opacity duration-300 ${toastType === "success" ? "bg-green-500" : "bg-red-500"
