@@ -8,6 +8,7 @@ import ProductCard from './ProductCard'
 
 const ProductGrid = () => {
     const [products, setProducts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userId, setUserId] = useState(null);
@@ -36,6 +37,18 @@ const ProductGrid = () => {
 
     // Fetch categories
 
+    useEffect(() => {
+        let result = [...products];
+        console.log("result from featured products", result, "and search term is ", searchTerm)
+        // Apply search filter
+        if (searchTerm) {
+            result = result.filter(product =>
+                product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (product.tag && typeof product.tag === 'string' && product.tag.toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+        }
+    }, [products, searchTerm]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -43,7 +56,7 @@ const ProductGrid = () => {
             try {
                 // You could add query params for filtering based on your filters state
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/product/get-products`);
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -95,6 +108,14 @@ const ProductGrid = () => {
     const filteredProducts = React.useMemo(() => {
         let result = [...products];
 
+
+        if (searchTerm) {
+            result = result.filter(product =>
+                product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (product.tag && typeof product.tag === 'string' && product.tag.toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+        }
         // Apply category filter
         if (filters.category !== "all") {
             result = result.filter(product => product.category === filters.category);
@@ -125,7 +146,7 @@ const ProductGrid = () => {
         }
 
         return result;
-    }, [products, filters]);
+    }, [products, filters, searchTerm]);
 
     // Handle price range change
     const handlePriceRangeChange = (min, max) => {
@@ -170,22 +191,31 @@ const ProductGrid = () => {
                             </select>
                         </div>
 
-                        {/* Category Filter */}
+
+                        {/* Category Filter / Search Bar */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                            <select
-                                className="w-full border rounded-lg px-3 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={filters.category}
-                                onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                            >
-                                <option value="all">All Categories</option>
-                                {categories.map(category => (
-                                    <option key={category._id} value={category._id}>
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="Search products..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                                />
+                                <span className="absolute right-3 top-2.5 text-gray-400">
+                                    {/* Search icon */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </div>
                         </div>
+
 
                         {/* Price Range Filter */}
                         <div>

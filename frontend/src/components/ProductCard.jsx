@@ -157,10 +157,12 @@ const ProductCard = ({ product, loading }) => {
                         <span className="text-green-600 font-bold text-lg">{calculatedPrice} د.إ</span>
                     </div>
                     <div className="flex items-center gap-2 mt-2 text-gray-600 text-sm">
-                        {product.tag && <span className="font-medium">{product.tag}</span>}
-                        {product.tag && product.SKU && <span>|</span>}
-                        {product.SKU && <span className="font-medium">SKU: {product.SKU}</span>}
+                        {product.category && <span className="font-medium">{product.category}</span>}
                     </div>
+                    <div className="flex items-center gap-2 mt-2 text-gray-600 text-sm">
+                        {product.category && <span className="font-medium font-bold">{product.tagline}</span>}
+                    </div>
+                 
                 </div>
             </Link>
 

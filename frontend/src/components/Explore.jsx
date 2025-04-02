@@ -12,7 +12,7 @@ const Explore = () => {
             description: "Premium leather wallets with RFID protection",
             productCount: 24,
             images: [
-                "/images/explore/earbuds.gif",  
+                "/images/explore/earbuds.gif",
             ],
             featured: true,
             new: false,
