@@ -163,9 +163,8 @@ const Explore = () => {
         });
     };
     const hanldeCategory = (category) => {
-        // const newcategory = category.toLowerCase()
-        navigate(`/product/${category}`)
-
+        const newcategory = category.toLowerCase()
+        navigate(`/product/categories/${newcategory}`)
     }
 
     return (

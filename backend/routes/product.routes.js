@@ -108,18 +108,26 @@ app.post('/remove-from-cart', async (req, res) => {
 app.get('/categories/:category', async (req, res) => {
     try {
         const { category } = req.params;
-        const products = await productModel.find({ tag: category });
-        console.log(category)
-        typeof (console.log(category))
-        if (!products || products.length == 0) {
-            return res.status(404).json({ message: `no products found in ${category} category ` })
+        console.log("Category received:", category); // Debugging log
+
+        // Correcting the query to match category field
+        const products = await productModel.find({ category });
+
+        // Debugging
+        console.log("Data type of category:", typeof category);
+
+        // Checking if products exist
+        if (!products || products.length === 0) {
+            return res.status(404).json({ message: `No products found in ${category} category` });
         }
-        res.status(200).json({ message: "products found successfully", products: products })
+
+        res.status(200).json({ message: "Products found successfully", products });
     } catch (error) {
-        console.error('Error fetching category:', error);
-        res.status(500).json({ message: 'Server error' });
+        console.error("Error fetching category:", error);
+        res.status(500).json({ message: "Server error" });
     }
-})
+});
+
 
 
 
