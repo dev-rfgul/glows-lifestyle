@@ -118,7 +118,6 @@ app.get('/categories/:category', async (req, res) => {
     } catch (error) {
         console.error('Error fetching category:', error);
         res.status(500).json({ message: 'Server error' });
-
     }
 })
 

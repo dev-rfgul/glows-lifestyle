@@ -164,8 +164,7 @@ const Explore = () => {
     };
     const hanldeCategory = (category) => {
         // const newcategory = category.toLowerCase()
-
-        navigate(`/products/${category}`)
+        navigate(`/product/${category}`)
 
     }
 

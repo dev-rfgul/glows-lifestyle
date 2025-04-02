@@ -206,6 +206,7 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
             tagline,
             price,
             stock,
+            category,
             discountPrice,
             colors,
             features,
@@ -215,7 +216,7 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
         } = req.body;
 
         // Validate required fields
-        if (!name || !price || !description || !stock) {
+        if (!name || !price || !description || !stock || !category) {
             return res.status(400).json({ message: 'Name, price, stock ,and description are required fields' });
         }
 
@@ -225,6 +226,7 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
             tagline,
             price,
             stock,
+            category,
             discountPrice,
             colors,
             features,

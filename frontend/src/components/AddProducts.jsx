@@ -7,7 +7,8 @@ const AddProductForm = ({ onProductAdded }) => {
         name: '',
         tagline: '',
         price: '',
-        stock:'',
+        stock: '',
+        category:'earbuds',
         discountPrice: '',
         colors: [{ name: '', hex: '#000000' }],
         features: [''],
@@ -162,7 +163,7 @@ const AddProductForm = ({ onProductAdded }) => {
                 tagline: '',
                 price: '',
                 discountPrice: '',
-                stock:'',
+                stock: '',
                 colors: [{ name: '', hex: '#000000' }],
                 features: [''],
                 description: '',
@@ -264,6 +265,22 @@ const AddProductForm = ({ onProductAdded }) => {
                         required
                     />
                 </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">category</label>
+                    <select
+                        name="stock"
+                        value={formData.category}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        required
+                    >
+                        <option value="">Select a product</option>
+                        <option value="smartwatch">Smartwatch</option>
+                        <option value="earbuds">Earbuds</option>
+                        <option value="headphones">Headphones</option>
+                    </select>
+                </div>
+
             </div>
 
             {/* Description */}
