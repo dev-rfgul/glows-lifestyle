@@ -532,7 +532,7 @@ const EarbudsProductDisplay = () => {
 
                     {/* Price Section */}
                     <div className="flex items-center space-x-4">
-                        <span className="text-3xl font-bold text-black">${product.discountPrice}</span>
+                        <span className="text-3xl font-bold text-black">PKR : {product.discountPrice}</span>
                         <span className="text-xl text-gray-900 line-through">${product.
                             discountPrice
                         }</span>

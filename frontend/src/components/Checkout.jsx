@@ -560,12 +560,13 @@ const PaymentInfoCard = () => {
             }));
         }
     }, [userData]);
+    console.log("cart products",cartProducts)
 
     // Calculate order total when cart products change
     useEffect(() => {
         if (cartProducts.length > 0) {
             const total = cartProducts.reduce((sum, product) => {
-                return sum + (product.price * (product.quantity || 1));
+                return sum + (product.discountPrice * (product.quantity || 1));
             }, 0);
             setOrderTotal(total);
         }

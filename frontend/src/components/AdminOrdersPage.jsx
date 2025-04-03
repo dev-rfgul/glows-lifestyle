@@ -50,13 +50,13 @@ const AdminOrdersPage = () => {
     });
 
     // Format currency
-    const formatCurrency = (amount, currency = 'AED') => {
-        return new Intl.NumberFormat('en-AE', {
-            style: 'currency',
-            currency: currency.toUpperCase(),
-            minimumFractionDigits: 2
-        }).format(amount);
-    };
+    // const formatCurrency = (amount, currency = 'AED') => {
+    //     return new Intl.NumberFormat('en-AE', {
+    //         style: 'currency',
+    //         currency: currency.toUpperCase(),
+    //         minimumFractionDigits: 2
+    //     }).format(amount);
+    // };
 
     const formatDate = (dateString) => {
         try {
@@ -217,7 +217,7 @@ const AdminOrdersPage = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm font-medium text-gray-900">
-                                            {formatCurrency(order.orderTotal)}
+                                            {order.orderTotal}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
@@ -320,7 +320,7 @@ const AdminOrdersPage = () => {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Total Amount</p>
-                                        <p className="font-medium">{formatCurrency(selectedOrder.orderTotal)}</p>
+                                        <p className="font-medium">{selectedOrder.orderTotal}</p>
                                     </div>
                                 </div>
                             </div>
@@ -388,11 +388,11 @@ const AdminOrdersPage = () => {
                                                         <div className="text-sm font-medium text-gray-900">{item.productId}</div>
                                                     </td>
                                                     <td className="px-4 py-3 text-sm">
-                                                        {formatCurrency(item.price)}
+                                                        {item.orderTotal}
                                                     </td>
-                                                    <td className="px-4 py-3 text-sm">{item.quantity}</td>
+                                                    <td className="px-4 py-3 text-sm">{item.quantity || 1}</td>
                                                     <td className="px-4 py-3 text-sm font-medium">
-                                                        {formatCurrency(item.price * item.quantity)}
+                                                        {item.orderTotal* item.quantity}
                                                     </td>
                                                 </tr>
                                             ))}
@@ -403,7 +403,7 @@ const AdminOrdersPage = () => {
                                                     Total
                                                 </td>
                                                 <td className="px-4 py-3 text-sm font-bold">
-                                                    {formatCurrency(selectedOrder.orderTotal)}
+                                                    {selectedOrder.orderTotal}
                                                 </td>
                                             </tr>
                                         </tfoot>
