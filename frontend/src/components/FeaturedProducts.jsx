@@ -16,7 +16,7 @@ const ProductGrid = () => {
     const [filters, setFilters] = useState({
         sort: "newest",
         category: "all",
-        priceRange: [0, 10000]
+        priceRange: [0, 100000]
     });
     const [categories, setCategories] = useState([]);
 

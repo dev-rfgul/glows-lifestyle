@@ -194,45 +194,28 @@ const uploadImgsToCloudinary = async (files) => {
 
 
 
-app.get('/test', (req, res) => {
-    res.send("The route is working");
-});
 
-
-app.post('/add-product', verifyAdmin, async (req, res) => {
+app.post('/add-product', verifyAdmin, upload.array('productImages'), async (req, res) => {
     try {
-        const {
-            name,
-            tagline,
-            price,
-            stock,
-            category,
-            discountPrice,
-            colors,
-            features,
-            description,
-            technicalSpecs,
-            img
-        } = req.body;
-
+        // Parse the product data from the JSON string
+        const productData = JSON.parse(req.body.productData);
+        
         // Validate required fields
-        if (!name || !price || !description || !stock || !category) {
-            return res.status(400).json({ message: 'Name, price, stock ,and description are required fields' });
+        if (!productData.name || !productData.price || !productData.description || 
+            !productData.stock || !productData.category) {
+            return res.status(400).json({ 
+                message: 'Name, price, stock, and description are required fields' 
+            });
         }
+        
+        
+        // Upload images to Cloudinary
+        const imageUrls = req.files?.length ? await uploadImgsToCloudinary(req.files) : [];
 
         // Create new product document
         const newProduct = new productModel({
-            name,
-            tagline,
-            price,
-            stock,
-            category,
-            discountPrice,
-            colors,
-            features,
-            description,
-            technicalSpecs,
-            img
+            ...productData,
+            img: imageUrls // Make sure this matches your schema
         });
 
         // Save product to database
@@ -243,7 +226,6 @@ app.post('/add-product', verifyAdmin, async (req, res) => {
             message: 'Product added successfully',
             product: savedProduct
         });
-
     } catch (error) {
         console.error('Product creation error:', error);
         res.status(500).json({

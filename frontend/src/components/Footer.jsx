@@ -87,9 +87,9 @@ const Footer = () => {
                     <div className="text-center md:text-left">
                         <h4 className="text-2xl font-semibold mb-4">Get Social</h4>
                         <ul className="flex flex-col md:flex-row md:justify-start items-center space-y-3 md:space-y-0 md:space-x-6 text-lg">
-                            {[{icon: FaFacebook, name: "Facebook"}, {icon: FaInstagram, name: "Instagram"}, {icon: FaPinterest, name: "Pinterest"}].map(({icon: Icon, name}, index) => (
+                            {[{icon: FaFacebook, name: "Facebook", link:"https://www.facebook.com/profile.php?id=61558535894505"}, {icon: FaInstagram, name: "Instagram", link:"https://www.instagram.com/glowzlifestyle/"},].map(({icon: Icon, name ,link:link}, index) => (
                                 <li key={index}>
-                                    <a href="#" className="flex items-center space-x-2 hover:text-yellow-300">
+                                    <a href={link} className="flex items-center space-x-2 hover:text-yellow-300">
                                         <Icon className="text-xl" />
                                         <span>{name}</span>
                                     </a>
@@ -104,9 +104,9 @@ const Footer = () => {
 
                 {/* Bottom Row */}
                 <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
-                    <p>&copy; 2024 Dewnor. All rights reserved.</p>
+                    <p>&copy; 2025 Glowz Lifestyle. All rights reserved.</p>
                     <p className="mt-3 md:mt-0">
-                        Powered by <a href="#" className="text-yellow-300 hover:text-yellow-400">Dewnor</a>
+                        Powered by <a href="#" className="text-yellow-300 hover:text-yellow-400">Glowz Lifestyle</a>
                     </p>
                 </div>
             </div>

@@ -222,7 +222,7 @@ const ProductCard = ({ product, loading }) => {
     const [userId, setUserId] = useState(null);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [isBuyingNow, setIsBuyingNow] = useState(false);
-    
+
     // Alert state
     const [alert, setAlert] = useState({
         show: false,
@@ -327,7 +327,7 @@ const ProductCard = ({ product, loading }) => {
 
     // Calculate discounted price if not already calculated
     const calculatedPrice = product.price;
-    const originalPrice = product.originalPrice ||
+    const originalPrice = product.price ||
         (product.discount > 0 ? (calculatedPrice / (1 - product.discount / 100)).toFixed(2) : calculatedPrice);
 
     return (
@@ -342,7 +342,7 @@ const ProductCard = ({ product, loading }) => {
                     showCloseButton={true}
                 />
             )}
-            
+
             <div className="border rounded-xl shadow-lg overflow-hidden bg-white hover:shadow-2xl hover:scale-[1.03] transition-transform duration-300">
                 {/* Product Image and Discount Badge */}
                 <Link to={`/product/${product._id}`} className="block">
@@ -352,11 +352,13 @@ const ProductCard = ({ product, loading }) => {
                             alt={product.name}
                             className="w-full h-52 object-cover transition-all duration-300 group-hover:brightness-95"
                         />
-                        {product.discount > 0 && (
+                        {/* {product.discount > 0 && (
                             <div className="absolute top-2 left-2 bg-red-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-md">
                                 -{product.discount}%
                             </div>
-                        )}
+                        )} */}
+
+
                         {product.stock <= 5 && product.stock > 0 && (
                             <div className="absolute top-2 right-2 bg-amber-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-md">
                                 Only {product.stock} left
@@ -381,14 +383,16 @@ const ProductCard = ({ product, loading }) => {
                     <div className="p-4">
                         <h3 className="text-base font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
                         <div className="flex items-center gap-2 mt-2">
-                            {product.discount > 0 && (
-                                <span className="text-gray-400 line-through text-sm">{originalPrice} د.إ</span>
-                            )}
-                            <span className="text-green-600 font-bold text-lg">{calculatedPrice} د.إ</span>
+
+                            <span className="text-gray-400 line-through text-lg">{product.price}</span>
+
+                            <span className="text-black-600 font-bold text-lg">RS {product.discountPrice}</span>
                         </div>
+
                         <div className="flex items-center gap-2 mt-2 text-gray-600 text-sm">
                             {product.category && <span className="font-medium">{product.category}</span>}
                         </div>
+
                         <div className="flex items-center gap-2 mt-2 text-gray-600 text-sm">
                             {product.tagline && <span className="font-medium font-bold">{product.tagline}</span>}
                         </div>
@@ -399,11 +403,10 @@ const ProductCard = ({ product, loading }) => {
                     <button
                         onClick={() => addToCart(product._id)}
                         disabled={isAddingToCart || product.stock === 0}
-                        className={`w-full text-black text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${
-                            product.stock === 0
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-gray-100 border-2 border-black text-black hover:bg-black hover:text-white"
-                        }`}
+                        className={`w-full text-black text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${product.stock === 0
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-gray-100 border-2 border-black text-black hover:bg-black hover:text-white"
+                            }`}
                     >
                         {isAddingToCart ? (
                             <span className="flex items-center justify-center">
@@ -420,11 +423,10 @@ const ProductCard = ({ product, loading }) => {
                     <button
                         onClick={() => addToCart(product._id, true)}
                         disabled={isBuyingNow || product.stock === 0}
-                        className={`w-full text-white text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${
-                            product.stock === 0
-                                ? "bg-blue-300 cursor-not-allowed"
-                                : "bg-black hover:bg-gray-800"
-                        }`}
+                        className={`w-full text-white text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${product.stock === 0
+                            ? "bg-blue-300 cursor-not-allowed"
+                            : "bg-black hover:bg-gray-800"
+                            }`}
                     >
                         {isBuyingNow ? (
                             <span className="flex items-center justify-center">

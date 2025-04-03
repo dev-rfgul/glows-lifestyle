@@ -28,7 +28,7 @@
 //     const [toastMessage, setToastMessage] = useState("");
 //     const [toastType, setToastType] = useState("success"); // success or error
 
-    
+
 
 
 //     useEffect(() => {
@@ -254,7 +254,7 @@
 //                             >
 //                                 Buy Now
 //                             </button>
-                            
+
 //                         </div>
 //                     </div>
 //                 </div>
@@ -320,7 +320,9 @@ const EarbudsProductDisplay = () => {
     const [userId, setUserId] = useState(null);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [isBuyingNow, setIsBuyingNow] = useState(false);
-    
+    const [selectedImage, setSelectedImage] = useState(product?.img[0]); // Set first image as default
+
+
     // Alert state
     const [alertProps, setAlertProps] = useState({
         message: "",
@@ -402,8 +404,8 @@ const EarbudsProductDisplay = () => {
             console.log("Product added to cart:", response.data);
 
             showNotification(
-                buyNow 
-                    ? "Product purchased successfully! Redirecting to profile..." 
+                buyNow
+                    ? "Product purchased successfully! Redirecting to profile..."
                     : "Product added to cart successfully!",
                 "success"
             );
@@ -459,7 +461,7 @@ const EarbudsProductDisplay = () => {
                     showCloseButton={true}
                 />
             )}
-            
+
             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
                 {/* Product Visual Section */}
                 <motion.div
@@ -468,19 +470,36 @@ const EarbudsProductDisplay = () => {
                     transition={{ duration: 0.5 }}
                     className="relative group"
                 >
-                    <div className="rounded-3xl p-8 relative overflow-hidden">
+                    ``          <div className="rounded-3xl p-8 relative overflow-hidden">
+                        {/* Main Image */}
                         <motion.img
-                            src={product.img[0]}
+                            src={selectedImage || product.img[0]}
                             alt={product.name}
                             className="w-full h-96 object-contain transform transition-all duration-300 group-hover:scale-110"
-                            style={{ filter: `hue-rotate(${selectedColor === '#FFFFFF' ? '0deg' : '180deg'})` }}
+                            style={{ filter: `hue-rotate(${selectedImage === '#FFFFFF' ? '0deg' : '180deg'})` }}
                         />
+
+                        {/* Expand Button */}
                         <button
                             onClick={() => setIsFullScreenImage(true)}
                             className="absolute top-4 right-4 bg-white/50 hover:bg-white/80 p-2 rounded-full transition"
                         >
                             <FaExpand className="text-blue-800" />
                         </button>
+
+                        {/* Thumbnail Images */}
+                        <div className="flex gap-2 mt-4">
+                            {product.img.map((img, index) => (
+                                <img
+                                    key={index}
+                                    src={img}
+                                    alt={`Thumbnail ${index}`}
+                                    className={`w-20 h-20 object-contain cursor-pointer rounded-lg border-2 transition ${selectedImage === img ? "border-blue-500 scale-105" : "border-gray-300"
+                                        }`}
+                                    onClick={() => setSelectedImage(img)}
+                                />
+                            ))}
+                        </div>
                     </div>
 
                     {/* Color Selection */}
@@ -514,7 +533,9 @@ const EarbudsProductDisplay = () => {
                     {/* Price Section */}
                     <div className="flex items-center space-x-4">
                         <span className="text-3xl font-bold text-black">${product.discountPrice}</span>
-                        <span className="text-xl text-gray-900 line-through">${product.price}</span>
+                        <span className="text-xl text-gray-900 line-through">${product.
+                            discountPrice
+                        }</span>
                         <span className="bg-green-100 text-gray-900 px-3 py-1 rounded-full">
                             Save ${(product.price - product.discountPrice).toFixed(2)}
                         </span>

@@ -41,14 +41,14 @@ export default function FeatureSection() {
                     <img src="./images/image.png" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
                 </div>
 
-                {/* Centered Image */}
+                {/* Centered Image
                 <div className="mt-12 bg-white rounded-lg shadow-sm p-8 flex justify-center">
                     <img src="https://www.dewnor.com/wp-content/uploads/2022/07/logo.png" alt="Tabby Banner" className=" " />
                 </div>
 
                 <div className="mt-12 bg-white rounded-lg shadow-sm p-8 text-center">
                     <img src="./images/tabby-banner" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
-                </div>
+                </div> */}
             </div>
         </div>
     );

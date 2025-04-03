@@ -1,0 +1,3 @@
+cloudinary cloud name = dfmdl6gea
+cloudinary api key= 937369548916434
+cloudinary  api secret=  wukJn4-SPlZ-aKdLmLSlHW8yV-0
