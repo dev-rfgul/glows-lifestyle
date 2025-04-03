@@ -8,7 +8,7 @@ const AdminOrdersPage = () => {
     const [error, setError] = useState(null);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterStatus, setFilterStatus] = useState('all');
+    const [filterStatus, setFilterStatus] = useState('pending');
     const [statusMessages, setStatusMessages] = useState({});
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const AdminOrdersPage = () => {
 
     // Filter orders based on search term and status
     const filteredOrders = orders.filter(order => {
-        const matchesSearch = 
+        const matchesSearch =
             order.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             order.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             order._id?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -180,10 +180,13 @@ const AdminOrdersPage = () => {
                                 Status
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
+                                Invoice
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Order Status
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Send Msg
                             </th>
                         </tr>
                     </thead>
@@ -218,13 +221,12 @@ const AdminOrdersPage = () => {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                            order.orderStatus === 'completed'
-                                                ? 'bg-green-100 text-green-800'
-                                                : order.orderStatus === 'dispatched'
-                                                    ? 'bg-blue-100 text-blue-800'
-                                                    : 'bg-yellow-100 text-yellow-800'
-                                        }`}>
+                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.orderStatus === 'completed'
+                                            ? 'bg-green-100 text-green-800'
+                                            : order.orderStatus === 'dispatched'
+                                                ? 'bg-blue-100 text-blue-800'
+                                                : 'bg-yellow-100 text-yellow-800'
+                                            }`}>
                                             {order.orderStatus}
                                         </span>
                                     </td>
@@ -251,6 +253,17 @@ const AdminOrdersPage = () => {
                                         {statusMessages[order._id] && (
                                             <p className="text-xs text-green-500 mt-1">{statusMessages[order._id]}</p>
                                         )}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {/* WhatsApp Button */}
+                                        <a
+                                            href={`https://wa.me/${order.phone}?text=Hello, Dear Customer ${order.name}, your order had been successfully placed on GlowzLifestyle.shop of RS ${order.orderTotal}. Your Order status  is : ${order.orderStatus}, and it will be delievered to you within 5-7 working days.`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-block px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
+                                        >
+                                            Send Message on WhatsApp
+                                        </a>
                                     </td>
                                 </tr>
                             ))
@@ -296,13 +309,12 @@ const AdminOrdersPage = () => {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Order Status</p>
-                                        <p className={`font-medium ${
-                                            selectedOrder.orderStatus === 'completed'
-                                                ? 'text-green-600'
-                                                : selectedOrder.orderStatus === 'dispatched'
-                                                    ? 'text-blue-600'
-                                                    : 'text-yellow-600'
-                                        }`}>
+                                        <p className={`font-medium ${selectedOrder.orderStatus === 'completed'
+                                            ? 'text-green-600'
+                                            : selectedOrder.orderStatus === 'dispatched'
+                                                ? 'text-blue-600'
+                                                : 'text-yellow-600'
+                                            }`}>
                                             {selectedOrder.orderStatus || 'Pending'}
                                         </p>
                                     </div>

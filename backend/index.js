@@ -18,6 +18,7 @@ import paymentRoutes from './routes/payment.routes.js'
 import AnalyticsRoutes from './routes/analytics.routes.js'
 import { cloudinaryConnect } from './config/cloudinary.js';
 import CheckoutRoutes from './routes/checkout.routes.js'
+import VisitCounter from './models/visitCount.model.js';
 // Initialize app and services
 const app = express();
 
@@ -73,6 +74,46 @@ app.use('/payment', paymentRoutes)
 app.use('/analytics', AnalyticsRoutes)
 app.use('/checkout', CheckoutRoutes)
 
+app.put('/globalVisitCount', async (req, res) => {
+    // Assuming req.body.visitCount contains a value that should be a number
+    const visitCount = Number(req.body.visitCount);
+
+    // Check if the conversion was successful
+    if (isNaN(visitCount)) {
+        return res.status(400).json({ error: "visitCount is not a valid number" });
+    } else {
+        console.log(`The visit count is: ${visitCount}`);
+    }
+
+    try {
+        // Find the visit counter document
+        let visitCounter = await VisitCounter.findOne();
+
+        // If no document exists, create it with an initial count of 0
+        if (!visitCounter) {
+            visitCounter = new VisitCounter({ globalVisitCount: 0 });
+            await visitCounter.save();
+        }
+
+        // Increment the visit count by the value in the request
+        visitCounter.globalVisitCount += visitCount;
+
+        // Update the last updated timestamp (optional, based on your schema)
+        visitCounter.lastUpdated = new Date();
+
+        // Save the updated visit counter
+        await visitCounter.save();
+
+        // Respond with the updated visit count and timestamp
+        res.json({
+            visitorCount: visitCounter.globalVisitCount,
+            lastUpdated: visitCounter.lastUpdated,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating visit count');
+    }
+});
 
 
 

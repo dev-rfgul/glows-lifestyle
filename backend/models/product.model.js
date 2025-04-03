@@ -54,6 +54,10 @@ const ProductSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    productVisitCount: {
+        // it will keep the reocrd of the specific visited product 
+        type: Number,
+    },
     tagline: {
         type: String,
         required: true,

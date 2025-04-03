@@ -28,7 +28,10 @@ app.get('/get-products', async (req, res) => {
 app.get('/get-product/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const product = await productModel.findById(id);
+        const product = await productModel.findByIdAndUpdate(id,
+            { $inc: { visitCount: 1 } },
+            { new: true }
+        );
         if (!product) {
             return res.status(404).json({ message: "product not found" })
         }

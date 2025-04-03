@@ -7,6 +7,8 @@ const Admin = () => {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState();
+    const [orders, setOrders] = useState([]);
 
     // Dashboard data states
     const [dashboardData, setDashboardData] = useState({
@@ -253,115 +255,58 @@ const Admin = () => {
                     )}
 
                     {/* Recent Activity & Tasks */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Recent Activity & Tasks */}
+                    <div className="grid grid-cols-1 lg:grid-cols gap-8">
                         {/* Recent Activity */}
                         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                                 <h3 className="text-lg font-medium">Recent Activity</h3>
-                                <button className="text-blue-600 text-sm hover:underline">View All</button>
+                                <Link to={'/orders'}>
+                                    <button className="text-blue-600 text-sm hover:underline">View All</button>
+                                </Link>
                             </div>
 
                             {isLoading ? (
-                                <div className="divide-y divide-gray-100">
+                                <div className="flex space-x-4 p-6">
                                     {[1, 2, 3, 4].map((item) => (
-                                        <div key={item} className="px-6 py-4 animate-pulse">
-                                            <div className="flex items-center">
-                                                <div className="w-10 h-10 rounded-full bg-gray-200 mr-4"></div>
-                                                <div className="flex-1">
-                                                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                                                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                                                </div>
-                                            </div>
+                                        <div key={item} className="w-48 h-32 bg-gray-200 animate-pulse rounded-lg">
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="divide-y divide-gray-100">
-                                    {dashboardData.productsData.slice(0, 4).map((item, index) => (
-                                        <div key={item._id || index} className="px-6 py-4 hover:bg-gray-50 transition-colors">
-                                            <div className="flex items-center">
-                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white mr-4 ${item.orderStatus === 'pending' ? 'bg-yellow-500' :
-                                                        item.orderStatus === 'dispatched' ? 'bg-blue-500' : 'bg-green-500'
+                                <div className="flex space-x-4 p-6 ">
+                                    {dashboardData.productsData.slice(0, 5).map((item, index) => (
+                                        <div key={item._id || index} className="flex-shrink-0 w-64 p-4 bg-white rounded-lg shadow-lg space-y-4 border-2 border-gray-400">
+                                            <div className="flex items-center space-x-4">
+                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white ${item.orderStatus === 'pending' ? 'bg-yellow-500' :
+                                                    item.orderStatus === 'dispatched' ? 'bg-blue-500' : 'bg-green-500'
                                                     }`}>
                                                     {item.orderStatus === 'pending' ? '⏳' :
                                                         item.orderStatus === 'dispatched' ? '🚚' : '✅'}
                                                 </div>
-                                                <div>
-                                                    <p className="font-medium">
-                                                        New order from {item.customer_email}
-                                                    </p>
+                                                <div className="flex-1">
+                                                    <p className="text-xl font-semibold text-gray-800">New order from: <span className="font-bold text-blue-600">{item.name}</span></p>
+                                                    <p className="text-lg text-gray-700">Total Amount: <span className="text-green-600">{item.orderTotal}</span></p>
+                                                    <p className="text-lg text-gray-700">From: <span className="italic text-gray-600">{item.city}</span></p>
+
                                                     <p className="text-sm text-gray-500">
-                                                        {formatDate(item.created_at || new Date())} - {item.orderStatus}
+                                                        {formatDate(item.orderDate|| new Date())} - <span className={`font-medium ${item.orderStatus === 'Completed' ? 'text-green-500' : 'text-red-500'}`}>{item.orderStatus}</span>
                                                     </p>
+
+                                                    <Link to={'/orders'}>
+                                                        <button
+                                                            className="text-indigo-600 hover:text-indigo-900"
+                                                        >View Order</button>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             )}
-                        </div>
-
-                        {/* Tasks */}
-                        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                                <h3 className="text-lg font-medium">Pending Orders</h3>
-                                <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                                    {dashboardData.pendingOrders} orders
-                                </span>
-                            </div>
-
-                            {isLoading ? (
-                                <div className="divide-y divide-gray-100">
-                                    {[1, 2, 3].map((item) => (
-                                        <div key={item} className="px-6 py-4 animate-pulse">
-                                            <div className="flex items-center">
-                                                <div className="h-4 w-4 bg-gray-200 rounded mr-4"></div>
-                                                <div className="flex-1">
-                                                    <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="divide-y divide-gray-100">
-                                    {dashboardData.productsData
-                                        .filter(task => task.orderStatus === 'pending')
-                                        .slice(0, 5)
-                                        .map((task, index) => (
-                                            <div key={task._id || index} className="px-6 py-4 flex items-center hover:bg-gray-50 transition-colors">
-                                                <input type="checkbox" className="mr-4 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
-                                                <div className="flex-1">
-                                                    <p className="font-medium">Order from: {task.customer_email}</p>
-                                                    <div className="flex text-sm text-gray-500 space-x-4">
-                                                        <span>Ordered: {formatDate(task.created_at || new Date())}</span>
-                                                        <span className="px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">
-                                                            {task.orderStatus}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <button className="ml-2 text-blue-600 hover:text-blue-800">
-                                                    Process
-                                                </button>
-                                            </div>
-                                        ))}
-
-                                    {dashboardData.productsData.filter(task => task.orderStatus === 'pending').length === 0 && (
-                                        <div className="px-6 py-8 text-center text-gray-500">
-                                            <p>No pending orders at the moment</p>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            <div className="px-6 py-3 bg-gray-50 border-t border-gray-100">
-                                <Link to='/orders' className="text-blue-600 text-sm hover:underline w-full text-center" >
-                                    view all
-                                </Link>
-
-                            </div>
                         </div>
                     </div>
+
                 </div>
             </main>
         </div>
