@@ -22,7 +22,7 @@ import CheckoutRoutes from './routes/checkout.routes.js'
 const app = express();
 
 // Properly handle CORS origins
-const allowedOrigins = ["https://glowslifestyle.onrender.com", ];
+const allowedOrigins = ["https://glowslifestyle.onrender.com", "https://www.glowzlifestyle.shop", "https://glows-lifestyle.vercel.app"];
 if (process.env.FRONT_END_URL) {
     allowedOrigins.push(process.env.FRONT_END_URL);
 }
@@ -71,7 +71,7 @@ app.use('/product', productRoutes);
 app.use('/admin', adminRoutes);
 app.use('/payment', paymentRoutes)
 app.use('/analytics', AnalyticsRoutes)
-app.use('/checkout',CheckoutRoutes)
+app.use('/checkout', CheckoutRoutes)
 
 
 
