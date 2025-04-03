@@ -46,7 +46,7 @@ const App = () => {
   return (
     <div className='overflow-hidden'>
       {/* <Launch /> */}
-       <Routes>
+      <Routes>
 // <Route path='/' element={<Home />} />
 // <Route path='/signup' element={<Signup />} />
 // <Route path='/login' element={<Login />} />

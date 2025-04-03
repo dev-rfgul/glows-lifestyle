@@ -54,7 +54,7 @@ const ProductSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    productVisitCount: {
+    visitCount: {
         // it will keep the reocrd of the specific visited product 
         type: Number,
     },

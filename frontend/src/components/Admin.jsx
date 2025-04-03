@@ -83,9 +83,9 @@ const Admin = () => {
                 usersCount: usersData.length || 0,
                 productCount: productsData.products?.length || 0,
                 revenue: revenueData.totalRevenue || 0,
-                pendingOrders: pending,
-                completedOrders: completed,
-                dispatchedOrders: dispatched,
+                pendingOrders: pending || 0,
+                completedOrders: completed || 0,
+                dispatchedOrders: dispatched || 0,
                 productsData: orders
             });
 
@@ -290,7 +290,7 @@ const Admin = () => {
                                                     <p className="text-lg text-gray-700">From: <span className="italic text-gray-600">{item.city}</span></p>
 
                                                     <p className="text-sm text-gray-500">
-                                                        {formatDate(item.orderDate|| new Date())} - <span className={`font-medium ${item.orderStatus === 'Completed' ? 'text-green-500' : 'text-red-500'}`}>{item.orderStatus}</span>
+                                                        {formatDate(item.orderDate || new Date())} - <span className={`font-medium ${item.orderStatus === 'Completed' ? 'text-green-500' : 'text-red-500'}`}>{item.orderStatus}</span>
                                                     </p>
 
                                                     <Link to={'/orders'}>

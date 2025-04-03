@@ -1,3 +1,4 @@
+
 // import React, { useState, useEffect, useCallback } from "react";
 // import {
 //     FaShoppingCart,
@@ -11,10 +12,11 @@
 // import { motion } from 'framer-motion';
 // import axios from "axios";
 // import { useParams } from "react-router-dom";
+// import AlertMessage from "./Alert"; // Import the AlertMessage component
 
 // const EarbudsProductDisplay = () => {
-//     const { id } = useParams(); // Fixed: extracting id correctly
-//     const [product, setProduct] = useState(null); // Initialize as null
+//     const { id } = useParams();
+//     const [product, setProduct] = useState(null);
 //     const [selectedColor, setSelectedColor] = useState('black');
 //     const [quantity, setQuantity] = useState(1);
 //     const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
@@ -24,33 +26,33 @@
 //     const [userId, setUserId] = useState(null);
 //     const [isAddingToCart, setIsAddingToCart] = useState(false);
 //     const [isBuyingNow, setIsBuyingNow] = useState(false);
-//     const [showToast, setShowToast] = useState(false);
-//     const [toastMessage, setToastMessage] = useState("");
-//     const [toastType, setToastType] = useState("success"); // success or error
+//     const [selectedImage, setSelectedImage] = useState(product?.img[0]); // Set first image as default
 
 
-
+//     // Alert state
+//     const [alertProps, setAlertProps] = useState({
+//         message: "",
+//         type: "success",
+//         visible: false
+//     });
 
 //     useEffect(() => {
 //         const storedUser = localStorage.getItem("user");
 //         if (!storedUser) {
 //             console.log("No user found in localStorage");
-//             return; // Avoid throwing an error
+//             return;
 //         }
 
-//         const user = JSON.parse(storedUser); // Convert string to object
-//         setUserId(user?.id || ""); // Ensure safe state update
-
-
+//         const user = JSON.parse(storedUser);
+//         setUserId(user?.id || "");
 //     }, []);
 
 //     const getProduct = useCallback(async () => {
 //         try {
 //             setLoading(true);
 //             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/product/get-product/${id}`);
-//             // Axios directly gives the data property
 //             console.log("Product fetched successfully");
-//             console.log(response.data.product)
+//             console.log(response.data.product);
 //             setProduct(response.data.product);
 //             setLoading(false);
 //         } catch (error) {
@@ -70,12 +72,23 @@
 //         setSelectedColor(color.hex);
 //     };
 
+//     // Updated showNotification function to use AlertMessage
 //     const showNotification = (message, type = "success") => {
-//         setToastMessage(message);
-//         setToastType(type);
-//         setShowToast(true);
-//         setTimeout(() => setShowToast(false), 3000);
+//         setAlertProps({
+//             message,
+//             type,
+//             visible: true
+//         });
 //     };
+
+//     // Handler to close the alert
+//     const handleCloseAlert = () => {
+//         setAlertProps(prev => ({
+//             ...prev,
+//             visible: false
+//         }));
+//     };
+
 //     const addToCart = async (productId, buyNow = false) => {
 //         console.log("Adding to cart:", productId);
 //         if (!userId) {
@@ -96,12 +109,18 @@
 //             });
 //             console.log("Product added to cart:", response.data);
 
-//             showNotification(response.data.message);
+//             showNotification(
+//                 buyNow
+//                     ? "Product purchased successfully! Redirecting to profile..."
+//                     : "Product added to cart successfully!",
+//                 "success"
+//             );
 
 //             // If buying now, redirect to cart page
 //             if (buyNow) {
-//                 // You could also use dispatch to navigate via redux
-//                 window.location.href = '/profile';
+//                 setTimeout(() => {
+//                     window.location.href = '/profile';
+//                 }, 2000); // Give time for the alert to be visible
 //             }
 //         } catch (error) {
 //             console.error("Error:", error.response?.data?.message || error.message);
@@ -138,6 +157,17 @@
 
 //     return (
 //         <div className="min-h-screen py-12 px-4">
+//             {/* Alert Message Component */}
+//             {alertProps.visible && (
+//                 <AlertMessage
+//                     message={alertProps.message}
+//                     type={alertProps.type}
+//                     onClose={handleCloseAlert}
+//                     duration={5000}
+//                     showCloseButton={true}
+//                 />
+//             )}
+
 //             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
 //                 {/* Product Visual Section */}
 //                 <motion.div
@@ -146,19 +176,35 @@
 //                     transition={{ duration: 0.5 }}
 //                     className="relative group"
 //                 >
-//                     <div className="rounded-3xl p-8 relative overflow-hidden">
+//                     ``          <div className="rounded-3xl p-8 relative overflow-hidden">
+//                         {/* Main Image */}
 //                         <motion.img
-//                             src={product.img[0]} // Use the actual image from product data
+//                             src={selectedImage || product.img[0]}
 //                             alt={product.name}
 //                             className="w-full h-96 object-contain transform transition-all duration-300 group-hover:scale-110"
-//                             style={{ filter: `hue-rotate(${selectedColor === '#FFFFFF' ? '0deg' : '180deg'})` }}
 //                         />
+
+//                         {/* Expand Button */}
 //                         <button
 //                             onClick={() => setIsFullScreenImage(true)}
 //                             className="absolute top-4 right-4 bg-white/50 hover:bg-white/80 p-2 rounded-full transition"
 //                         >
 //                             <FaExpand className="text-blue-800" />
 //                         </button>
+
+//                         {/* Thumbnail Images */}
+//                         <div className="flex gap-2 mt-4">
+//                             {product.img.map((img, index) => (
+//                                 <img
+//                                     key={index}
+//                                     src={img}
+//                                     alt={`Thumbnail ${index}`}
+//                                     className={`w-20 h-20 object-contain cursor-pointer rounded-lg border-2 transition ${selectedImage === img ? "border-blue-500 scale-105" : "border-gray-300"
+//                                         }`}
+//                                     onClick={() => setSelectedImage(img)}
+//                                 />
+//                             ))}
+//                         </div>
 //                     </div>
 
 //                     {/* Color Selection */}
@@ -191,8 +237,9 @@
 
 //                     {/* Price Section */}
 //                     <div className="flex items-center space-x-4">
-//                         <span className="text-3xl font-bold text-black">${product.discountPrice}</span>
-//                         <span className="text-xl text-gray-900 line-through">${product.price}</span>
+//                         <span className="text-3xl font-bold text-black">PKR : {product.discountPrice}</span>
+//                         <span className="text-xl text-gray-900 line-through">${product.price
+//                         }</span>
 //                         <span className="bg-green-100 text-gray-900 px-3 py-1 rounded-full">
 //                             Save ${(product.price - product.discountPrice).toFixed(2)}
 //                         </span>
@@ -241,20 +288,26 @@
 
 //                         <div className="grid grid-cols-2 gap-4">
 //                             <button
-//                                 onClick={() => addToCart(product._id)}
+//                                 onClick={() => addToCart(product._id, false)}
 //                                 className="bg-gray-100 border-2 border-black text-black py-4 rounded-xl hover:bg-blue-600 transition flex items-center justify-center space-x-2"
-//                                 disabled={product.stock <= 0}
+//                                 disabled={isAddingToCart || isBuyingNow || product.stock <= 0}
 //                             >
-//                                 <FaShoppingCart />
-//                                 <span>Add to Cart</span>
+//                                 {isAddingToCart ? (
+//                                     "Adding..."
+//                                 ) : (
+//                                     <>
+//                                         <FaShoppingCart />
+//                                         <span>Add to Cart</span>
+//                                     </>
+//                                 )}
 //                             </button>
 //                             <button
+//                                 onClick={() => addToCart(product._id, true)}
 //                                 className="bg-black text-white py-4 rounded-xl hover:bg-blue-800 transition"
-//                                 disabled={product.stock <= 0}
+//                                 disabled={isAddingToCart || isBuyingNow || product.stock <= 0}
 //                             >
-//                                 Buy Now
+//                                 {isBuyingNow ? "Processing..." : "Buy Now"}
 //                             </button>
-
 //                         </div>
 //                     </div>
 //                 </div>
@@ -320,8 +373,7 @@ const EarbudsProductDisplay = () => {
     const [userId, setUserId] = useState(null);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [isBuyingNow, setIsBuyingNow] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(product?.img[0]); // Set first image as default
-
+    const [selectedImage, setSelectedImage] = useState(null); // Initialize as null
 
     // Alert state
     const [alertProps, setAlertProps] = useState({
@@ -347,7 +399,10 @@ const EarbudsProductDisplay = () => {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/product/get-product/${id}`);
             console.log("Product fetched successfully");
             console.log(response.data.product);
-            setProduct(response.data.product);
+            const productData = response.data.product;
+            setProduct(productData);
+            // Set the default selected image after fetching the product
+            setSelectedImage(productData.img[0]);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching product:", error);
@@ -470,13 +525,12 @@ const EarbudsProductDisplay = () => {
                     transition={{ duration: 0.5 }}
                     className="relative group"
                 >
-                    ``          <div className="rounded-3xl p-8 relative overflow-hidden">
+                    <div className="rounded-3xl p-8 relative overflow-hidden">
                         {/* Main Image */}
                         <motion.img
-                            src={selectedImage || product.img[0]}
+                            src={selectedImage}
                             alt={product.name}
                             className="w-full h-96 object-contain transform transition-all duration-300 group-hover:scale-110"
-                            style={{ filter: `hue-rotate(${selectedImage === '#FFFFFF' ? '0deg' : '180deg'})` }}
                         />
 
                         {/* Expand Button */}
@@ -487,14 +541,14 @@ const EarbudsProductDisplay = () => {
                             <FaExpand className="text-blue-800" />
                         </button>
 
-                        {/* Thumbnail Images */}
-                        <div className="flex gap-2 mt-4">
+                        {/* Thumbnail Images - Made responsive */}
+                        <div className="flex flex-wrap justify-center gap-2 mt-4">
                             {product.img.map((img, index) => (
                                 <img
                                     key={index}
                                     src={img}
                                     alt={`Thumbnail ${index}`}
-                                    className={`w-20 h-20 object-contain cursor-pointer rounded-lg border-2 transition ${selectedImage === img ? "border-blue-500 scale-105" : "border-gray-300"
+                                    className={`w-16 h-16 sm:w-20 sm:h-20 object-contain cursor-pointer rounded-lg border-2 transition ${selectedImage === img ? "border-blue-500 scale-105" : "border-gray-300"
                                         }`}
                                     onClick={() => setSelectedImage(img)}
                                 />
@@ -508,13 +562,13 @@ const EarbudsProductDisplay = () => {
                             <button
                                 key={color._id}
                                 onClick={() => handleColorSelect(color)}
-                                className={`w-12 h-12 rounded-full border-4 transition-all duration-300 ${selectedColor === color.hex
-                                    ? 'border-blue-500 scale-110'
-                                    : 'border-transparent hover:border-blue-300'
-                                    }`}
+                                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 transition-all duration-300 
+                               ${selectedColor === color.hex ? 'border-blue-500 scale-110' : 'hover:border-blue-300'}
+                               ${color.hex === '#FFFFFF' ? 'border-gray-400 shadow-md' : ''}`}
                                 style={{ backgroundColor: color.hex }}
                                 title={color.name}
                             />
+
                         ))}
                     </div>
                 </motion.div>
@@ -533,8 +587,7 @@ const EarbudsProductDisplay = () => {
                     {/* Price Section */}
                     <div className="flex items-center space-x-4">
                         <span className="text-3xl font-bold text-black">PKR : {product.discountPrice}</span>
-                        <span className="text-xl text-gray-900 line-through">${product.
-                            discountPrice
+                        <span className="text-xl text-gray-900 line-through">${product.price
                         }</span>
                         <span className="bg-green-100 text-gray-900 px-3 py-1 rounded-full">
                             Save ${(product.price - product.discountPrice).toFixed(2)}
@@ -620,7 +673,7 @@ const EarbudsProductDisplay = () => {
                 <p className="text-black text-lg leading-relaxed">{product.description}</p>
             </div>
 
-            {/* Full Screen Image Modal */}
+            {/* Full Screen Image Modal - Fixed to show selected image */}
             {isFullScreenImage && (
                 <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
                     <button
@@ -630,7 +683,7 @@ const EarbudsProductDisplay = () => {
                         ×
                     </button>
                     <img
-                        src={product.img[0]}
+                        src={selectedImage}
                         alt={product.name}
                         className="max-w-full max-h-full object-contain"
                     />
