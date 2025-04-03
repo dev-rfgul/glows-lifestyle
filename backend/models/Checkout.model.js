@@ -83,7 +83,12 @@ const checkoutSchema = new mongoose.Schema({
         type: Date,
         required: true, // Date the order was placed
         default: Date.now, // Default to current date if not provided
-    }
+    },
+    orderStatus: {
+        type: String,
+        enum: ['pending', 'dispatched', 'completed',],
+        default: 'pending'
+    },
 });
 
 export default mongoose.model('Checkout', checkoutSchema);

@@ -2,7 +2,7 @@ import express from 'express'
 
 
 import Revenue from '../models/revenue.model.js'
-import Order from '../models/order.model.js'
+import checkoutModel from '../models/Checkout.model.js'
 
 
 
@@ -31,7 +31,7 @@ app.get('/total-revenue', async (req, res) => {
 });
 app.get('/all-orders', async (req, res) => {
     try {
-        const orders = await Order.find({});
+        const orders = await checkoutModel.find({});
         if (!orders || orders.length == 0) {
             return res.status(404).json({ message: "No orders found" })
         }
@@ -48,7 +48,7 @@ app.put('/update-order-status', async (req, res) => {
         return res.status(400).json({ message: "both order id and order status are required " })
     }
     try{
-        const updateOrderStatus=await Order.findByIdAndUpdate(orderID,{orderStatus},{new:true});
+        const updateOrderStatus=await checkoutModel.findByIdAndUpdate(orderID,{orderStatus},{new:true});
         if(!updateOrderStatus){
             return res.status(400).json({message:"Order not found"})
         }
@@ -60,8 +60,6 @@ app.put('/update-order-status', async (req, res) => {
     }
 
 })
-app.post('/order-msg',async(req,res)=>{
-    const newOrder=new Order(req.body);
-})
+
 
 export default app;
