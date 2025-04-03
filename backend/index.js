@@ -17,6 +17,7 @@ import adminRoutes from './routes/admin.routes.js';
 import paymentRoutes from './routes/payment.routes.js'
 import AnalyticsRoutes from './routes/analytics.routes.js'
 import { cloudinaryConnect } from './config/cloudinary.js';
+import CheckoutRoutes from './routes/checkout.routes.js'
 // Initialize app and services
 const app = express();
 
@@ -70,6 +71,7 @@ app.use('/product', productRoutes);
 app.use('/admin', adminRoutes);
 app.use('/payment', paymentRoutes)
 app.use('/analytics', AnalyticsRoutes)
+app.use('/checkout',CheckoutRoutes)
 
 
 

@@ -285,7 +285,7 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        const isPasswordCorrect =bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
@@ -391,7 +391,7 @@ router.get('/get-user/:id', async (req, res) => {
 });
 
 // Route to create a new checkout
-router.post("/checkout", async (req, res) => {
+router.post("/checkout2", async (req, res) => {
     try {
         const {
             userId,
@@ -433,6 +433,89 @@ router.post("/checkout", async (req, res) => {
         // Save the checkout data to the database
         const savedCheckout = await checkout.save();
 
+        // Return a success response
+        res.status(201).json({
+            success: true,
+            message: "Checkout created successfully",
+            data: savedCheckout,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server error, could not create checkout",
+            error: error.message,
+        });
+    }
+});
+
+router.post("/checkout", async (req, res) => {
+    try {
+        const {
+            userId,
+            orderedProducts,
+            name,
+            email,
+            phone,
+            address,
+            city,
+            province,
+            postalCode,
+            country,
+            orderNotes,
+            latitude,
+            longitude,
+            orderTotal,
+            orderDate,
+        } = req.body;
+
+        // Create a new Checkout document
+        const checkout = new checkoutModel({
+            userId: new mongoose.Types.ObjectId(userId),
+            orderedProducts,
+            name,
+            email,
+            phone,
+            address,
+            city,
+            province,
+            postalCode,
+            country,
+            orderNotes,
+            latitude,
+            longitude,
+            orderTotal,
+            orderDate: new Date(orderDate), // Convert to Date if not already
+        });
+        console.log(checkout);
+
+        // Save the checkout data to the database
+        const savedCheckout = await checkout.save();
+
+        // Update the user's orderStatus to 'Pending'
+        await userModel.findByIdAndUpdate(
+            userId,
+            { $set: { orderStatus: ['Pending'] } },
+            { new: true }
+        );
+        await userModel.findByIdAndUpdate(
+            userId,
+            { $push: { orderHistory: savedCheckout._id } },
+            { new: true }
+        )
+        await userModel.findByIdAndUpdate(
+            userId,
+            { $set: { cart: [] } },
+            { new: true }
+        );
+        // Update the ordered products' stock
+        for (const product of orderedProducts) {
+            await checkoutModel.findByIdAndUpdate(
+                product.productId,
+                { $inc: { stock: -product.quantity } },
+                { new: true }
+            );
+        }
         // Return a success response
         res.status(201).json({
             success: true,

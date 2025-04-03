@@ -527,12 +527,13 @@ const PaymentInfoCard = () => {
         orderNotes: '',
         latitude: '',
         longitude: '',
-        orderdProducts: cartProducts.map(p => ({  // TYPO HERE - "orderdProducts"
+        orderedProducts: cartProducts.map(p => ({
             productId: p._id,
-            productName:p.name,
+            productName: p.name,
             productColor: p.color || '',
             quantity: p.quantity || 1,
-            price: p.price
+            price: p.price,
+            img: p.img
         })),
     });
 
@@ -788,12 +789,13 @@ const PaymentInfoCard = () => {
             const orderData = {
                 ...formData,
                 userId,
-                orderdProducts: cartProducts.map(p => ({
+                orderedProducts: cartProducts.map(p => ({
                     productId: p._id,
                     productName: p.name,
                     productColor: p.color || '',
-                    quantity: p.quantity || 1,
-                    price: p.price
+                    productQuantity: p.quantity || 1,
+                    productPrice: p.price,
+                    productImg: p.img,
                 })),
                 orderTotal,
                 orderDate: new Date().toISOString()
@@ -919,7 +921,7 @@ const PaymentInfoCard = () => {
                                         <div key={index} className="flex items-center space-x-2">
                                             <img src={product.img[0]} alt={product.name} className="w-12 h-12 object-cover" />
                                             <p className="text-sm text-gray-600">
-                                                {product.name} - {product.quantity}x
+                                                {product.name} - {product.quantity || 1}
                                             </p>
                                         </div>
                                     ))}

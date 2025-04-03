@@ -1,5 +1,368 @@
+// import React, { useEffect, useState, useMemo } from "react";
+// import { FaShoppingCart, FaUserCircle, FaTrash, FaSpinner } from "react-icons/fa";
+// import { Link, useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import { loadStripe } from "@stripe/stripe-js";
+
+// const UserProfile = () => {
+//     const [userData, setUserData] = useState(null);
+//     const [cartProducts, setCartProducts] = useState([]);
+//     const [userId, setUserId] = useState(null);
+//     const [isLoading, setIsLoading] = useState(true);
+//     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+//     const [error, setError] = useState(null);
+//     const [orderedProducts, setOrderedProducts] = useState({ orderedProducts: [] })
+
+//     const navigate = useNavigate();
+
+//     // Calculate cart total
+//     const cartTotal = useMemo(() => {
+//         return cartProducts.reduce((sum, product) => sum + Number(product.price), 0).toFixed(2);
+//     }, [cartProducts]);
+
+//     useEffect(() => {
+//         const fetchUserData = async () => {
+//             try {
+//                 const storedUser = localStorage.getItem("user");
+//                 if (!storedUser) {
+//                     console.log("No user found in localStorage");
+//                     throw new Error("No user found in localStorage");
+//                 }
+
+//                 const user = JSON.parse(storedUser); // Convert string to object
+//                 setUserId(user.id); // Update state but don't use it immediately
+
+//                 const response = await fetch(
+//                     `${import.meta.env.VITE_BACKEND_URL}/user/get-user/${user.id}` // Use user.id directly
+//                 );
+
+//                 if (!response.ok) {
+//                     throw new Error("Failed to fetch user data");
+//                 }
+
+//                 const data = await response.json();
+//                 setUserData(data.user);
+//                 console.log(data.user);
+
+//                 if (data.user.role === "admin") {
+//                     navigate("/admin");
+//                 }
+
+//                 if (data.user.cart && data.user.cart.length > 0) {
+//                     await fetchCartProducts(data.user.cart);
+//                 }
+//             } catch (error) {
+//                 console.error("Error fetching user data:", error);
+//                 setError(error.message);
+//             } finally {
+//                 setIsLoading(false);
+//             }
+//         };
+
+//         fetchUserData();
+//     }, []); // Keep dependencies empty unless needed
+
+
+//     const fetchCartProducts = async (cartIds) => {
+//         if (!Array.isArray(cartIds) || cartIds.length === 0) {
+//             setCartProducts([]);
+//             return;
+//         }
+
+//         try {
+//             const response = await axios.post(
+//                 `${import.meta.env.VITE_BACKEND_URL}/product/get-selected-products`,
+//                 { ids: cartIds }
+//             );
+//             setCartProducts(response.data);
+//         } catch (error) {
+//             console.error("Error fetching products:", error);
+//             setError("Failed to load cart products");
+//         }
+//     };
+
+//     const makePayment = async () => {
+//         if (cartProducts.length === 0) {
+//             // alert("Your cart is empty");
+//             return;
+//         }
+
+//         setIsProcessingPayment(true);
+
+//         try {
+//             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/payment/makepayment`, {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify({
+//                     userId: userId,
+//                     products: cartProducts.map(product => ({
+//                         _id: product._id,
+//                         name: product.name,
+//                         price: product.price,
+//                         images: product.images && product.images.length > 0
+//                             ? [product.images[0]]
+//                             : ["https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"]
+//                     })),
+//                 }),
+//             });
+
+//             const data = await response.json();
+
+//             if (!response.ok || !data.sessionId) {
+//                 throw new Error(data.message || "Failed to create payment session");
+//             }
+
+//             // Redirect to Stripe Checkout
+//             const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+//             const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+
+//             if (error) {
+//                 throw new Error(error.message);
+//             }
+//         } catch (error) {
+//             console.error("Payment Error:", error);
+//             // alert("Payment failed: " + error.message);
+//         } finally {
+//             setIsProcessingPayment(false);
+//         }
+//     };
+
+//     const fetchOrder = async () => {
+//         // Ensure userData and orderHistory are valid before accessing them
+//         const orderHistory = userData?.orderHistory;
+//         if (!orderHistory || orderHistory.length === 0) {
+//             // alert("No order ID found");
+//             return;
+//         }
+
+//         const orderID = orderHistory[0]; // Get the first order ID
+//         // alert(orderID);  // Debugging: show the order ID
+
+//         try {
+//             // Send the order ID as a query parameter in the GET request
+//             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/checkout/order-products?id=${orderID}`);
+//             console.log(response.data);
+//             setOrderedProducts(response.data.order)
+//         } catch (error) {
+//             console.error("Error fetching order:", error.response?.data?.message || error.message);
+//             // alert("Failed to fetch order: " + (error.response?.data?.message || error.message));
+//         }
+//     }
+
+//     useEffect(() => {
+//         if (userData) {
+//             fetchOrder();
+//         }
+//     }, [userData]);  // Trigger fetchOrder only when userData is available
+
+//     console.log(orderedProducts)
+//     const handleLogout = async () => {
+//         try {
+//             await axios.post(
+//                 `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
+//                 {},
+//                 { withCredentials: true }
+//             );
+//             localStorage.clear();
+//             navigate("/login");
+//         } catch (error) {
+//             console.error("Logout failed:", error.response?.data?.message || error.message);
+//             // alert("Logout failed: " + (error.response?.data?.message || error.message));
+//         }
+//     };
+
+//     const removeFromCart = async (productId) => {
+//         try {
+//             const response = await axios.post(
+//                 `${import.meta.env.VITE_BACKEND_URL}/product/remove-from-cart`,
+//                 { productId, userId }
+//             );
+
+//             // Update the cart products immediately for better UX
+//             setCartProducts((prev) => prev.filter((product) => product._id !== productId));
+
+//             // Also update the userData to reflect the current cart state
+//             if (userData) {
+//                 setUserData({
+//                     ...userData,
+//                     cart: userData.cart.filter(id => id !== productId)
+//                 });
+//             }
+//         } catch (error) {
+//             console.error("Error removing product:", error.response?.data?.message || error.message);
+//             // alert("Failed to remove product: " + (error.response?.data?.message || error.message));
+//         }
+//     };
+
+//     if (isLoading) {
+//         return (
+//             <div className="flex justify-center items-center h-screen">
+//                 <FaSpinner className="animate-spin text-blue-600 text-4xl" />
+//                 <p className="ml-2 text-lg">Loading profile...</p>
+//             </div>
+//         );
+//     }
+
+//     if (error) {
+//         return (
+//             <div className="max-w-4xl mx-auto text-center mt-10 p-6 bg-red-50 rounded-lg border border-red-200">
+//                 <h2 className="text-2xl font-bold text-red-700 mb-2">Error Loading Profile</h2>
+//                 <p className="text-red-600">{error}</p>
+//                 <button
+//                     onClick={() => navigate("/login")}
+//                     className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+//                 >
+//                     Return to Login
+//                 </button>
+//             </div>
+//         );
+//     }
+
+//     if (!userData) {
+//         return (
+//             <div className="max-w-4xl mx-auto text-center mt-10 p-6 bg-yellow-50 rounded-lg border border-yellow-200">
+//                 <h2 className="text-2xl font-bold text-yellow-700 mb-2">Session Expired</h2>
+//                 <p className="text-yellow-600">Please log in again to access your profile.</p>
+//                 <button
+//                     onClick={() => navigate("/login")}
+//                     className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+//                 >
+//                     Go to Login
+//                 </button>
+//             </div>
+//         );
+//     }
+
+//     return (
+//         <div className="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 ease-in-out my-8">
+//             {/* User Info Section */}
+
+//             <div className="flex flex-col md:flex-row items-center md:space-x-8 border-b pb-6">
+//                 <img className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl md:text-5xl font-bold shadow-lg mb-4 md:mb-0" src={userData.picture} alt="" />
+//                 <div className="text-center md:text-left flex-grow">
+
+//                     <h2 className="text-3xl md:text-4xl font-bold text-gray-800">{userData.name}</h2>
+//                     <p className="text-lg text-gray-500 capitalize">{userData.role}</p>
+//                     <p className="text-sm text-gray-400 mt-1">{userData.email}</p>
+//                 </div>
+//                 <button
+//                     onClick={handleLogout}
+//                     className="mt-4 md:mt-0 px-4 py-2 bg-red-100 text-red-600 rounded-lg font-semibold hover:bg-red-200 transition"
+//                 >
+//                     Logout
+//                 </button>
+//             </div>
+
+//             {/* Cart Section */}
+//             <div className="mt-8 space-y-6">
+//                 <div className="p-6 bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+//                     <h3 className="text-2xl font-semibold text-gray-800 flex items-center">
+//                         <FaShoppingCart className="mr-2 text-blue-600" />
+//                         Your Cart
+//                         <span className="ml-auto text-lg font-normal text-gray-600">
+//                             {cartProducts.length} {cartProducts.length === 1 ? 'item' : 'items'}
+//                         </span>
+//                     </h3>
+
+//                     {cartProducts.length > 0 ? (
+//                         <>
+//                             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//                                 {cartProducts.map((product) => (
+//                                     <div key={product._id} className="border rounded-xl shadow-md bg-white hover:shadow-lg transition-shadow overflow-hidden">
+//                                         <div className="h-48 overflow-hidden relative">
+//                                             <img
+//                                                 src={product.img?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"}
+//                                                 alt={product.name}
+//                                                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+//                                             />
+//                                         </div>
+//                                         <div className="p-4">
+//                                             <h3 className="text-base font-semibold text-gray-900 line-clamp-2 h-12">{product.name}</h3>
+//                                             <span className="text-green-600 font-bold text-lg block mt-2">{product.price} د.إ</span>
+//                                             <button
+//                                                 onClick={() => removeFromCart(product._id)}
+//                                                 className="mt-4 w-full bg-red-600 text-white text-sm px-5 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center"
+//                                             >
+//                                                 <FaTrash className="mr-2" /> Remove
+//                                             </button>
+//                                         </div>
+//                                     </div>
+//                                 ))}
+//                             </div>
+
+//                             <div className="mt-8 border-t pt-6">
+//                                 <div className="flex justify-between items-center mb-6">
+//                                     <span className="text-xl font-semibold text-gray-800">Total:</span>
+//                                     <span className="text-2xl font-bold text-green-600">{cartTotal} د.إ</span>
+//                                 </div>
+//                                 <Link to="/checkout">
+//                                     <button
+//                                         // onClick={makePayment}
+//                                         disabled={isProcessingPayment}
+//                                         className={`w-full ${isProcessingPayment ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'} 
+//                                     text-white font-medium text-lg px-5 py-3 rounded-lg transition-colors flex items-center justify-center`}
+//                                     >
+//                                         {isProcessingPayment ? (
+//                                             <>
+//                                                 <FaSpinner className="animate-spin mr-2" />
+//                                                 Processing...
+//                                             </>
+//                                         ) : (
+//                                             "Proceed to Checkout"
+//                                         )}
+//                                     </button>
+//                                 </Link>
+//                             </div>
+//                         </>
+//                     ) : (
+//                         <div className="mt-6 text-center py-10 bg-gray-100 rounded-xl">
+//                             <FaShoppingCart className="mx-auto text-gray-400 text-5xl mb-4" />
+//                             <p className="text-gray-500 text-lg">Your cart is empty.</p>
+//                             <button
+//                                 onClick={() => navigate("/products")}
+//                                 className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+//                             >
+//                                 Browse Products
+//                             </button>
+//                         </div>
+//                     )}
+//                 </div>
+
+//                 <div>
+//                     <h1>order status</h1>
+//                     <p>{userData.orderStatus}</p>
+//                 </div>
+//                 <div>
+//                     <h1>Ordered Products</h1>
+//                     <h1>length: {orderedProducts.orderedProducts.length}</h1>
+//                     {Array.isArray(orderedProducts.orderedProducts
+//                     ) && orderedProducts.orderedProducts
+//                         .length > 0 ? (
+//                         orderedProducts.orderedProducts
+//                         .map((product, index) => (
+//                             <div key={index}>
+//                                 <p>{product.id}</p>
+//                                 <p>{product.productPrice}</p>
+//                                 <p>{product.productQuantity}</p>
+//                                 <p>{product.productName}</p>
+//                                 <img src={product.productImg?.[0]} alt="" />
+//                             </div>
+                            
+//                         ))
+//                     ) : (
+//                         <p>No ordered products found.</p>
+//                     )}
+//                 </div>
+
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default UserProfile;
+
 import React, { useEffect, useState, useMemo } from "react";
-import { FaShoppingCart, FaUserCircle, FaTrash, FaSpinner } from "react-icons/fa";
+import { FaShoppingCart, FaTrash, FaSpinner, FaUser, FaHistory, FaBox, FaSignOutAlt, FaStore } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
@@ -11,6 +374,8 @@ const UserProfile = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [error, setError] = useState(null);
+    const [orderedProducts, setOrderedProducts] = useState({ orderedProducts: [] });
+    const [activeTab, setActiveTab] = useState("cart"); // "cart", "orders"
 
     const navigate = useNavigate();
 
@@ -28,11 +393,11 @@ const UserProfile = () => {
                     throw new Error("No user found in localStorage");
                 }
 
-                const user = JSON.parse(storedUser); // Convert string to object
-                setUserId(user.id); // Update state but don't use it immediately
+                const user = JSON.parse(storedUser);
+                setUserId(user.id);
 
                 const response = await fetch(
-                    `${import.meta.env.VITE_BACKEND_URL}/user/get-user/${user.id}` // Use user.id directly
+                    `${import.meta.env.VITE_BACKEND_URL}/user/get-user/${user.id}`
                 );
 
                 if (!response.ok) {
@@ -59,7 +424,7 @@ const UserProfile = () => {
         };
 
         fetchUserData();
-    }, []); // Keep dependencies empty unless needed
+    }, [navigate]);
 
 
     const fetchCartProducts = async (cartIds) => {
@@ -82,7 +447,6 @@ const UserProfile = () => {
 
     const makePayment = async () => {
         if (cartProducts.length === 0) {
-            alert("Your cart is empty");
             return;
         }
 
@@ -111,7 +475,6 @@ const UserProfile = () => {
                 throw new Error(data.message || "Failed to create payment session");
             }
 
-            // Redirect to Stripe Checkout
             const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
             const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
 
@@ -120,11 +483,33 @@ const UserProfile = () => {
             }
         } catch (error) {
             console.error("Payment Error:", error);
-            alert("Payment failed: " + error.message);
         } finally {
             setIsProcessingPayment(false);
         }
     };
+
+    const fetchOrder = async () => {
+        const orderHistory = userData?.orderHistory;
+        if (!orderHistory || orderHistory.length === 0) {
+            return;
+        }
+
+        const orderID = orderHistory[0];
+
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/checkout/order-products?id=${orderID}`);
+            console.log("Order data:", response.data);
+            setOrderedProducts(response.data.order);
+        } catch (error) {
+            console.error("Error fetching order:", error.response?.data?.message || error.message);
+        }
+    }
+
+    useEffect(() => {
+        if (userData) {
+            fetchOrder();
+        }
+    }, [userData]);
 
     const handleLogout = async () => {
         try {
@@ -137,13 +522,12 @@ const UserProfile = () => {
             navigate("/login");
         } catch (error) {
             console.error("Logout failed:", error.response?.data?.message || error.message);
-            alert("Logout failed: " + (error.response?.data?.message || error.message));
         }
     };
 
     const removeFromCart = async (productId) => {
         try {
-            const response = await axios.post(
+            await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/product/remove-from-cart`,
                 { productId, userId }
             );
@@ -160,27 +544,28 @@ const UserProfile = () => {
             }
         } catch (error) {
             console.error("Error removing product:", error.response?.data?.message || error.message);
-            alert("Failed to remove product: " + (error.response?.data?.message || error.message));
         }
     };
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <FaSpinner className="animate-spin text-blue-600 text-4xl" />
-                <p className="ml-2 text-lg">Loading profile...</p>
+            <div className="flex justify-center items-center h-screen bg-gray-50">
+                <div className="bg-white p-8 rounded-lg shadow-lg flex items-center space-x-4">
+                    <FaSpinner className="animate-spin text-blue-600 text-3xl" />
+                    <p className="text-lg font-medium text-gray-700">Loading your profile...</p>
+                </div>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="max-w-4xl mx-auto text-center mt-10 p-6 bg-red-50 rounded-lg border border-red-200">
-                <h2 className="text-2xl font-bold text-red-700 mb-2">Error Loading Profile</h2>
-                <p className="text-red-600">{error}</p>
+            <div className="max-w-4xl mx-auto text-center mt-10 p-8 bg-red-50 rounded-lg border border-red-200 shadow-lg">
+                <h2 className="text-2xl font-bold text-red-700 mb-3">Error Loading Profile</h2>
+                <p className="text-red-600 mb-6">{error}</p>
                 <button
                     onClick={() => navigate("/login")}
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
                 >
                     Return to Login
                 </button>
@@ -190,12 +575,12 @@ const UserProfile = () => {
 
     if (!userData) {
         return (
-            <div className="max-w-4xl mx-auto text-center mt-10 p-6 bg-yellow-50 rounded-lg border border-yellow-200">
-                <h2 className="text-2xl font-bold text-yellow-700 mb-2">Session Expired</h2>
-                <p className="text-yellow-600">Please log in again to access your profile.</p>
+            <div className="max-w-4xl mx-auto text-center mt-10 p-8 bg-yellow-50 rounded-lg border border-yellow-200 shadow-lg">
+                <h2 className="text-2xl font-bold text-yellow-700 mb-3">Session Expired</h2>
+                <p className="text-yellow-600 mb-6">Please log in again to access your profile.</p>
                 <button
                     onClick={() => navigate("/login")}
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
                 >
                     Go to Login
                 </button>
@@ -203,99 +588,205 @@ const UserProfile = () => {
         );
     }
 
-    return (
-        <div className="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 ease-in-out my-8">
-            {/* User Info Section */}
+    const renderCartContent = () => (
+        <div className="p-6 bg-white rounded-xl shadow-lg">
+            <h3 className="text-2xl font-semibold text-gray-800 flex items-center mb-6 pb-3 border-b">
+                <FaShoppingCart className="mr-3 text-blue-600" />
+                Your Cart
+                <span className="ml-auto text-lg font-normal text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                    {cartProducts.length} {cartProducts.length === 1 ? 'item' : 'items'}
+                </span>
+            </h3>
 
-            <div className="flex flex-col md:flex-row items-center md:space-x-8 border-b pb-6">
-                <img className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl md:text-5xl font-bold shadow-lg mb-4 md:mb-0" src={userData.picture} alt="" />
-                <div className="text-center md:text-left flex-grow">
+            {cartProducts.length > 0 ? (
+                <>
+                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {cartProducts.map((product) => (
+                            <div key={product._id} className="border rounded-xl shadow-md bg-white hover:shadow-lg transition-shadow overflow-hidden group">
+                                <div className="h-48 overflow-hidden relative">
+                                    <img
+                                        src={product.img?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"}
+                                        alt={product.name}
+                                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                </div>
+                                <div className="p-4">
+                                    <h3 className="text-base font-semibold text-gray-900 line-clamp-2 h-12">{product.name}</h3>
+                                    <span className="text-green-600 font-bold text-lg block mt-2">{product.price} د.إ</span>
+                                    <button
+                                        onClick={() => removeFromCart(product._id)}
+                                        className="mt-4 w-full bg-red-600 text-white text-sm px-5 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center transition-colors"
+                                    >
+                                        <FaTrash className="mr-2" /> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800">{userData.name}</h2>
-                    <p className="text-lg text-gray-500 capitalize">{userData.role}</p>
-                    <p className="text-sm text-gray-400 mt-1">{userData.email}</p>
+                    <div className="mt-8 border-t pt-6">
+                        <div className="flex justify-between items-center mb-6 bg-gray-50 p-4 rounded-lg">
+                            <span className="text-xl font-semibold text-gray-800">Total:</span>
+                            <span className="text-2xl font-bold text-green-600">{cartTotal} د.إ</span>
+                        </div>
+                        <Link to="/checkout" className="block">
+                            <button
+                                disabled={isProcessingPayment}
+                                className={`w-full ${isProcessingPayment ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'} 
+                                text-white font-medium text-lg px-5 py-3 rounded-lg transition-colors flex items-center justify-center shadow-md`}
+                            >
+                                {isProcessingPayment ? (
+                                    <>
+                                        <FaSpinner className="animate-spin mr-2" />
+                                        Processing...
+                                    </>
+                                ) : (
+                                    "Proceed to Checkout"
+                                )}
+                            </button>
+                        </Link>
+                    </div>
+                </>
+            ) : (
+                <div className="text-center py-16 bg-gray-50 rounded-xl">
+                    <FaShoppingCart className="mx-auto text-gray-400 text-6xl mb-6" />
+                    <p className="text-gray-500 text-lg mb-6">Your cart is empty.</p>
+                    <button
+                        onClick={() => navigate("/products")}
+                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
+                    >
+                        Browse Products
+                    </button>
                 </div>
-                <button
-                    onClick={handleLogout}
-                    className="mt-4 md:mt-0 px-4 py-2 bg-red-100 text-red-600 rounded-lg font-semibold hover:bg-red-200 transition"
-                >
-                    Logout
-                </button>
+            )}
+        </div>
+    );
+
+    const renderOrderContent = () => (
+        <div className="p-6 bg-white rounded-xl shadow-lg">
+            <h3 className="text-2xl font-semibold text-gray-800 flex items-center mb-6 pb-3 border-b">
+                <FaHistory className="mr-3 text-blue-600" />
+                Your Order History
+            </h3>
+            
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-semibold text-lg text-gray-700 mb-2">Order Status</h4>
+                <p className="px-3 py-2 bg-blue-50 text-blue-700 rounded-md inline-block">
+                    {userData.orderStatus || "No active orders"}
+                </p>
             </div>
 
-            {/* Cart Section */}
-            <div className="mt-8 space-y-6">
-                <div className="p-6 bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 className="text-2xl font-semibold text-gray-800 flex items-center">
-                        <FaShoppingCart className="mr-2 text-blue-600" />
-                        Your Cart
-                        <span className="ml-auto text-lg font-normal text-gray-600">
-                            {cartProducts.length} {cartProducts.length === 1 ? 'item' : 'items'}
-                        </span>
-                    </h3>
-
-                    {cartProducts.length > 0 ? (
-                        <>
-                            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {cartProducts.map((product) => (
-                                    <div key={product._id} className="border rounded-xl shadow-md bg-white hover:shadow-lg transition-shadow overflow-hidden">
-                                        <div className="h-48 overflow-hidden relative">
-                                            <img
-                                                src={product.img?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                                            />
-                                        </div>
-                                        <div className="p-4">
-                                            <h3 className="text-base font-semibold text-gray-900 line-clamp-2 h-12">{product.name}</h3>
-                                            <span className="text-green-600 font-bold text-lg block mt-2">{product.price} د.إ</span>
-                                            <button
-                                                onClick={() => removeFromCart(product._id)}
-                                                className="mt-4 w-full bg-red-600 text-white text-sm px-5 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center"
-                                            >
-                                                <FaTrash className="mr-2" /> Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="mt-8 border-t pt-6">
-                                <div className="flex justify-between items-center mb-6">
-                                    <span className="text-xl font-semibold text-gray-800">Total:</span>
-                                    <span className="text-2xl font-bold text-green-600">{cartTotal} د.إ</span>
+            <div>
+                <h4 className="font-semibold text-lg text-gray-700 mb-4">Recently Ordered Products</h4>
+                
+                {Array.isArray(orderedProducts?.orderedProducts) && orderedProducts.orderedProducts.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {orderedProducts.orderedProducts.map((product, index) => (
+                            <div key={index} className="border rounded-lg overflow-hidden bg-white shadow-md flex">
+                                <div className="w-1/3 h-32 overflow-hidden">
+                                    <img 
+                                        src={product.productImg?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"} 
+                                        alt={product.productName || "Product"} 
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
-                                <Link to="/checkout">
-                                    <button
-                                        // onClick={makePayment}
-                                        disabled={isProcessingPayment}
-                                        className={`w-full ${isProcessingPayment ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'} 
-                                    text-white font-medium text-lg px-5 py-3 rounded-lg transition-colors flex items-center justify-center`}
-                                    >
-                                        {isProcessingPayment ? (
-                                            <>
-                                                <FaSpinner className="animate-spin mr-2" />
-                                                Processing...
-                                            </>
-                                        ) : (
-                                            "Proceed to Checkout"
-                                        )}
-                                    </button>
-                                </Link>
+                                <div className="w-2/3 p-4">
+                                    <h5 className="font-semibold text-gray-800 mb-2">{product.productName || "Product Name"}</h5>
+                                    <div className="text-sm text-gray-600 flex flex-col space-y-1">
+                                        <p>Product ID: <span className="font-medium">{product.id || "N/A"}</span></p>
+                                        <p>Price: <span className="font-medium text-green-600">{product.productPrice} د.إ</span></p>
+                                        <p>Quantity: <span className="font-medium">{product.productQuantity}</span></p>
+                                    </div>
+                                </div>
                             </div>
-                        </>
-                    ) : (
-                        <div className="mt-6 text-center py-10 bg-gray-100 rounded-xl">
-                            <FaShoppingCart className="mx-auto text-gray-400 text-5xl mb-4" />
-                            <p className="text-gray-500 text-lg">Your cart is empty.</p>
-                            <button
-                                onClick={() => navigate("/products")}
-                                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                            >
-                                Browse Products
-                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-10 bg-gray-50 rounded-xl">
+                        <FaBox className="mx-auto text-gray-400 text-6xl mb-4" />
+                        <p className="text-gray-500 text-lg">No ordered products found.</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="max-w-6xl mx-auto p-4 my-8">
+            <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+                {/* Header with user info */}
+                <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 md:p-10 text-white">
+                    <div className="flex flex-col md:flex-row items-center md:space-x-8">
+                        <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4 md:mb-0 overflow-hidden">
+                            {userData.picture ? (
+                                <img 
+                                    src={userData.picture} 
+                                    alt={userData.name} 
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <FaUser className="text-4xl md:text-5xl text-gray-400" />
+                            )}
                         </div>
-                    )}
+                        <div className="text-center md:text-left flex-grow">
+                            <h2 className="text-3xl md:text-4xl font-bold">{userData.name}</h2>
+                            <p className="text-lg opacity-90 capitalize">{userData.role}</p>
+                            <p className="text-sm opacity-80 mt-1">{userData.email}</p>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="mt-4 md:mt-0 px-5 py-2 bg-white text-red-600 rounded-lg font-semibold hover:bg-red-50 transition flex items-center"
+                        >
+                            <FaSignOutAlt className="mr-2" />
+                            Logout
+                        </button>
+                    </div>
+                </div>
+
+                {/* Navigation tabs */}
+                <div className="flex border-b">
+                    <button
+                        className={`flex-1 py-4 px-6 text-center font-medium text-lg ${
+                            activeTab === "cart" 
+                                ? "text-blue-600 border-b-2 border-blue-600" 
+                                : "text-gray-600 hover:text-blue-500"
+                        }`}
+                        onClick={() => setActiveTab("cart")}
+                    >
+                        <div className="flex items-center justify-center">
+                            <FaShoppingCart className="mr-2" />
+                            Your Cart
+                        </div>
+                    </button>
+                    <button
+                        className={`flex-1 py-4 px-6 text-center font-medium text-lg ${
+                            activeTab === "orders" 
+                                ? "text-blue-600 border-b-2 border-blue-600" 
+                                : "text-gray-600 hover:text-blue-500"
+                        }`}
+                        onClick={() => setActiveTab("orders")}
+                    >
+                        <div className="flex items-center justify-center">
+                            <FaHistory className="mr-2" />
+                            Orders History
+                        </div>
+                    </button>
+                </div>
+
+                {/* Main content area */}
+                <div className="p-6 bg-gray-50">
+                    {activeTab === "cart" ? renderCartContent() : renderOrderContent()}
+                </div>
+
+                {/* Footer */}
+                <div className="bg-gray-100 p-4 flex justify-center">
+                    <button
+                        onClick={() => navigate("/products")}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md flex items-center"
+                    >
+                        <FaStore className="mr-2" />
+                        Continue Shopping
+                    </button>
                 </div>
             </div>
         </div>

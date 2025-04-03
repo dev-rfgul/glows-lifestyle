@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { stringify } from "uuid";
 
 const checkoutSchema = new mongoose.Schema({
     userId: {
@@ -11,14 +12,24 @@ const checkoutSchema = new mongoose.Schema({
             ref: 'Product',
             required: true,
         },
-        quantity: {
+        productName: {
+            type: String,
+        },
+        productColor: {
+            type: String,
+        },
+
+        productQuantity: {
             type: Number,
             required: true,
         },
-        price: {
+        productPrice: {
             type: Number,
             required: true,
-        }
+        },
+        productImg: [{
+            type: String,
+        }],
     }],
     name: {
         type: String,
