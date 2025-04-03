@@ -527,7 +527,13 @@ const PaymentInfoCard = () => {
         orderNotes: '',
         latitude: '',
         longitude: '',
-        orderProducts: [cartProducts]
+        orderdProducts: cartProducts.map(p => ({  // TYPO HERE - "orderdProducts"
+            productId: p._id,
+            productName:p.name,
+            productColor: p.color || '',
+            quantity: p.quantity || 1,
+            price: p.price
+        })),
     });
 
     const [errors, setErrors] = useState({});
@@ -784,6 +790,8 @@ const PaymentInfoCard = () => {
                 userId,
                 orderdProducts: cartProducts.map(p => ({
                     productId: p._id,
+                    productName: p.name,
+                    productColor: p.color || '',
                     quantity: p.quantity || 1,
                     price: p.price
                 })),

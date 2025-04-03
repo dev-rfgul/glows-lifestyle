@@ -167,13 +167,13 @@ const Navbar = () => {
 
     // Navbar menu items for better maintainability
     const navItems = [
-     
+
     ];
 
     return (
         <header className={`bg-black text-blue-100 transition-all duration-300`}>
             {/* Banner Section */}
-            <div className="bg-black text-red-600 text-xl font-bold  italic text-black text-sm py-2 text-center border-b-2 border-white">
+            <div className="bg-black text-white text-xl font-bold  italic text-black text-sm py-2 text-center border-b-2 border-white">
                 <p>Shop the Latest Trends , Your Favourite Styles , Delievered  </p>
             </div>
 
@@ -209,14 +209,13 @@ const Navbar = () => {
                     </button>
                 </div>
 
-              
+
 
                 {/* User Account, Wishlist, and Cart - Desktop */}
                 <div className="hidden md:flex items-center space-x-6">
                     {/* User Account */}
                     <div className="flex items-center space-x-2 group">
-                        <FontAwesomeIcon icon={faUser} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
-                        <div>
+                       <div>
                             <Link
                                 to="/profile"
                                 className="text-white text-sm hover:text-lime-500 transition-colors"
@@ -245,21 +244,11 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* Wishlist Icon */}
-                    <Link to="/wishlist" className="relative group">
-                        <FontAwesomeIcon icon={faHeart} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
-                        <span className="absolute -top-2 -right-2 bg-lime-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center transition-all group-hover:scale-110">
-                            {wishlistItems.length}
-                        </span>
-                    </Link>
-
                     {/* Cart Icon */}
-                    <Link to="/cart" className="relative group">
+                    <Link to="/profile" className="relative group">
                         <FontAwesomeIcon icon={faShoppingCart} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
-                        <span className="absolute -top-2 -right-2 bg-lime-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center transition-all group-hover:scale-110">
-                            {cartLength}
-                        </span>
                     </Link>
+                    <FontAwesomeIcon icon={faUser} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
                 </div>
             </div>
 

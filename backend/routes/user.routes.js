@@ -429,7 +429,7 @@ router.post("/checkout", async (req, res) => {
             orderTotal,
             orderDate: new Date(orderDate), // Convert to Date if not already
         });
-
+        console.log(checkout)
         // Save the checkout data to the database
         const savedCheckout = await checkout.save();
 

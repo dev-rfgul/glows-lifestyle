@@ -22,7 +22,7 @@ const AlertMessage = ({
   type = "success", 
   onClose, 
   duration = 5000,
-  logoUrl = "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png",
+  logoUrl = "./images/logo.png",
   showCloseButton = true
 }) => {
     const [visible, setVisible] = useState(false);
