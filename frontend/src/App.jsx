@@ -45,7 +45,29 @@ const App = () => {
   })
   return (
     <div className='overflow-hidden'>
-      <Launch />
+      {/* <Launch /> */}
+       <Routes>
+// <Route path='/' element={<Home />} />
+// <Route path='/signup' element={<Signup />} />
+// <Route path='/login' element={<Login />} />
+// <Route path='/product/:id' element={<ProductDisplay />} />
+// <Route path='/profile' element={<Profile />} />
+// <Route path='/all-products' element={<AllProducts />} />
+// <Route path="/products/:category" element={<AllProducts />} />
+// <Route path="/checkout" element={<Checkout />} />
+// <Route path="/payment/success" element={<SuccessPayment />} />
+// <Route path="/payment/cancel" element={<CancelPayment />} />
+
+// {/* Admin Routes - Use ProtectedRoute for access control */}
+// <Route path='/admin' element={<ProtectedRoute role={role} requiredRole="admin"><Admin /></ProtectedRoute>} />
+// <Route path='/add-product' element={<ProtectedRoute role={role} requiredRole="admin"><AddProduct /></ProtectedRoute>} />
+// <Route path='/add-users' element={<ProtectedRoute role={role} requiredRole="admin"><User /></ProtectedRoute>} />
+// <Route path='/edit-product/:id' element={<ProtectedRoute role={role} requiredRole="admin"><EditProduct /></ProtectedRoute>} />
+// <Route path='/orders' element={<ProtectedRoute role={role} requiredRole="admin"><AdminOrdersPage /></ProtectedRoute>} />
+
+// {/* Redirect unknown routes to home */}
+// <Route path="*" element={<Navigate to="/" />} />
+// </Routes>
     </div>
   )
 }

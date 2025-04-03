@@ -26,11 +26,11 @@ createRoot(document.getElementById('root')).render(
     >
       <Provider store={store}>
         <BrowserRouter >
-          {/* <Navbar /> */}
+          <Navbar />
           <Elements stripe={stripePromise}>
             <App />
           </Elements>
-          {/* <Footer /> */}
+          <Footer />
         </BrowserRouter>
       </Provider>
     </Auth0Provider>
