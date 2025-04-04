@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 import userModel from '../models/user.model.js';
 import checkoutModel from '../models/Checkout.model.js'
 import Revenue from '../models/revenue.model.js';
+import productModel from '../models/product.model.js'
 
 const router = express.Router();
 
@@ -248,6 +249,10 @@ router.get('/get-user/:id', async (req, res) => {
 });
 
 router.post("/checkout", async (req, res) => {
+    // Start a MongoDB session for transactions
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const {
             userId,
@@ -261,13 +266,65 @@ router.post("/checkout", async (req, res) => {
             postalCode,
             country,
             orderNotes,
-            latitude,
-            longitude,
             orderTotal,
             orderDate,
         } = req.body;
 
-        // Create a new Checkout document
+        // Validate required fields according to your schema
+        if (!province) {
+            return res.status(400).json({
+                success: false,
+                message: "Province is required"
+            });
+        }
+
+        // Validate required fields
+        if (!userId || !orderedProducts || !orderTotal || !name || !email || !address) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required fields"
+            });
+        }
+
+        // Validate userId format
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID format"
+            });
+        }
+
+        // Validate orderTotal is a number
+        if (isNaN(parseFloat(orderTotal))) {
+            return res.status(400).json({
+                success: false,
+                message: "Order total must be a number"
+            });
+        }
+
+        // Check stock availability for all products
+        for (const product of orderedProducts) {
+            const productDoc = await productModel.findById(product.productId);
+            const quantity = Number(product.productQuantity) || 1;
+
+            if (!productDoc) {
+                await session.abortTransaction();
+                return res.status(404).json({
+                    success: false,
+                    message: `Product with ID ${product.productId} not found`
+                });
+            }
+
+            if (productDoc.stock < quantity) {
+                await session.abortTransaction();
+                return res.status(400).json({
+                    success: false,
+                    message: `Not enough stock for product ${productDoc.name}`
+                });
+            }
+        }
+
+        // Create checkout with session
         const checkout = new checkoutModel({
             userId: new mongoose.Types.ObjectId(userId),
             orderedProducts,
@@ -280,64 +337,59 @@ router.post("/checkout", async (req, res) => {
             postalCode,
             country,
             orderNotes,
-            latitude,
-            longitude,
-            orderTotal,
-            orderDate: new Date(orderDate), // Convert to Date if not already
+            orderTotal: parseFloat(orderTotal),
+            orderDate: new Date(orderDate || Date.now()),
         });
-        console.log(checkout);
 
-        // Save the checkout data to the database
-        const savedCheckout = await checkout.save();
+        const savedCheckout = await checkout.save({ session });
 
-        // Update the user's orderStatus to 'Pending'
+        // Update user data with session
         await userModel.findByIdAndUpdate(
             userId,
-            { $set: { orderStatus: ['Pending'] } },
-            { new: true }
+            {
+                $set: { orderStatus: ['Pending'] },
+                $push: { orderHistory: savedCheckout._id },
+                $set: { cart: [] }
+            },
+            { new: true, session }
         );
-        await userModel.findByIdAndUpdate(
-            userId,
-            { $push: { orderHistory: savedCheckout._id } },
-            { new: true }
-        )
-        await userModel.findByIdAndUpdate(
-            userId,
-            { $set: { cart: [] } },
-            { new: true }
-        );
-        // Update the ordered products' stock
+
+        // Update product stock with session
         for (const product of orderedProducts) {
-            await checkoutModel.findByIdAndUpdate(
+            const quantity = Number(product.productQuantity) || 1;
+            await productModel.findByIdAndUpdate(
                 product.productId,
-                { $inc: { stock: -product.quantity } },
-                { new: true }
+                { $inc: { stock: -quantity } },
+                { new: true, session }
             );
         }
-        // Revenue update
-        try {
-            await Revenue.findOneAndUpdate(
-                {}, // Find the only revenue document (assuming one)
-                { $inc: { total: orderTotal } }, // Increment the total
-                { upsert: true, new: true } // Create if not exists
-            );
-            console.log('Revenue updated successfully');
-        } catch (error) {
-            console.error('Error updating revenue:', error);
-        }
-        // Return a success response
+
+        // Update revenue with session
+        await Revenue.findOneAndUpdate(
+            {},
+            { $inc: { total: parseFloat(orderTotal) } },
+            { upsert: true, new: true, session }
+        );
+
+        // Commit the transaction
+        await session.commitTransaction();
+
         res.status(201).json({
             success: true,
             message: "Checkout created successfully",
             data: savedCheckout,
         });
     } catch (error) {
+        // Abort transaction on error
+        await session.abortTransaction();
         console.error(error);
         res.status(500).json({
             success: false,
             message: "Server error, could not create checkout",
             error: error.message,
         });
+    } finally {
+        session.endSession();
     }
 });
 

@@ -184,9 +184,9 @@ const Navbar = () => {
                     className="flex items-center space-x-4 transition-transform hover:scale-105"
                 >
                     <img
-                        className="w-36 md:w-48 h-auto object-contain"
+                        className="w-22 md:w-22 h-auto object-contain"
                         src="./images/logo.png"
-                        alt="Dewnor Logo"
+                        alt="Glowz Lifestyel Logo"
                         loading="eager"
                     />
                 </Link>

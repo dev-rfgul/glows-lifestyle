@@ -793,9 +793,9 @@ const PaymentInfoCard = () => {
                 orderedProducts: cartProducts.map(p => ({
                     productId: p._id,
                     productName: p.name,
-                    productColor: p.color || '',
+                    productColor: p.color || p.colors[0].name,
                     productQuantity: p.quantity || 1,
-                    productPrice: p.price,
+                    productPrice: p.discountPrice,
                     productImg: p.img,
                 })),
                 orderTotal,
@@ -1092,6 +1092,7 @@ const PaymentInfoCard = () => {
                                     value={formData.province}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                    required
                                 />
                             </div>
 
