@@ -76,7 +76,7 @@ const UserProfile = () => {
                 { ids: cartIds }
             );
             setCartProducts(response.data);
-            
+
         } catch (error) {
             console.error("Error fetching products:", error);
             setError("Failed to load cart products");
@@ -129,26 +129,41 @@ const UserProfile = () => {
     const fetchOrder = async () => {
         const orderHistory = userData?.orderHistory;
         if (!orderHistory || orderHistory.length === 0) {
+            console.log("No order history found");
             return;
         }
 
-        const orderID = orderHistory[0];
+        console.log("orderHistory:", orderHistory);
+
+        // No need to extract - orderHistory already contains the IDs
+        const orderIDs = orderHistory; // orderHistory is already an array of order ID strings
+        console.log("Order IDs to fetch:", orderIDs);
 
         try {
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/checkout/order-products?id=${orderID}`);
-            // console.log("Order data:", response.data);
-            setOrderedProducts(response.data.order);
-        } catch (error) {
-            console.error("Error fetching order:", error.response?.data?.message || error.message);
-        }
-    }
+            // Create an array of promises for all the requests
+            const requests = orderIDs.map(orderID =>
+                axios.get(`${import.meta.env.VITE_BACKEND_URL}/checkout/order-products?id=${orderID}`)
+            );
 
+            // Wait for all requests to finish
+            const responses = await Promise.all(requests);
+            console.log("All responses received:", responses.map((data) => data.data.order));
+
+            // After all requests complete, update the state with the fetched data
+            setOrderedProducts(responses.map((response, index) => ({
+                orderID: orderIDs[index],
+                products: response.data.order
+            })));
+        } catch (error) {
+            console.error("Error fetching orders:", error.response?.data?.message || error.message);
+        }
+    };
     useEffect(() => {
         if (userData) {
             fetchOrder();
         }
     }, [userData]);
-
+    console.log("orderd prods", orderedProducts)
     const handleLogout = async () => {
         try {
             await axios.post(
@@ -307,36 +322,66 @@ const UserProfile = () => {
                 Your Order History
             </h3>
 
-            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-semibold text-lg text-gray-700 mb-2">Order Status</h4>
-                <p className="px-3 py-2 bg-blue-50 text-blue-700 rounded-md inline-block">
-                    {userData.orderStatus || "No active orders"}
-                </p>
-            </div>
 
             <div>
-                <h4 className="font-semibold text-lg text-gray-700 mb-4">Recently Ordered Products</h4>
 
-                {Array.isArray(orderedProducts?.orderedProducts) && orderedProducts.orderedProducts.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {orderedProducts.orderedProducts.map((product, index) => (
-                            <div key={index} className="border rounded-lg overflow-hidden bg-white shadow-md flex">
-                                <div className="w-1/3 h-32 overflow-hidden">
-                                    <img
-                                        src={product.productImg?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"}
-                                        alt={product.productName || "Product"}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <div className="w-2/3 p-4">
-                                    <h5 className="font-semibold text-gray-800 mb-2">{product.productName || "Product Name"}</h5>
-                                    <div className="text-sm text-gray-600 flex flex-col space-y-1">
-                                        <p>Product ID: <span className="font-medium">{product.id || "N/A"}</span></p>
-                                        <p>Price: <span className="font-medium text-green-600">{product.price}</span></p>
-                                        <p>Quantity: <span className="font-medium">{product.productQuantity}</span></p>
+                {Array.isArray(orderedProducts) && orderedProducts.length > 0 ? (
+                    <div className="space-y-8">
+                        {orderedProducts.map((order, orderIndex) => (
+                            <div key={orderIndex} className="border rounded-lg overflow-hidden bg-white shadow-lg">
+                                <div className="bg-gray-50 p-4 border-b">
+                                    <div className="flex justify-between items-center flex-wrap">
+                                        <h5 className="font-medium text-gray-700 text-sm sm:text-base">Order ID: <span className="font-semibold">{order.orderID}</span></h5>
+                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${order.products.orderStatus === "completed" ? "bg-green-100 text-green-800" :
+                                            order.products.orderStatus === "pending" ? "bg-yellow-100 text-yellow-800" :
+                                                "bg-blue-100 text-blue-800"
+                                            }`}>
+                                            {order.products.orderStatus?.toUpperCase() || "PENDING"}
+                                        </span>
+                                    </div>
+                                    <div className="mt-2 text-sm sm:text-base text-gray-600">
+                                        <p>Date: {new Date(order.products.orderDate).toLocaleDateString()}</p>
+                                        <p>Total: <span className="font-semibold text-green-600">${order.products.orderTotal}</span></p>
                                     </div>
                                 </div>
-                                
+
+                                <div className="p-4">
+                                    <h6 className="font-medium text-gray-700 mb-3">Products</h6>
+                                    <div className="space-y-4">
+                                        {Array.isArray(order.products.orderedProducts) && order.products.orderedProducts.map((product, productIndex) => (
+                                            <div key={productIndex} className="border rounded-lg overflow-hidden bg-white shadow-sm flex flex-col sm:flex-row">
+                                                <div className="w-full sm:w-1/3 h-32 overflow-hidden">
+                                                    <img
+                                                        src={product.productImg?.[0] || "https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"}
+                                                        alt={product.productName || "Product"}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                                <div className="w-full sm:w-2/3 p-4">
+                                                    <h5 className="font-semibold text-gray-800 mb-2">{product.productName || "Product Name"}</h5>
+                                                    <div className="text-sm text-gray-600 flex flex-col space-y-1">
+                                                        <p>Product ID: <span className="font-medium">{product.productId || "N/A"}</span></p>
+                                                        <p>Price: <span className="font-medium text-green-600">${product.productPrice}</span></p>
+                                                        <p>Quantity: <span className="font-medium">{product.productQuantity}</span></p>
+                                                        {product.productColor && (
+                                                            <p>Color: <span className="font-medium">{product.productColor}</span></p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="bg-gray-50 p-4 border-t">
+                                    <h6 className="font-medium text-gray-700 mb-2">Shipping Details</h6>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm sm:text-base text-gray-600">
+                                        <p>Name: <span className="font-medium">{order.products.name}</span></p>
+                                        <p>Email: <span className="font-medium">{order.products.email}</span></p>
+                                        <p>Phone: <span className="font-medium">{order.products.phone}</span></p>
+                                        <p>Address: <span className="font-medium">{order.products.address}, {order.products.city}, {order.products.province}, {order.products.country} {order.products.postalCode}</span></p>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -347,6 +392,7 @@ const UserProfile = () => {
                     </div>
                 )}
             </div>
+
         </div>
     );
 

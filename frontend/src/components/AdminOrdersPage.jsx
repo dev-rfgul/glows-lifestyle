@@ -375,7 +375,7 @@ const AdminOrdersPage = () => {
                                     <table className="min-w-full divide-y divide-gray-200">
                                         <thead className="bg-gray-100">
                                             <tr>
-                                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product ID</th>
+                                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
                                                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                                                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
                                                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
@@ -385,14 +385,14 @@ const AdminOrdersPage = () => {
                                             {selectedOrder.orderedProducts?.map((item) => (
                                                 <tr key={item._id}>
                                                     <td className="px-4 py-3">
-                                                        <div className="text-sm font-medium text-gray-900">{item.productId}</div>
+                                                        <div className="text-sm font-medium text-gray-900">{item.productName}</div>
                                                     </td>
                                                     <td className="px-4 py-3 text-sm">
-                                                        {item.orderTotal}
+                                                        {item.productPrice}
                                                     </td>
-                                                    <td className="px-4 py-3 text-sm">{item.quantity || 1}</td>
+                                                    <td className="px-4 py-3 text-sm">{item.productQuantity || 1}</td>
                                                     <td className="px-4 py-3 text-sm font-medium">
-                                                        {item.orderTotal* item.quantity}
+                                                        {item.orderTotal * item.quantity}
                                                     </td>
                                                 </tr>
                                             ))}
