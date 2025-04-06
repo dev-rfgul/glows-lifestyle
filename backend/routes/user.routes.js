@@ -52,23 +52,45 @@ router.post('/signup', async (req, res) => {
     res.status(200).json({ message: 'User Created', user });
 });
 
+
 router.get('/guest-signup', async (req, res) => {
-    const genRandomEmail = 'hello@gmail.com';
-    const randomPassword = '11221122';
-    const guestName = 'Guest123';
-    const existingUser = await userModel.findOne({ genRandomEmail });
-    if (existingUser) {
-        res.status(400).json({ message: "Guest user already Exists" })
+    try {
+        // Generate simple unique ID using timestamp + random number
+        const timestamp = Date.now();
+        const guestEmail = `guest_${timestamp}@glowzlifestyl.shop`;
+        const guestPassword = '11221122'; // You can randomize this too
+        const guestName = `Guest_${timestamp}`;
+
+        // Check if somehow this generated email already exists
+        const existingUser = await userModel.findOne({ email: guestEmail });
+        if (existingUser) {
+            return res.status(400).json({ message: "Guest user already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(guestPassword, 10);
+
+        const newUser = new userModel({
+            name: guestName,
+            email: guestEmail,
+            password: hashedPassword
+        });
+
+        await newUser.save();
+
+        res.status(201).json({
+            message: "Guest user created successfully",
+            user: {
+                id: newUser._id,
+                name: newUser.name,
+                email: newUser.email
+            }
+        });
+
+    } catch (error) {
+        console.error("Error during guest signup:", error);
+        res.status(500).json({ message: "Server error during guest signup" });
     }
-    const hashPassword = await bcrypt.hash(randomPassword, 10);
-    const user = new userModel({
-        name: guestName,
-        email: genRandomEmail,
-        password: hashPassword
-    })
-    await user.save();
-    res.status(200).json({ message: "guest user created", user })
-})
+});
 // Enhanced Auth0 login endpoint
 router.post('/auth0-login', async (req, res) => {
     const { email, name, picture } = req.body;
