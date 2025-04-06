@@ -72,18 +72,16 @@ router.get('/guest-signup', async (req, res) => {
         const newUser = new userModel({
             name: guestName,
             email: guestEmail,
-            password: hashedPassword
+            password: hashedPassword,
+            authProvider: 'guest',
+            role: 'guest'
         });
 
         await newUser.save();
 
         res.status(201).json({
             message: "Guest user created successfully",
-            user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email
-            }
+            newUser
         });
 
     } catch (error) {

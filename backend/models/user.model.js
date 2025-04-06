@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["admin", "user"],
+        enum: ["admin", "user", "guest"],
         default: "user",
     },
     email: {
@@ -66,7 +66,7 @@ const UserSchema = new mongoose.Schema({
     },
     authProvider: {
         type: String,
-        enum: ['local', 'auth0'],
+        enum: ['local', 'auth0','guest'],
         default: 'local'
     },
     lastLogin: {
