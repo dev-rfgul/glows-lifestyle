@@ -23,11 +23,28 @@ const Signup = () => {
             [e.target.name]: e.target.value
         });
     };
-
     const handleGuestAcct = async () => {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/guest-signup`)
-        console.log(response.data.user)
-    }
+        try {
+            // Optional: Set loading state here (e.g., setIsLoading(true))
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/guest-signup`);
+            const user = response.data?.newUser;
+            if (user) {
+                localStorage.setItem("user", JSON.stringify(user));
+                console.log("Guest account created:", user);
+                navigate('/')
+            } else {
+                console.error("No user returned from guest-signup API");
+                // Optional: show user-friendly error toast/message
+            }
+
+        } catch (error) {
+            console.error("Error creating guest account:", error);
+            // Optional: show toast or alert to user
+        } finally {
+            // Optional: Reset loading state here (e.g., setIsLoading(false))
+        }
+    };
+
     // Handle regular signup form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,7 +70,9 @@ const Signup = () => {
             );
 
             console.log('Signup successful:', response.data);
-            navigate('/login');
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            localStorage.setItem("token", response.data.token);
+            navigate('/profile');
         } catch (error) {
             console.error("Signup error:", error);
             setSignupError(
@@ -64,7 +83,6 @@ const Signup = () => {
             setIsSubmitting(false);
         }
     };
-
     // Handle Auth0 redirect if user is already authenticated
     useEffect(() => {
         if (!isLoading && isAuthenticated && user) {
