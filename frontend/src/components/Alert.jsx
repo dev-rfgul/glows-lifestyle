@@ -96,7 +96,6 @@ const AlertMessage = ({
             }
         }
     }, [message, duration]);
-
     // Handle keyboard accessibility
     useEffect(() => {
         const handleEscape = (e) => {

@@ -52,6 +52,23 @@ router.post('/signup', async (req, res) => {
     res.status(200).json({ message: 'User Created', user });
 });
 
+router.get('/guest-signup', async (req, res) => {
+    const genRandomEmail = 'hello@gmail.com';
+    const randomPassword = '11221122';
+    const guestName = 'Guest123';
+    const existingUser = await userModel.findOne({ genRandomEmail });
+    if (existingUser) {
+        res.status(400).json({ message: "Guest user already Exists" })
+    }
+    const hashPassword = await bcrypt.hash(randomPassword, 10);
+    const user = new userModel({
+        name: guestName,
+        email: genRandomEmail,
+        password: hashPassword
+    })
+    await user.save();
+    res.status(200).json({ message: "guest user created", user })
+})
 // Enhanced Auth0 login endpoint
 router.post('/auth0-login', async (req, res) => {
     const { email, name, picture } = req.body;
