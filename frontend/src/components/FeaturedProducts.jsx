@@ -12,7 +12,8 @@ const ProductGrid = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userId, setUserId] = useState(null);
-    const [globalAlert, setGlobalAlert] = useState({ message: "", type: "" });
+    const [showGuestSignInAlert, setShowGuestSignInAlert] = useState(false)
+    const [globalAlert, setGlobalAlert] = useState({ message: "", type: "",showBtns:'' });
     const [filters, setFilters] = useState({
         sort: "newest",
         category: "all",
@@ -77,11 +78,14 @@ const ProductGrid = () => {
         fetchProducts();
     }, [filters.category]);
 
+
     const addToCart = useCallback(async (productId) => {
         if (!userId) {
+            // Explicitly set showBtns to true for login-related messages
             setGlobalAlert({
                 message: "Please log in to add items to your cart",
-                type: "warning"
+                type: "warning",
+                showBtns: true
             });
             return Promise.reject(new Error("User not logged in"));
         }
@@ -92,18 +96,28 @@ const ProductGrid = () => {
                 userId,
             });
 
-            setGlobalAlert({ message: response.data.message, type: "success" });
+            setGlobalAlert({
+                message: response.data.message,
+                type: "success",
+                showBtns: false // Explicitly set to false for success messages
+            });
             return Promise.resolve(response.data);
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message;
+            // Check if this is a login-related error
+            const isLoginError = errorMessage.toLowerCase().includes("login") ||
+                errorMessage.toLowerCase().includes("auth") ||
+                !userId;
+
             setGlobalAlert({
                 message: "Error adding product to cart: " + errorMessage,
                 type: "error",
+                showBtns: isLoginError // Set to true only for login-related errors
             });
+
             return Promise.reject(error);
         }
     }, [userId]);
-
     // Filter and sort products function
     const filteredProducts = React.useMemo(() => {
         let result = [...products];
@@ -156,6 +170,28 @@ const ProductGrid = () => {
         }));
     };
 
+    const handleGuestAcct = async () => {
+        try {
+            // Optional: Set loading state here (e.g., setIsLoading(true))
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/guest-signup`);
+            const user = response.data?.newUser;
+            if (user) {
+                localStorage.setItem("user", JSON.stringify(user));
+                console.log("Guest account created:", user);
+                navigate('/')
+            } else {
+                console.error("No user returned from guest-signup API");
+                // Optional: show user-friendly error toast/message
+            }
+
+        } catch (error) {
+            console.error("Error creating guest account:", error);
+            // Optional: show toast or alert to user
+        } finally {
+            // Optional: Reset loading state here (e.g., setIsLoading(false))
+        }
+    };
+
     return (
         <div className="container mx-auto px-6 py-10">
             {/* Global Alert */}
@@ -164,7 +200,8 @@ const ProductGrid = () => {
                     <AlertMessage
                         message={globalAlert.message}
                         type={globalAlert.type}
-                        onClose={() => setGlobalAlert({ message: "", type: "" })}
+                        onClose={() => setGlobalAlert({ message: "", type: "", showBtns: false })}
+                        showBtns={true}
                     />
                 </div>
             )}
@@ -270,6 +307,20 @@ const ProductGrid = () => {
                     </select>
                 </div>
             </div>
+
+            {showGuestSignInAlert && (
+                <div className="max-w-sm mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg text-center">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4">Continue Without Account</h2>
+                    <p className="text-gray-600 mb-6">You can browse and use the app as a guest.</p>
+                    <button
+                        onClick={handleGuestAcct}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+                    >
+                        Continue as Guest
+                    </button>
+                </div>
+            )}
+
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {loading
