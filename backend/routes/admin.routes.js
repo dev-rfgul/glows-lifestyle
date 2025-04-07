@@ -199,16 +199,16 @@ app.post('/add-product', verifyAdmin, upload.array('productImages'), async (req,
     try {
         // Parse the product data from the JSON string
         const productData = JSON.parse(req.body.productData);
-        
+
         // Validate required fields
-        if (!productData.name || !productData.price || !productData.description || 
+        if (!productData.name || !productData.price || !productData.description ||
             !productData.stock || !productData.category) {
-            return res.status(400).json({ 
-                message: 'Name, price, stock, and description are required fields' 
+            return res.status(400).json({
+                message: 'Name, price, stock, and description are required fields'
             });
         }
-        
-        
+
+
         // Upload images to Cloudinary
         const imageUrls = req.files?.length ? await uploadImgsToCloudinary(req.files) : [];
 
@@ -344,6 +344,21 @@ app.post('/add-user', verifyAdmin, async (req, res) => {
         res.status(500).json({ message: "Error creating user", error: error.message });
     }
 });
+
+app.post('/delete-user/:id', async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const user = await userModel.findByIdAndDelete(userId);
+        if (user) {
+            res.status(200).json({ message: "User deleted successfully", user });
+        } else {
+            res.status(404).json({ message: "User with this ID does not exist" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: `An error occurred: ${error.message}` });
+    }
+});
+
 
 
 export default app;

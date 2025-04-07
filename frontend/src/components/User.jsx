@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-
+import axios from 'axios'
 const User = () => {
     const [user, setUser] = useState({
         name: "",
@@ -21,14 +21,14 @@ const User = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const { name, email, password, cart, role } = user;
-    
+
         if (!name || !email || !password || !role) {
             alert("Please fill all the required fields");
             return;
         }
-    
+
         try {
             const token = JSON.parse(localStorage.getItem("user"))?.token;
             if (!token) {
@@ -36,7 +36,7 @@ const User = () => {
                 toast.error("Authentication failed. Please log in again.");
                 return;
             }
-    
+
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/add-user`, {
                 method: "POST",
                 headers: {
@@ -46,9 +46,9 @@ const User = () => {
                 body: JSON.stringify({ name, email, password, role }), // ✅ Send JSON
                 credentials: "include"
             });
-    
+
             const data = await response.json();
-    
+
             if (response.ok) {
                 alert("User added successfully!");
                 setUsers(prev => [...prev, data.user]); // updated to push the actual user
@@ -61,22 +61,31 @@ const User = () => {
             alert("Error adding user");
         }
     };
-    
+
 
     const fetchUsers = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/get-users`);
             const data = await response.json();
+            console.table(data)
             setUsers(data);
         } catch (error) {
             console.error("Error fetching users:", error);
+        }
+    };
+    const deleteUser = async (userId) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/delete-user/${userId}`);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Delete user error:', error.response?.data || error.message);
         }
     };
 
     useEffect(() => {
         fetchUsers();
     }, []);
-    console.log(JSON.stringify(users))
+    // console.log(JSON.stringify(users))
 
     const handleRoleChange = async (userId, newRole) => {
 
@@ -148,8 +157,9 @@ const User = () => {
                                 <th className="py-2 px-4">Name</th>
                                 <th className="py-2 px-4">Email</th>
                                 <th className="py-2 px-4">Cart</th>
+                                <th className="py-2 px-4">Orders</th>
                                 <th className="py-2 px-4">Role</th>
-                                <th className="py-2 px-4">Created At</th>
+                                <th className="py-2 px-4">btns</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -159,9 +169,17 @@ const User = () => {
                                     <td className="py-2 px-4">{user.email}</td>
                                     <td className="py-2 px-4 text-black">
                                         {user.cart && user.cart.length > 0
-                                            ? user.cart.map((item) => item).join(", ")
+                                            ? user.cart.map((item) => item.name).join(", ")
                                             : "NA"}
                                     </td>
+                                    <td className="py-2 px-4 text-black">
+                                        {user.orderHistory && user.orderHistory.length > 0
+                                            ? user.orderHistory
+                                                .flatMap((item) => item.orderedProducts.map((product) => product.productName))
+                                                .join(", ")
+                                            : "NA"}
+                                    </td>
+
                                     <td className="py-2 px-4 capitalize">
                                         <select
                                             value={user.role}
@@ -172,7 +190,20 @@ const User = () => {
                                             <option value="admin">Admin</option>
                                         </select>
                                     </td>
-                                    <td className="py-2 px-4">{new Date(user.createdAt).toLocaleString()}</td>
+                                    <td className="flex gap-2 py-2 px-4 capitalize">
+                                        <button
+                                            className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-4 rounded shadow-sm transition duration-200"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => deleteUser(user._id)}
+                                            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1 px-4 rounded shadow-sm transition duration-200"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+
                                 </tr>
                             ))}
                         </tbody>

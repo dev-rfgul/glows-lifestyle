@@ -262,7 +262,9 @@ router.put("/update-role", async (req, res) => {
 // Get all users route
 router.get('/get-users', async (req, res) => {
     try {
-        const users = await userModel.find({});
+        const users = await userModel.find({})
+        .populate('cart')
+        .populate('orderHistory')
         res.status(200).json(users);
     }
     catch (error) {

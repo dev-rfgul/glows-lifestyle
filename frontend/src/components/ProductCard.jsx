@@ -316,7 +316,6 @@ const ProductCard = ({ product, loading }) => {
                 localStorage.setItem("user", JSON.stringify(user));
                 console.log("Guest account created:", user);
                 setShowGuestSignin(false); // Close guest signin prompt
-                
                 // Refresh the page to apply localStorage changes
                 window.location.reload();
             } else {
