@@ -926,7 +926,7 @@ const PaymentInfoCard = () => {
                                             </p>
                                         </div>
                                     ))}
-                                    <p className="font-medium text-indigo-900">Total: ${orderTotal.toFixed(2)}</p>
+                                    <p className="font-medium text-indigo-900">Total:RS {orderTotal.toFixed(2)}</p>
                                 </>
                             ) : (
                                 <p className="text-sm text-gray-600">Your cart is empty</p>
