@@ -176,43 +176,41 @@ const ProductCardSkeleton = () => (
 
 // Component for product image section with badges
 const ProductImageSection = ({ product }) => (
-    <Link to={`/product/${product._id}`} className="block">
-        <div className="relative group">
-            <img
-                src={product.img[0]}
-                alt={product.name}
-                className="w-full h-52 object-cover transition-all duration-300 group-hover:brightness-95"
-            />
-            
-            {/* Stock status indicators */}
-            {product.stock <= 5 && product.stock > 0 && (
-                <div className="absolute top-2 right-2 bg-amber-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-md">
-                    Only {product.stock} left
-                </div>
-            )}
-            {product.stock === 0 && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <span className="text-white text-lg font-bold">Out of Stock</span>
-                </div>
-            )}
-            
+<Link to={`/product/${product._id}`} className="block">
+    <div className="relative group">
+        <img
+            src={product.img[0]}
+            alt={product.name}
+            className="w-full h-32 object-cover transition-all duration-300 group-hover:brightness-95"
+        />
         
-        </div>
-
-        {/* Product Information */}
-        <div className="p-4">
-            <h3 className="text-base font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
-            <div className="flex items-center gap-2 mt-2">
-                <span className="text-gray-400 line-through text-lg">{product.price}</span>
-                <span className="text-black-600 font-bold text-lg">RS {product.discountPrice}</span>
+        {/* Stock status indicators */}
+        {product.stock <= 5 && product.stock > 0 && (
+            <div className="absolute top-1 right-1 bg-amber-500 text-white px-2 py-0.5 text-xs font-semibold rounded-full shadow-md">
+                Only {product.stock} left
             </div>
-            {product.tagline && (
-                <div className="flex items-center gap-2 mt-2 text-gray-600 text-sm">
-                    <span className="font-medium font-bold">{product.tagline}</span>
-                </div>
-            )}
+        )}
+        {product.stock === 0 && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <span className="text-white text-sm font-bold">Out of Stock</span>
+            </div>
+        )}
+    </div>
+
+    {/* Product Information */}
+    <div className="p-2">
+        <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">{product.name}</h3>
+        <div className="flex items-center gap-1 mt-1">
+            <span className="text-gray-400 line-through text-xs">{product.price}</span>
+            <span className="text-black-600 font-bold text-sm">RS {product.discountPrice}</span>
         </div>
-    </Link>
+        {product.tagline && (
+            <div className="mt-1 text-gray-600 text-xs">
+                <span className="font-medium">{product.tagline}</span>
+            </div>
+        )}
+    </div>
+</Link>
 );
 
 // Button components for cart actions

@@ -299,11 +299,9 @@ const ProductGrid = () => {
                     </select>
                 </div>
             </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-
+            <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 xs:gap-3 sm:gap-4 md:gap-6">
                 {loading
-                    ? Array.from({ length: 8 }).map((_, index) => (
+                    ? Array.from({ length: 10 }).map((_, index) => (
                         <ProductCard key={`skeleton-${index}`} loading={true} />
                     ))
                     : filteredProducts.length > 0
@@ -313,6 +311,7 @@ const ProductGrid = () => {
                                 product={product}
                                 loading={false}
                                 onAddToCart={addToCart}
+                                compact={true}
                             />
                         ))
                         : (
