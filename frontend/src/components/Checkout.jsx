@@ -73,8 +73,8 @@ const PaymentInfoCard = () => {
         if (userData) {
             setFormData(prevData => ({
                 ...prevData,
-                name: userData.name || '',
-                email: userData.email || '',
+                name:  '',
+                email:  '',
                 phone: userData.phone || '',
                 address: userData.address || '',
                 city: userData.city || '',
@@ -488,7 +488,7 @@ const PaymentInfoCard = () => {
                             </div>
                         </div>
                     )}
-
+{/* //just help me in changing the autofill up of name and email to make it empty so that user can manually entery his name and email */}
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -505,6 +505,7 @@ const PaymentInfoCard = () => {
                                     id="name"
                                     value={formData.name}
                                     onChange={handleChange}
+                                    autoComplete="off"
                                     className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                                 />
                                 {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
