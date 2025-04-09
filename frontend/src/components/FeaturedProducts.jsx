@@ -200,8 +200,6 @@ const ProductGrid = () => {
             )}
             {/* Filter Controls */}
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Products</h2>
-
                 <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
                     <h3 className="font-semibold text-gray-700 mb-3">Filters</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

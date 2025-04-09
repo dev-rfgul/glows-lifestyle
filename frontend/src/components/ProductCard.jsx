@@ -140,7 +140,7 @@ const ProductCard = ({ product, loading }) => {
             <div className="border rounded-xl shadow-lg overflow-hidden bg-white hover:shadow-2xl hover:scale-[1.03] transition-transform duration-300">
                 {/* Product Image and badges */}
                 <ProductImageSection product={product} />
-                
+
                 {/* Action Buttons */}
             </div>
         </>
@@ -176,41 +176,47 @@ const ProductCardSkeleton = () => (
 
 // Component for product image section with badges
 const ProductImageSection = ({ product }) => (
-<Link to={`/product/${product._id}`} className="block">
-    <div className="relative group">
-        <img
-            src={product.img[0]}
-            alt={product.name}
-            className="w-full h-32 object-cover transition-all duration-300 group-hover:brightness-95"
-        />
-        
-        {/* Stock status indicators */}
-        {product.stock <= 5 && product.stock > 0 && (
-            <div className="absolute top-1 right-1 bg-amber-500 text-white px-2 py-0.5 text-xs font-semibold rounded-full shadow-md">
-                Only {product.stock} left
-            </div>
-        )}
-        {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <span className="text-white text-sm font-bold">Out of Stock</span>
-            </div>
-        )}
-    </div>
+    <Link to={`/product/${product._id}`} className="block">
+        <div className=" m-2 relative overflow-hidden">
+            {/* Full Image that covers the card */}
+            <div className="relative w-full h-32 sm:h-48 md:h-64">
+                <img
+                    src={product.img[0]}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-95"
+                />
 
-    {/* Product Information */}
-    <div className="p-2">
-        <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">{product.name}</h3>
-        <div className="flex items-center gap-1 mt-1">
-            <span className="text-gray-400 line-through text-xs">{product.price}</span>
-            <span className="text-black-600 font-bold text-sm">RS {product.discountPrice}</span>
-        </div>
-        {product.tagline && (
-            <div className="mt-1 text-gray-600 text-xs">
-                <span className="font-medium">{product.tagline}</span>
+                {/* Stock status indicators */}
+                {product.stock <= 5 && product.stock > 0 && (
+                    <div className="absolute top-1 right-1 bg-amber-500 text-white px-2 py-0.5 text-xs font-semibold rounded-full shadow-md">
+                        Only {product.stock} left
+                    </div>
+                )}
+                {product.stock === 0 && (
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                        <span className="text-white text-sm font-bold">Out of Stock</span>
+                    </div>
+                )}
             </div>
-        )}
-    </div>
-</Link>
+
+            {/* Product Information */}
+            <div className="p-4">
+                {/* Product Name */}
+                <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
+
+                {/* Price Section */}
+                <div className="flex items-center gap-2 mt-2">
+                    <span className="text-gray-500 line-through text-sm">{product.price}</span>
+                    <span className="text-black-600 font-bold text-lg">RS {product.discountPrice}</span>
+                </div>
+
+                {/* Tagline */}
+                <p className="mt-2 text-gray-700 text-sm">{product.tagline}</p>
+            </div>
+
+        </div>
+    </Link>
+
 );
 
 // Button components for cart actions
@@ -218,11 +224,10 @@ const AddToCartButton = ({ onClick, isLoading, disabled }) => (
     <button
         onClick={onClick}
         disabled={isLoading || disabled}
-        className={`w-full text-black text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${
-            disabled
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gray-100 border-2 border-black text-black hover:bg-black hover:text-white"
-        }`}
+        className={`w-full text-black text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${disabled
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-gray-100 border-2 border-black text-black hover:bg-black hover:text-white"
+            }`}
     >
         {isLoading ? (
             <LoadingSpinner text="Adding..." />
@@ -236,11 +241,10 @@ const BuyNowButton = ({ onClick, isLoading, disabled }) => (
     <button
         onClick={onClick}
         disabled={isLoading || disabled}
-        className={`w-full text-white text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${
-            disabled
-                ? "bg-blue-300 cursor-not-allowed"
-                : "bg-black hover:bg-gray-800"
-        }`}
+        className={`w-full text-white text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${disabled
+            ? "bg-blue-300 cursor-not-allowed"
+            : "bg-black hover:bg-gray-800"
+            }`}
     >
         {isLoading ? (
             <LoadingSpinner text="Processing..." />
