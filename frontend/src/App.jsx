@@ -18,6 +18,7 @@ import AdminOrdersPage from './components/AdminOrdersPage'
 import ProtectedRoute from './components/ProtectedRoute';
 import Checkout from './components/Checkout'
 import Launch from './components/Launch'
+import Analytics from './components/Analytics'
 
 const App = () => {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
@@ -64,6 +65,7 @@ const App = () => {
 // <Route path='/add-users' element={<ProtectedRoute role={role} requiredRole="admin"><User /></ProtectedRoute>} />
 // <Route path='/edit-product/:id' element={<ProtectedRoute role={role} requiredRole="admin"><EditProduct /></ProtectedRoute>} />
 // <Route path='/orders' element={<ProtectedRoute role={role} requiredRole="admin"><AdminOrdersPage /></ProtectedRoute>} />
+// <Route path='/analytics' element={<ProtectedRoute role={role} requiredRole="admin"><Analytics /></ProtectedRoute>} />
 
 // {/* Redirect unknown routes to home */}
 // <Route path="*" element={<Navigate to="/" />} />
