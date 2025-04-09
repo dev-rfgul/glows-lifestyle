@@ -211,7 +211,7 @@ const ProductImageSection = ({ product }) => (
                 </div>
 
                 {/* Tagline */}
-                <p className="mt-2 text-gray-700 text-sm">{product.tagline}</p>
+                <p className="mt-2 text-gray-700 text-sm line-clamp-2">{product.tagline}</p>
             </div>
 
         </div>

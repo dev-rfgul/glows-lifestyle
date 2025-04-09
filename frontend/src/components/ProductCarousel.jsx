@@ -169,7 +169,7 @@ const ProductCarousel = () => {
             {
                 breakpoint: 480, // xs
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 2,
                 }
             }
         ]
@@ -208,14 +208,51 @@ const ProductCarousel = () => {
         <div className="carousel-container w-full mx-auto">
             <Slider {...settings}>
                 {data.map((product, index) => (
-                       <ProductCard
-                       key={product._id}
-                       product={product}
-                       loading={false}
-                    //    onAddToCart={addToCart}
-                       compact={true}
-                   />
+                    <div key={product._id} className="px-2">
+                        <Link to={`/product/${product._id}`} className="block">
+                            <div className="h-96 border rounded shadow overflow-hidden flex flex-col">
+                                {/* Image container with fixed height */}
+                                <div className="relative w-full h-48">
+                                    <img
+                                        src={product.img[0]}
+                                        alt={product.name}
+                                        className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-95"
+                                    />
 
+                                    {/* Stock status indicators */}
+                                    {product.stock <= 5 && product.stock > 0 && (
+                                        <div className="absolute top-1 right-1 bg-amber-500 text-white px-2 py-0.5 text-xs font-semibold rounded-full shadow-md">
+                                            Only {product.stock} left
+                                        </div>
+                                    )}
+                                    {product.stock === 0 && (
+                                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                            <span className="text-white text-sm font-bold">Out of Stock</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Product Information with fixed height */}
+                                <div className="p-4 flex-1 flex flex-col">
+                                    {/* Product Name with strict line clamping */}
+                                    <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 h-12 overflow-hidden">
+                                        {product.name}
+                                    </h3>
+
+                                    {/* Price Section */}
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <span className="text-gray-500 line-through text-sm">{product.price}</span>
+                                        <span className="text-black-600 font-bold text-lg">RS {product.discountPrice}</span>
+                                    </div>
+
+                                    {/* Tagline with strict height */}
+                                    <p className="mt-2 text-gray-700 text-sm line-clamp-2 h-10 overflow-hidden">
+                                        {product.tagline}
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
                 ))}
             </Slider>
         </div>
