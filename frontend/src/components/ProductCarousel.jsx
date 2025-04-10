@@ -210,7 +210,7 @@ const ProductCarousel = () => {
                 {data.map((product, index) => (
                     <div key={product._id} className="px-2">
                         <Link to={`/product/${product._id}`} className="block">
-                            <div className="h-96 border rounded shadow overflow-hidden flex flex-col">
+                            <div className="h-78 border rounded shadow overflow-hidden flex flex-col">
                                 {/* Image container with fixed height */}
                                 <div className="relative w-full h-48">
                                     <img
@@ -235,7 +235,7 @@ const ProductCarousel = () => {
                                 {/* Product Information with fixed height */}
                                 <div className="p-4 flex-1 flex flex-col">
                                     {/* Product Name with strict line clamping */}
-                                    <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 h-12 overflow-hidden">
+                                    <h3 className="text-md  font-semibold text-gray-900 line-clamp-3 h-12 overflow-hidden">
                                         {product.name}
                                     </h3>
 
@@ -245,10 +245,7 @@ const ProductCarousel = () => {
                                         <span className="text-black-600 font-bold text-lg">RS {product.discountPrice}</span>
                                     </div>
 
-                                    {/* Tagline with strict height */}
-                                    <p className="mt-2 text-gray-700 text-sm line-clamp-2 h-10 overflow-hidden">
-                                        {product.tagline}
-                                    </p>
+                                    
                                 </div>
                             </div>
                         </Link>
