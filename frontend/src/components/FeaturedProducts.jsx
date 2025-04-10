@@ -201,26 +201,9 @@ const ProductGrid = () => {
             {/* Filter Controls */}
             <div className="mb-8">
                 <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
-                    <h3 className="font-semibold text-gray-700 mb-3">Filters</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {/* Sort By Filter */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
-                            <select
-                                className="w-full border rounded-lg px-3 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={filters.sort}
-                                onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
-                            >
-                                <option value="newest">Newest</option>
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                                <option value="popular">Most Popular</option>
-                            </select>
-                        </div>
 
-
-                        {/* Category Filter / Search Bar */}
-                        <div>
+                    <div className="flex justify-center">
+                        <div className="w-full max-w-sm">
                             <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
                             <div className="relative">
                                 <input
@@ -242,34 +225,10 @@ const ProductGrid = () => {
                                 </span>
                             </div>
                         </div>
-
-
-                        {/* Price Range Filter */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
-                            <div className="flex items-center">
-                                <input
-                                    type="number"
-                                    className="w-full border rounded-lg px-3 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Min"
-                                    value={filters.priceRange[0]}
-                                    onChange={(e) => handlePriceRangeChange(e.target.value, filters.priceRange[1])}
-                                    min="0"
-                                />
-                                <span className="mx-2">-</span>
-                                <input
-                                    type="number"
-                                    className="w-full border rounded-lg px-3 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Max"
-                                    value={filters.priceRange[1]}
-                                    onChange={(e) => handlePriceRangeChange(filters.priceRange[0], e.target.value)}
-                                    min={filters.priceRange[0]}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
+
 
             {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
