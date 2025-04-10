@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 // import logo from "../images/logo.png";
 
-{/* <AlertMessage logoUrl={logo} /> */}
+{/* <AlertMessage logoUrl={logo} /> */ }
 
 import {
     FaShoppingCart,
@@ -31,6 +31,8 @@ const EarbudsProductDisplay = () => {
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [isBuyingNow, setIsBuyingNow] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null); // Initialize as null
+    const [showGuestSign, setShowGuestSignin] = useState(false)
+
 
     // Alert state
     const [alertProps, setAlertProps] = useState({
@@ -94,11 +96,29 @@ const EarbudsProductDisplay = () => {
             visible: false
         }));
     };
-
+    const handleGuestAcct = async () => {
+        try {
+            setLoading(true)
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/guest-signup`);
+            const user = response.data?.newUser;
+            if (user) {
+                localStorage.setItem("user", JSON.stringify(user));
+                console.log("Guest account created:", user);
+                setShowGuestSignin(false); // Close alert after successful guest login
+                setLoading(false)
+                navigate('/');
+            } else {
+                console.error("No user returned from guest-signup API");
+            }
+        } catch (error) {
+            console.error("Error creating guest account:", error);
+        }
+    };
     const addToCart = async (productId, buyNow = false) => {
         console.log("Adding to cart:", productId);
         if (!userId) {
-            showNotification("Please login to add items to cart", "error");
+            // showNotification("Please login to add items to cart hello", "error");
+            setShowGuestSignin(true)
             return;
         }
 
@@ -170,10 +190,45 @@ const EarbudsProductDisplay = () => {
                     type={alertProps.type}
                     onClose={handleCloseAlert}
                     duration={5000}
-                    logoUrl= {"../images/logo.png"}
+                    logoUrl={"../images/logo.png"}
                     showCloseButton={true}
                 />
             )}
+            {showGuestSign && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div className="bg-gray-400 w-full max-w-md px-6 py-6 text-center rounded-lg shadow-lg relative">
+                        {/* Close Button (X) positioned at the top-right */}
+                        <button
+                            className="absolute top-2 right-2 text-white bg-red-500 hover:bg-red-600 font-semibold text-lg rounded-full w-8 h-8 flex items-center justify-center"
+                            onClick={() => setShowGuestSignin(false)}
+                        >
+                            X
+                        </button>
+
+                        {loading ? (
+                            // Loader: Spinner shown while loading
+                            <div className="flex justify-center items-center">
+                                <div className="w-16 h-16 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"></div>
+                            </div>
+                        ) : (
+                            <>
+                                <h2 className="text-lg font-semibold text-gray-800 mb-2">Continue Without Account</h2>
+                                <p className="text-gray-600 mb-4 text-sm">You can browse and use the app as a guest.</p>
+                                <button
+                                    onClick={handleGuestAcct}
+                                    className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+                                >
+                                    Continue as Guest
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
+
+
+
+
 
             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
                 {/* Product Visual Section */}
