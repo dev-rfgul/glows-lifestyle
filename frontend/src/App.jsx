@@ -30,11 +30,10 @@ const App = () => {
   }, [])
   console.log(visitor)
 
-  const updateVisitCount = async (visitCountValue) => {
+  const updateVisitCount = async () => {
     try {
-      const response = await axios.put(
+      const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/globalVisitCount`,
-        { visitCount: visitCountValue } // pass the visitCount as the request body
       );
       console.log('Updated Visit Count:', response.data); // log the response
     } catch (error) {

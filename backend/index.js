@@ -23,7 +23,7 @@ import VisitCounter from './models/visitCount.model.js';
 const app = express();
 
 // Properly handle CORS origins
-const allowedOrigins = ["https://glowslifestyle.onrender.com", "https://www.glowzlifestyle.shop", "https://glows-lifestyle.vercel.app","https://glows-lifestyle-chi.vercel.app"];
+const allowedOrigins = ["https://glowslifestyle.onrender.com", "https://www.glowzlifestyle.shop", "https://glows-lifestyle.vercel.app", "https://glows-lifestyle-chi.vercel.app"];
 if (process.env.FRONT_END_URL) {
     allowedOrigins.push(process.env.FRONT_END_URL);
 }
@@ -74,16 +74,9 @@ app.use('/payment', paymentRoutes)
 app.use('/analytics', AnalyticsRoutes)
 app.use('/checkout', CheckoutRoutes)
 
-app.put('/globalVisitCount', async (req, res) => {
-    // Assuming req.body.visitCount contains a value that should be a number
-    const visitCount = Number(req.body.visitCount);
+app.get('/globalVisitCount', async (req, res) => {
 
-    // Check if the conversion was successful
-    if (isNaN(visitCount)) {
-        return res.status(400).json({ error: "visitCount is not a valid number" });
-    } else {
-        console.log(`The visit count is: ${visitCount}`);
-    }
+    
 
     try {
         // Find the visit counter document
@@ -96,7 +89,7 @@ app.put('/globalVisitCount', async (req, res) => {
         }
 
         // Increment the visit count by the value in the request
-        visitCounter.globalVisitCount += visitCount;
+        visitCounter.globalVisitCount += 1;
 
         // Update the last updated timestamp (optional, based on your schema)
         visitCounter.lastUpdated = new Date();
