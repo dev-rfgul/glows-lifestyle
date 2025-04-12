@@ -19,6 +19,7 @@ import AnalyticsRoutes from './routes/analytics.routes.js'
 import { cloudinaryConnect } from './config/cloudinary.js';
 import CheckoutRoutes from './routes/checkout.routes.js'
 import VisitCounter from './models/visitCount.model.js';
+import visitCounter from './models/visitCount.model.js';
 // Initialize app and services
 const app = express();
 
@@ -75,9 +76,15 @@ app.use('/analytics', AnalyticsRoutes)
 app.use('/checkout', CheckoutRoutes)
 
 app.get('/globalVisitCount', async (req, res) => {
+    try {
+        const visitorCount = await visitCounter.findOne({});
+        res.status(200).json({ message: visitorCount });
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
-    
-
+app.put('/updateGloalVisitCount', async (req, res) => {
     try {
         // Find the visit counter document
         let visitCounter = await VisitCounter.findOne();
@@ -106,7 +113,7 @@ app.get('/globalVisitCount', async (req, res) => {
         console.error(err);
         res.status(500).send('Error updating visit count');
     }
-});
+})
 
 
 

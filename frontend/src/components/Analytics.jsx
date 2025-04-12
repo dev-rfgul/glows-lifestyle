@@ -113,8 +113,8 @@ const Analytics = () => {
     // const totalVisits = data.reduce((sum, product) => sum + (product.visitCount || 0), 0);
     const getTotalVisits = async () => {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/globalVisitCount`)
-        console.log(response.data.visitorCount)
-        setTotalVisits(response.data.visitorCount)
+        console.log(response.data.message)
+        setTotalVisits(response.data.message.globalVisitCount)
     }
     // totalVisits()
     useEffect(() => {
