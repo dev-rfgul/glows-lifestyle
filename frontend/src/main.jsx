@@ -16,7 +16,7 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode >
+  // <StrictMode >
     <Auth0Provider
       domain="dev-3in5830qphna5i42.us.auth0.com"
       clientId="dfD1MvchEDmvYLfnMRyky8v2XDjsx5AJ"
@@ -34,5 +34,5 @@ createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </Provider>
     </Auth0Provider>
-  </StrictMode>
+  // </StrictMode>
 );

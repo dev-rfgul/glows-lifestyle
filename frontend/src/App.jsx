@@ -42,7 +42,7 @@ const App = () => {
   };
   useEffect(() => {
     updateVisitCount()
-  })
+  },[])
   return (
     <div className='overflow-hidden'>
       {/* <Launch /> */}
