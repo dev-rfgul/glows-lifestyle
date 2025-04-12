@@ -62,6 +62,7 @@
 // export default Analytics
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 
 const Analytics = () => {
     const [data, setData] = useState([]);
@@ -70,6 +71,7 @@ const Analytics = () => {
     const [sortBy, setSortBy] = useState('visitCount');
     const [sortOrder, setSortOrder] = useState('desc');
     const [searchTerm, setSearchTerm] = useState('');
+    const [totalVisits,setTotalVisits]=useState('0')
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -108,7 +110,16 @@ const Analytics = () => {
         });
 
     // For statistics
-    const totalVisits = data.reduce((sum, product) => sum + (product.visitCount || 0), 0);
+    // const totalVisits = data.reduce((sum, product) => sum + (product.visitCount || 0), 0);
+    const getTotalVisits = async () => {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/globalVisitCount`)
+        console.log(response.data.visitorCount)
+        setTotalVisits(response.data.visitorCount)
+    }
+    // totalVisits()
+    useEffect(() => {
+        getTotalVisits()
+    }, [])
     const avgVisits = data.length ? (totalVisits / data.length).toFixed(1) : 0;
     const topProduct = data.length ? [...data].sort((a, b) => b.visitCount - a.visitCount)[0] : null;
 
