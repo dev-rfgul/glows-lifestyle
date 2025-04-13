@@ -202,16 +202,16 @@ const ProductImageSection = ({ product }) => (
             {/* Product Information */}
             <div className="p-4">
                 {/* Product Name */}
-                <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
+                <h3 className="md:text-md text-sm font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
 
                 {/* Price Section */}
                 <div className="flex items-center gap-2 mt-2">
                     <span className="text-gray-500 line-through text-sm">{product.price}</span>
-                    <span className="text-black-600 font-bold text-lg">RS {product.discountPrice}</span>
+                    <span className="text-black-600 font-bold text-sm">RS {product.discountPrice}</span>
                 </div>
 
                 {/* Tagline */}
-                <p className="mt-2 text-gray-700 text-sm line-clamp-2">{product.tagline}</p>
+                <p className="mt-2 text-gray-700 text-sm line-clamp-1">{product.tagline}</p>
             </div>
 
         </div>
