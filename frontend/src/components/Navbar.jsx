@@ -173,7 +173,7 @@ const Navbar = () => {
     return (
         <header className={`bg-black text-blue-100 transition-all duration-300`}>
             {/* Banner Section */}
-            <div className="bg-black text-white text-xl font-bold  italic text-black text-sm py-2 text-center border-b-2 border-white">
+            <div className="bg-black  text-white text-sm md:text-lg lg:text-lg font-bold  italic text-black text-sm py-2 text-center border-b-2 border-white">
                 <p>Shop the Latest Trends , Your Favourite Styles , Delievered  </p>
             </div>
 
@@ -215,7 +215,7 @@ const Navbar = () => {
                 <div className="hidden md:flex items-center space-x-6">
                     {/* User Account */}
                     <div className="flex items-center space-x-2 group">
-                       <div>
+                        <div>
                             <Link
                                 to="/profile"
                                 className="text-white text-sm hover:text-lime-500 transition-colors"
