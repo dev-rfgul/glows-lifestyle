@@ -9,6 +9,7 @@ const Home = ({ heading, subHeading }) => {
             <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-600">
                 {subHeading}
             </p>
+            
         </div>
 
     )
