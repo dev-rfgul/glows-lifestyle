@@ -120,6 +120,7 @@ const Analytics = () => {
     useEffect(() => {
         getTotalVisits()
     }, [])
+    const totalProductVisits = data.reduce((total, product) => total + product.visitCount, 0);
     const avgVisits = data.length ? (totalVisits / data.length).toFixed(1) : 0;
     const topProduct = data.length ? [...data].sort((a, b) => b.visitCount - a.visitCount)[0] : null;
 
@@ -166,12 +167,12 @@ const Analytics = () => {
                                 <p className="mt-2 text-4xl font-bold text-gray-900">{data.length}</p>
                             </div>
                             <div className="bg-white rounded-lg shadow-md p-6">
-                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Visits</h3>
+                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Site  Visits</h3>
                                 <p className="mt-2 text-4xl font-bold text-indigo-600">{totalVisits}</p>
                             </div>
                             <div className="bg-white rounded-lg shadow-md p-6">
-                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide">Average Visits</h3>
-                                <p className="mt-2 text-4xl font-bold text-green-600">{avgVisits}</p>
+                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Product Visits</h3>
+                                <p className="mt-2 text-4xl font-bold text-green-600">{totalProductVisits}</p>
                             </div>
                         </div>
 
