@@ -121,8 +121,10 @@ const Analytics = () => {
         getTotalVisits()
     }, [])
     const totalProductVisits = data.reduce((total, product) => total + product.visitCount, 0);
-    const avgVisits = data.length ? (totalVisits / data.length).toFixed(1) : 0;
+    const avgVisits = data.length ? (totalProductVisits /data.length).toFixed(1) : 0;
     const topProduct = data.length ? [...data].sort((a, b) => b.visitCount - a.visitCount)[0] : null;
+    const productVisitRate=(totalProductVisits/totalVisits)*100
+
 
     return (
         <div className="bg-gray-50 min-h-screen p-6">
@@ -173,6 +175,14 @@ const Analytics = () => {
                             <div className="bg-white rounded-lg shadow-md p-6">
                                 <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Product Visits</h3>
                                 <p className="mt-2 text-4xl font-bold text-green-600">{totalProductVisits}</p>
+                            </div>
+                            <div className="bg-white rounded-lg shadow-md p-6">
+                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide"> Product Visit Rate</h3>
+                                <p className="mt-2 text-4xl font-bold text-green-600">{productVisitRate.toFixed(2)}%</p>
+                            </div>
+                            <div className="bg-white rounded-lg shadow-md p-6">
+                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide"> Avg Views per Product</h3>
+                                <p className="mt-2 text-4xl font-bold text-green-600">{avgVisits}</p>
                             </div>
                         </div>
 
