@@ -188,29 +188,42 @@ const Analytics = () => {
                             </div>
                         </div>
 
-                        {/* Most Popular Product */}
-                        {topProducts.map((topProduct, index) => (
-                            <div key={topProduct.id || index} className="bg-white rounded-lg shadow-md p-6 mb-6">
-                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide mb-4">
-                                    Top Performing Product
-                                </h3>
-                                <div className="flex items-center">
-                                    <div className="flex-shrink-0 h-16 w-16 bg-gray-200 rounded-md overflow-hidden">
-                                        <img
-                                            src={topProduct.img?.[0] || "/api/placeholder/64/64"}
-                                            alt={topProduct.name}
-                                            className="h-full w-full object-cover"
-                                        />
+                        {/* Most Popular Products */}
+                        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 shadow-lg border border-indigo-100">
+                            <h3 className="text-indigo-700 text-base font-bold uppercase tracking-wide mb-6 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                Top Performing Products
+                            </h3>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {topProducts.map((topProduct, index) => (
+                                    <div
+                                        key={topProduct.id || index}
+                                        className="bg-white rounded-lg shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow duration-300 ease-in-out flex flex-col"
+                                    >
+                                        <div className="flex items-center">
+                                            <div className="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-lg overflow-hidden shadow-inner">
+                                                <img
+                                                    src={topProduct.img?.[0] || "/api/placeholder/64/64"}
+                                                    alt={topProduct.name}
+                                                    className="h-full w-full object-cover"
+                                                />
+                                            </div>
+                                            <div className="ml-4">
+                                                <h4 className="text-md font-semibold text-gray-900 line-clamp-1">{topProduct.name}</h4>
+                                                <div className="flex items-center mt-1">
+                                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                                        <span className="font-medium">{topProduct.visitCount || 0}</span> visits
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="ml-4">
-                                        <h4 className="text-lg font-semibold text-gray-900">{topProduct.name}</h4>
-                                        <p className="text-sm text-gray-500">
-                                            <span className="font-medium text-indigo-600">{topProduct.visitCount || 0}</span> visits
-                                        </p>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
-                        ))}
+                        </div>
 
 
                         {/* Product Table */}
