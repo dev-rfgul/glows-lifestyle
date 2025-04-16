@@ -71,7 +71,7 @@ const Analytics = () => {
     const [sortBy, setSortBy] = useState('visitCount');
     const [sortOrder, setSortOrder] = useState('desc');
     const [searchTerm, setSearchTerm] = useState('');
-    const [totalVisits,setTotalVisits]=useState('0')
+    const [totalVisits, setTotalVisits] = useState('0')
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -121,9 +121,11 @@ const Analytics = () => {
         getTotalVisits()
     }, [])
     const totalProductVisits = data.reduce((total, product) => total + product.visitCount, 0);
-    const avgVisits = data.length ? (totalProductVisits /data.length).toFixed(1) : 0;
-    const topProduct = data.length ? [...data].sort((a, b) => b.visitCount - a.visitCount)[0] : null;
-    const productVisitRate=(totalProductVisits/totalVisits)*100
+    const avgVisits = data.length ? (totalProductVisits / data.length).toFixed(1) : 0;
+    // const topProduct = data.length ? [...data].sort((a, b) => b.visitCount - a.visitCount)[0] : null;
+    const topProducts = data.length ? [...data].sort((a, b) => b.visitCount - a.visitCount).slice(0, 3) : [];
+
+    const productVisitRate = (totalProductVisits / totalVisits) * 100
 
 
     return (
@@ -187,9 +189,11 @@ const Analytics = () => {
                         </div>
 
                         {/* Most Popular Product */}
-                        {topProduct && (
-                            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide mb-4">Top Performing Product</h3>
+                        {topProducts.map((topProduct, index) => (
+                            <div key={topProduct.id || index} className="bg-white rounded-lg shadow-md p-6 mb-6">
+                                <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wide mb-4">
+                                    Top Performing Product
+                                </h3>
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0 h-16 w-16 bg-gray-200 rounded-md overflow-hidden">
                                         <img
@@ -206,7 +210,8 @@ const Analytics = () => {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        ))}
+
 
                         {/* Product Table */}
                         <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -297,7 +302,7 @@ const Analytics = () => {
                                                         <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
                                                             <div
                                                                 className="bg-blue-600 h-2.5 rounded-full"
-                                                                style={{ width: `${((product.visitCount || 0) / (topProduct?.visitCount || 1)) * 100}%` }}
+                                                                style={{ width: `${((product.visitCount || 0) / (topProducts[0]?.visitCount || 1)) * 100}%` }}
                                                             ></div>
                                                         </div>
                                                     </td>
