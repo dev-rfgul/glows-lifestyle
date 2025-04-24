@@ -113,6 +113,15 @@ const AdminOrdersPage = () => {
             }, 3000);
         }
     };
+    const cancelOrder = async (orderId) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/cancel-order/${orderId}`)
+            const res = response.json()
+            console.log(res)
+        } catch (error) {
+            console.log("error occured while deleting the order")
+        }
+    }
 
     if (loading) {
         return (
@@ -187,6 +196,9 @@ const AdminOrdersPage = () => {
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Send Msg
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Cancel Order
                             </th>
                         </tr>
                     </thead>
@@ -265,6 +277,11 @@ const AdminOrdersPage = () => {
                                             Send Message on WhatsApp
                                         </a>
                                     </td>
+                                    <td>
+                                        <button className='bg-green-500' onClick={()=>cancelOrder(order._id)}>
+                                            cancel order
+                                        </button>
+                                    </td>
                                 </tr>
                             ))
                         ) : (
@@ -305,119 +322,118 @@ const AdminOrdersPage = () => {
                         </div>
 
                         <div className="p-4">
-    {/* Combined Order Summary and Customer Info */}
-    <div className="mb-4 text-sm">
-        <h3 className="text-base font-semibold mb-2">Order Details</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 bg-gray-50 p-3 rounded-lg">
-            <div>
-                <p className="text-xs text-gray-500">Order Date</p>
-                <p className="font-medium">{formatDate(selectedOrder.orderDate)}</p>
-            </div>
-        
-            <div>
-                <p className="text-xs text-gray-500">Status</p>
-                <p className={`font-medium ${
-                    selectedOrder.orderStatus === 'completed' ? 'text-green-600' :
-                    selectedOrder.orderStatus === 'dispatched' ? 'text-blue-600' : 'text-yellow-600'
-                }`}>
-                    {selectedOrder.orderStatus || 'Pending'}
-                </p>
-            </div>
-            <div>
-                <p className="text-xs text-gray-500">Total</p>
-                <p className="font-medium">{selectedOrder.orderTotal}</p>
-            </div>
-            <div>
-                <p className="text-xs text-gray-500">Customer</p>
-                <p className="font-medium">{selectedOrder.name || 'N/A'}</p>
-            </div>
-            <div>
-                <p className="text-xs text-gray-500">Contact</p>
-                <p className="font-medium text-xs">{selectedOrder.email || 'N/A'}</p>
-            </div>
-        </div>
-    </div>
+                            {/* Combined Order Summary and Customer Info */}
+                            <div className="mb-4 text-sm">
+                                <h3 className="text-base font-semibold mb-2">Order Details</h3>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 bg-gray-50 p-3 rounded-lg">
+                                    <div>
+                                        <p className="text-xs text-gray-500">Order Date</p>
+                                        <p className="font-medium">{formatDate(selectedOrder.orderDate)}</p>
+                                    </div>
 
-    {/* Address Information - More compact */}
-    <div className="mb-4 text-sm">
-        <h3 className="text-base font-semibold mb-1">Shipping Address</h3>
-        <div className="bg-gray-50 p-3 rounded-lg">
-            <p className="text-sm">{selectedOrder.address || 'N/A'}</p>
-            <p className="text-sm">
-                {[
-                    selectedOrder.city,
-                    selectedOrder.province,
-                    selectedOrder.postalCode
-                ].filter(Boolean).join(', ')}
-                {selectedOrder.country ? `, ${selectedOrder.country}` : ''}
-            </p>
-            {selectedOrder.orderNotes && (
-                <div className="mt-1">
-                    <p className="text-xs text-gray-500">Notes: {selectedOrder.orderNotes}</p>
-                </div>
-            )}
-        </div>
-    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500">Status</p>
+                                        <p className={`font-medium ${selectedOrder.orderStatus === 'completed' ? 'text-green-600' :
+                                            selectedOrder.orderStatus === 'dispatched' ? 'text-blue-600' : 'text-yellow-600'
+                                            }`}>
+                                            {selectedOrder.orderStatus || 'Pending'}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500">Total</p>
+                                        <p className="font-medium">{selectedOrder.orderTotal}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500">Customer</p>
+                                        <p className="font-medium">{selectedOrder.name || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500">Contact</p>
+                                        <p className="font-medium text-xs">{selectedOrder.email || 'N/A'}</p>
+                                    </div>
+                                </div>
+                            </div>
 
-    {/* Order Items - Optimized for print */}
-    <div className="mb-4">
-        <h3 className="text-base font-semibold mb-1">Order Items</h3>
-        <div className="bg-gray-50 rounded-lg overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-                <thead className="bg-gray-100">
-                    <tr>
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500">Product</th>
-                        <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">Price</th>
-                        <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">Qty</th>
-                        <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">Total</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                    {selectedOrder.orderedProducts?.map((item) => (
-                        <tr key={item._id}>
-                            <td className="px-2 py-2">
-                                <div className="text-xs">{item.productName}</div>
-                            </td>
-                            <td className="px-2 py-2 text-xs text-right">
-                                {item.productPrice}
-                            </td>
-                            <td className="px-2 py-2 text-xs text-right">{item.productQuantity || 1}</td>
-                            <td className="px-2 py-2 text-xs font-medium text-right">
-                                {item.productPrice * item.productQuantity}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-                <tfoot className="bg-gray-50">
-                    <tr>
-                        <td colSpan="3" className="px-2 py-2 text-xs font-medium text-right">
-                            Total
-                        </td>
-                        <td className="px-2 py-2 text-xs font-bold text-right">
-                            {selectedOrder.orderTotal}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
+                            {/* Address Information - More compact */}
+                            <div className="mb-4 text-sm">
+                                <h3 className="text-base font-semibold mb-1">Shipping Address</h3>
+                                <div className="bg-gray-50 p-3 rounded-lg">
+                                    <p className="text-sm">{selectedOrder.address || 'N/A'}</p>
+                                    <p className="text-sm">
+                                        {[
+                                            selectedOrder.city,
+                                            selectedOrder.province,
+                                            selectedOrder.postalCode
+                                        ].filter(Boolean).join(', ')}
+                                        {selectedOrder.country ? `, ${selectedOrder.country}` : ''}
+                                    </p>
+                                    {selectedOrder.orderNotes && (
+                                        <div className="mt-1">
+                                            <p className="text-xs text-gray-500">Notes: {selectedOrder.orderNotes}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
 
-    {/* Action Buttons */}
-    <div className="flex justify-end space-x-2 print:hidden">
-        <button
-            className="px-3 py-1 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
-            onClick={closeOrderDetails}
-        >
-            Close
-        </button>
-        <button
-            className="px-3 py-1 bg-indigo-600 border border-transparent rounded-md text-xs font-medium text-white hover:bg-indigo-700"
-            onClick={() => window.print()}
-        >
-            Print Invoice
-        </button>
-    </div>
-</div>
+                            {/* Order Items - Optimized for print */}
+                            <div className="mb-4">
+                                <h3 className="text-base font-semibold mb-1">Order Items</h3>
+                                <div className="bg-gray-50 rounded-lg overflow-hidden">
+                                    <table className="min-w-full divide-y divide-gray-200 text-sm">
+                                        <thead className="bg-gray-100">
+                                            <tr>
+                                                <th className="px-2 py-2 text-left text-xs font-medium text-gray-500">Product</th>
+                                                <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">Price</th>
+                                                <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">Qty</th>
+                                                <th className="px-2 py-2 text-right text-xs font-medium text-gray-500">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-200">
+                                            {selectedOrder.orderedProducts?.map((item) => (
+                                                <tr key={item._id}>
+                                                    <td className="px-2 py-2">
+                                                        <div className="text-xs">{item.productName}</div>
+                                                    </td>
+                                                    <td className="px-2 py-2 text-xs text-right">
+                                                        {item.productPrice}
+                                                    </td>
+                                                    <td className="px-2 py-2 text-xs text-right">{item.productQuantity || 1}</td>
+                                                    <td className="px-2 py-2 text-xs font-medium text-right">
+                                                        {item.productPrice * item.productQuantity}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                        <tfoot className="bg-gray-50">
+                                            <tr>
+                                                <td colSpan="3" className="px-2 py-2 text-xs font-medium text-right">
+                                                    Total
+                                                </td>
+                                                <td className="px-2 py-2 text-xs font-bold text-right">
+                                                    {selectedOrder.orderTotal}
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex justify-end space-x-2 print:hidden">
+                                <button
+                                    className="px-3 py-1 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
+                                    onClick={closeOrderDetails}
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    className="px-3 py-1 bg-indigo-600 border border-transparent rounded-md text-xs font-medium text-white hover:bg-indigo-700"
+                                    onClick={() => window.print()}
+                                >
+                                    Print Invoice
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

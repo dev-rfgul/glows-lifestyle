@@ -363,13 +363,14 @@ app.post('/cancel-order/:id', async (req, res) => {
     try {
         const order = await orderModel.findOneAndDelete({ _id: orderId })
         if (!order) {
-            res.status(404).json({ message: "no order found" })
+            return res.status(404).json({ message: "no order found" })
         }
         res.status(200).json({ message: "order deleted successfully" })
     } catch (error) {
         res.status(500).json({ message: "server error" })
     }
 })
+
 
 
 
