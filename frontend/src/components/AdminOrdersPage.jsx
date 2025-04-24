@@ -272,12 +272,12 @@ const AdminOrdersPage = () => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="inline-block px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
-                                        >
-                                            Send Message on WhatsApp
+                                        >   
+                                            Send Message 
                                         </a>
                                     </td>
                                     <td>
-                                        <button className='bg-green-500' onClick={()=>cancelOrder(order._id)}>
+                                        <button   className="inline-block px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300" onClick={()=>cancelOrder(order._id)}>
                                             cancel order
                                         </button>
                                     </td>
