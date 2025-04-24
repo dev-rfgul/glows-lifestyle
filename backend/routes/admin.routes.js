@@ -168,13 +168,14 @@
 
 
 import express from 'express';
-import jwt from 'jsonwebtoken'; // Ensure JWT is imported
 import cloudinary, { cloudinaryConnect } from '../config/cloudinary.js';
 import upload from '../middleware/multer.js';
 import productModel from '../models/product.model.js';
+import orderModel from '../models/order.model.js'
 import userModel from '../models/user.model.js';
 import verifyAdmin from '../middleware/verifyAdmin.js';
 import bcrypt from 'bcrypt'
+
 
 const app = express();
 cloudinaryConnect();
@@ -234,7 +235,6 @@ app.post('/add-product', verifyAdmin, upload.array('productImages'), async (req,
         });
     }
 });
-
 // Product routes (Protected)
 app.post('/add-product2', verifyAdmin, upload.array('image'), async (req, res) => {
     try {
@@ -358,6 +358,18 @@ app.post('/delete-user/:id', async (req, res) => {
         res.status(500).json({ message: `An error occurred: ${error.message}` });
     }
 });
+app.post('/cancel-order/:id', async (req, res) => {
+    const orderId = req.params;
+    try {
+        const order = orderModel.findOneAndDelete({ _id: orderId })
+        if (!order) {
+            res.status(404).json({ message: "no order found" })
+        }
+        res.status(200).json({ message: "error deleted successfully" })
+    } catch (error) {
+        res.status(500).json({ message: "server error" })
+    }
+})
 
 
 
