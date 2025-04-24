@@ -171,7 +171,7 @@ import express from 'express';
 import cloudinary, { cloudinaryConnect } from '../config/cloudinary.js';
 import upload from '../middleware/multer.js';
 import productModel from '../models/product.model.js';
-import orderModel from '../models/order.model.js'
+import orderModel from '../models/Checkout.model.js'
 import userModel from '../models/user.model.js';
 import verifyAdmin from '../middleware/verifyAdmin.js';
 import bcrypt from 'bcrypt'
@@ -358,10 +358,12 @@ app.post('/delete-user/:id', async (req, res) => {
         res.status(500).json({ message: `An error occurred: ${error.message}` });
     }
 });
-app.post('/cancel-order/:id', async (req, res) => {
+app.delete('/cancel-order/:id', async (req, res) => {
     const orderId = req.params.id;
+    console.log(orderId)
     try {
         const order = await orderModel.findOneAndDelete({ _id: orderId })
+        console.log(order)
         if (!order) {
             return res.status(404).json({ message: "no order found" })
         }

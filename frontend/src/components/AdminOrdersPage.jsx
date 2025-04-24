@@ -115,9 +115,8 @@ const AdminOrdersPage = () => {
     };
     const cancelOrder = async (orderId) => {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/cancel-order/${orderId}`)
-            const res = response.json()
-            console.log(res)
+            const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/admin/cancel-order/${orderId}`)
+            console.log(response.data)
         } catch (error) {
             console.log("error occured while deleting the order")
         }
