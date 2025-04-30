@@ -33,7 +33,7 @@ const App = () => {
   const updateVisitCount = async () => {
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/updateGloalVisitCount`,
+        `${import.meta.env.VITE_BACKEND_URL}/updateGlobalVisitCount`,
       );
       console.log('Updated Visit Count:', response.data); // log the response
     } catch (error) {
