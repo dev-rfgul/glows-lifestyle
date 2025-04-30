@@ -84,27 +84,17 @@ app.get('/globalVisitCount', async (req, res) => {
     }
 });
 
-app.put('/updateGloalVisitCount', async (req, res) => {
+app.put('/updateGlobalVisitCount', async (req, res) => {
     try {
-        // Find the visit counter document
-        let visitCounter = await VisitCounter.findOne();
+        const visitCounter = await VisitCounter.findOneAndUpdate(
+            {}, //fetches any document , but as in this model we only have 1 document so it will only fetch the desired one 
+            {
+                $inc: { globalVisitCount: 1 },
+                $set: { lastUpdated: new Date() }
+            },
+            { new: true, upsert: true }
+        );
 
-        // If no document exists, create it with an initial count of 0
-        if (!visitCounter) {
-            visitCounter = new VisitCounter({ globalVisitCount: 0 });
-            await visitCounter.save();
-        }
-
-        // Increment the visit count by the value in the request
-        visitCounter.globalVisitCount += 1;
-
-        // Update the last updated timestamp (optional, based on your schema)
-        visitCounter.lastUpdated = new Date();
-
-        // Save the updated visit counter
-        await visitCounter.save();
-
-        // Respond with the updated visit count and timestamp
         res.json({
             visitorCount: visitCounter.globalVisitCount,
             lastUpdated: visitCounter.lastUpdated,
@@ -113,7 +103,8 @@ app.put('/updateGloalVisitCount', async (req, res) => {
         console.error(err);
         res.status(500).send('Error updating visit count');
     }
-})
+});
+
 
 
 
