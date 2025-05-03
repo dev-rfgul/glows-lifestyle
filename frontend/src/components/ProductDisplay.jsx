@@ -17,6 +17,7 @@ import { motion } from 'framer-motion';
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import AlertMessage from "./Alert"; // Import the AlertMessage component
+import DynamicProductSchema from "./DynamicProductScheme";
 
 const EarbudsProductDisplay = () => {
     const { id } = useParams();
@@ -166,6 +167,8 @@ const EarbudsProductDisplay = () => {
     if (!product) return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
 
     const renderTechnicalSpecs = () => (
+
+       
         <div className="p-6 rounded-xl shadow-lg">
             <h3 className="text-xl font-bold text-black mb-4 flex items-center">
                 <FaBolt className="mr-2 text-blue-600" /> Technical Specifications
@@ -183,6 +186,7 @@ const EarbudsProductDisplay = () => {
 
     return (
         <div className="min-h-screen  px-4">
+            {/* <DynamicProductSchema product={product} /> */}
             {/* Alert Message Component */}
             {alertProps.visible && (
                 <AlertMessage
