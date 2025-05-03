@@ -182,7 +182,7 @@ const EarbudsProductDisplay = () => {
     );
 
     return (
-        <div className="min-h-screen py-12 px-4">
+        <div className="min-h-screen  px-4">
             {/* Alert Message Component */}
             {alertProps.visible && (
                 <AlertMessage
@@ -255,7 +255,7 @@ const EarbudsProductDisplay = () => {
                         </button>
 
                         {/* Thumbnail Images - Made responsive */}
-                        <div className="flex flex-wrap justify-center gap-2 mt-4">
+                        <div className="flex flex-wrap justify-center gap-2 ">
                             {product.img.map((img, index) => (
                                 <img
                                     key={index}
@@ -275,7 +275,7 @@ const EarbudsProductDisplay = () => {
                             <button
                                 key={color._id}
                                 onClick={() => handleColorSelect(color)}
-                                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 transition-all duration-300 
+                                className={`w-8 h-8 sm:w-8 sm:h-8 rounded-full border-4 transition-all duration-300 
                                ${selectedColor === color.hex ? 'border-blue-500 scale-110' : 'hover:border-blue-300'}
                                ${color.hex === '#FFFFFF' ? 'border-gray-400 shadow-md' : ''}`}
                                 style={{ backgroundColor: color.hex }}
@@ -292,20 +292,78 @@ const EarbudsProductDisplay = () => {
                         initial={{ x: 50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.5 }}
-                    >
-                        <h1 className="text-4xl font-black text-black mb-2">{product.name}</h1>
+                    ><h1 className="text-2xl sm:text-4xl font-black text-black mb-2">{product.name}</h1>
+
                         <p className="text-xl text-black font-medium">{product.tagline}</p>
                     </motion.div>
 
                     {/* Price Section */}
-                    <div className="flex items-center space-x-4">
-                        <span className="text-3xl font-bold text-black">PKR : {product.discountPrice}</span>
-                        <span className="text-xl text-gray-900 line-through">${product.price
-                        }</span>
-                        <span className="bg-green-100 text-gray-900 px-3 py-1 rounded-full">
-                            Save ${(product.price - product.discountPrice).toFixed(2)}
-                        </span>
+                    <div className="w-full p-6 rounded-xl border border-gray-200 shadow-sm bg-white space-y-6">
+
+                        {/* Price and Discount */}
+                        <div className="space-y-2">
+                            <div className="flex items-center space-x-3">
+                                <span className="text-3xl sm:text-4xl font-extrabold text-black">
+                                    PKR: {product.discountPrice}
+                                </span>
+                                <span className="text-xl text-gray-400 line-through">
+                                    PKR: {product.price}
+                                </span>
+                            </div>
+                            <span className="inline-block bg-green-100 text-green-800 px-3 py-1 text-sm rounded-full font-medium">
+                                Save PKR {(product.price - product.discountPrice).toFixed(2)}
+                            </span>
+                        </div>
+
+                        {/* Quantity Selector */}
+                        <div className="flex items-center space-x-4">
+                            <span className="text-black font-medium">Quantity:</span>
+                            <div className="flex items-center bg-blue-50 rounded-full overflow-hidden border border-blue-200">
+                                <button
+                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                    className="px-4 py-2 text-blue-800 hover:bg-blue-200 transition font-bold"
+                                    disabled={product.stock <= 0}
+                                >
+                                    -
+                                </button>
+                                <span className="px-4 py-2 font-semibold">{quantity}</span>
+                                <button
+                                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                                    className="px-4 py-2 text-blue-800 hover:bg-blue-200 transition font-bold"
+                                    disabled={quantity >= product.stock || product.stock <= 0}
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Buttons */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                            <button
+                                onClick={() => addToCart(product._id, false)}
+                                className="flex items-center justify-center bg-white border-2 border-black text-black py-3 rounded-xl hover:bg-blue-600 hover:text-white transition font-semibold"
+                                disabled={isAddingToCart || isBuyingNow || product.stock <= 0}
+                            >
+                                {isAddingToCart ? (
+                                    "Adding..."
+                                ) : (
+                                    <>
+                                        <FaShoppingCart className="mr-2" />
+                                        Add to Cart
+                                    </>
+                                )}
+                            </button>
+
+                            <button
+                                onClick={() => addToCart(product._id, true)}
+                                className="bg-black text-white py-3 rounded-xl hover:bg-blue-800 transition font-semibold"
+                                disabled={isAddingToCart || isBuyingNow || product.stock <= 0}
+                            >
+                                {isBuyingNow ? "Processing..." : "Buy Now"}
+                            </button>
+                        </div>
                     </div>
+
 
                     {/* Features */}
                     <div className="space-y-2">
@@ -325,53 +383,7 @@ const EarbudsProductDisplay = () => {
                         </p>
                     </div>
 
-                    {/* Quantity & Add to Cart */}
-                    <div className="space-y-4">
-                        <div className="flex items-center space-x-4">
-                            <span className="text-black font-medium">Quantity:</span>
-                            <div className="flex items-center bg-blue-50 rounded-full">
-                                <button
-                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                    className="px-4 py-2 text-blue-800 hover:bg-gray-500 rounded-l-full"
-                                    disabled={product.stock <= 0}
-                                >
-                                    -
-                                </button>
-                                <span className="px-4 py-2">{quantity}</span>
-                                <button
-                                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                                    className="px-4 py-2 text-blue-800 hover:bg-gray-500 rounded-r-full"
-                                    disabled={quantity >= product.stock || product.stock <= 0}
-                                >
-                                    +
-                                </button>
-                            </div>
-                        </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <button
-                                onClick={() => addToCart(product._id, false)}
-                                className="bg-gray-100 border-2 border-black text-black py-4 rounded-xl hover:bg-blue-600 transition flex items-center justify-center space-x-2"
-                                disabled={isAddingToCart || isBuyingNow || product.stock <= 0}
-                            >
-                                {isAddingToCart ? (
-                                    "Adding..."
-                                ) : (
-                                    <>
-                                        <FaShoppingCart />
-                                        <span>Add to Cart</span>
-                                    </>
-                                )}
-                            </button>
-                            <button
-                                onClick={() => addToCart(product._id, true)}
-                                className="bg-black text-white py-4 rounded-xl hover:bg-blue-800 transition"
-                                disabled={isAddingToCart || isBuyingNow || product.stock <= 0}
-                            >
-                                {isBuyingNow ? "Processing..." : "Buy Now"}
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
 

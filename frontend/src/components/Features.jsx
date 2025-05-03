@@ -1,55 +1,38 @@
-import React from "react";
+import { FaTruck, FaBoxOpen, FaShieldAlt } from "react-icons/fa";
 
-const imgs=[
-    {
-        img:"./images/icons/globe-free-img.png",
-        text:"Worldwide Shipping"
-    },
-    {
-        img:"./images/icons/quality-free-img.png",
-        text:"Best Quality"
-    },
-    {
-        img:"./images/icons/tag-free-img.png",
-        text:"Best Offers"
-    },
-    {
-        img:"./images/icons/lock-free-img.png",
-        text:"Secure Payments"}
-]
-
-export default function FeatureSection() {
+const InfoBanner = () => {
     return (
-        <div className="py-12">
-            <div className="max-w-6xl mx-auto px-6">
-                {/* Features Section */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center mb-12">
-                    {imgs.map((feature, index) => (
-                        <div
-                            key={index}
-                            className="flex flex-col items-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out"
-                        >
-                            <div className="mb-4">{feature.icon}</div>
-                            <img src={feature.img} alt="" />
-                            <p className="text-xl font-semibold text-gray-800">{feature.text}</p>
-                        </div>
-                    ))}
+        <div className="w-full bg-white py-6 px-4">
+            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center sm:items-start gap-6 text-center sm:text-left">
+                {/* Fast Shipping */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-4 border-b sm:border-b-0 sm:border-r border-gray-200 sm:pr-4 pb-4 sm:pb-0 w-full sm:w-auto">
+                    <FaTruck className="text-3xl text-black mb-2 sm:mb-0" />
+                    <div>
+                        <h4 className="text-sm font-semibold text-black">Fast, Free Shipping</h4>
+                        <p className="text-sm text-gray-600">All over Pakistan.</p>
+                    </div>
                 </div>
 
-                {/* Tabby Banner Section */}
-                <div className="mt-12 bg-white h-full w-full rounded-lg shadow-sm p-8 text-center">
-                    <img src="./images/image.png" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
+                {/* Open Parcel Delivery */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-4 border-b sm:border-b-0 sm:border-r border-gray-200 sm:pr-4 pb-4 sm:pb-0 w-full sm:w-auto">
+                    <FaBoxOpen className="text-3xl text-black mb-2 sm:mb-0" />
+                    <div>
+                        <h4 className="text-sm font-semibold text-black">Open Parcel Delivery</h4>
+                        <p className="text-sm text-gray-600">Free – No Question Ask</p>
+                    </div>
                 </div>
 
-                {/* Centered Image
-                <div className="mt-12 bg-white rounded-lg shadow-sm p-8 flex justify-center">
-                    <img src="https://www.dewnor.com/wp-content/uploads/2022/07/logo.png" alt="Tabby Banner" className=" " />
+                {/* Secure Payment */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-4 w-full sm:w-auto">
+                    <FaShieldAlt className="text-3xl text-black mb-2 sm:mb-0" />
+                    <div>
+                        <h4 className="text-sm font-semibold text-black">Secure Payment</h4>
+                        <p className="text-sm text-gray-600">100% Safe Checkout</p>
+                    </div>
                 </div>
-
-                <div className="mt-12 bg-white rounded-lg shadow-sm p-8 text-center">
-                    <img src="./images/tabby-banner" alt="Tabby Banner" className="w-full h-auto rounded-lg" />
-                </div> */}
             </div>
         </div>
     );
-}
+};
+
+export default InfoBanner;
