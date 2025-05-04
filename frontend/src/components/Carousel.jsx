@@ -91,15 +91,10 @@ import "slick-carousel/slick/slick-theme.css";
 
 const ImageCarouselWithStaticBanner = () => {
     const carouselImages = [
-        "./images/carousel/carousel-image-4.jpg",
-        "./images/carousel/carousel-image-1.jpg",
-        "./images/carousel/carousel-image-7.jpg",
-        "./images/carousel/carousel-image-2.jpg",
-        "./images/carousel/carousel-image-5.jpg",
-        "./images/carousel/carousel-image-8.jpg",
-        "./images/carousel/carousel-image-3.jpg",
-        "./images/carousel/carousel-image-6.jpg",
-        "./images/carousel/carousel-image-9.jpg",
+        "./images/carousel/banner-1.jpeg",
+        "./images/carousel/banner-2.jpeg",
+        "./images/carousel/banner-3.jpeg",
+   
     ];
 
     const settings = {

@@ -41,10 +41,10 @@ const DynamicProductSchema = ({ product }) => {
 
     return (
         <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
-      );
+    );
 };
 
 export default DynamicProductSchema;
