@@ -1,38 +1,56 @@
+import { useState } from 'react';
 import { FaTruck, FaBoxOpen, FaShieldAlt } from "react-icons/fa";
 
 const InfoBanner = () => {
-    return (
-        <div className="w-full bg-white py-6 px-4">
-            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center sm:items-start gap-6 text-center sm:text-left">
-                {/* Fast Shipping */}
-                <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-4 border-b sm:border-b-0 sm:border-r border-gray-200 sm:pr-4 pb-4 sm:pb-0 w-full sm:w-auto">
-                    <FaTruck className="text-3xl text-black mb-2 sm:mb-0" />
-                    <div>
-                        <h4 className="text-sm font-semibold text-black">Fast, Free Shipping</h4>
-                        <p className="text-sm text-gray-600">All over Pakistan.</p>
-                    </div>
-                </div>
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  
+  const features = [
+    {
+      icon: FaTruck,
+      title: "Fast, Free Shipping",
+      description: "All over Pakistan",
+      color: "bg-blue-50"
+    },
+    {
+      icon: FaBoxOpen,
+      title: "Open Parcel Delivery",
+      description: "Free – No Question Ask",
+      color: "bg-green-50"
+    },
+    {
+      icon: FaShieldAlt,
+      title: "Secure Payment",
+      description: "100% Safe Checkout",
+      color: "bg-purple-50"
+    }
+  ];
 
-                {/* Open Parcel Delivery */}
-                <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-4 border-b sm:border-b-0 sm:border-r border-gray-200 sm:pr-4 pb-4 sm:pb-0 w-full sm:w-auto">
-                    <FaBoxOpen className="text-3xl text-black mb-2 sm:mb-0" />
-                    <div>
-                        <h4 className="text-sm font-semibold text-black">Open Parcel Delivery</h4>
-                        <p className="text-sm text-gray-600">Free – No Question Ask</p>
-                    </div>
+  return (
+    <div className="w-full bg-white py-8 px-4 shadow-sm">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className={`rounded-lg p-6 transition-all duration-300 ${feature.color} hover:shadow-md`}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <div className="flex items-start space-x-4">
+                <div className={`p-3 rounded-full bg-white ${hoveredIndex === index ? 'scale-110' : ''} transition-transform duration-300`}>
+                  <feature.icon className="text-gray-800 text-xl" />
                 </div>
-
-                {/* Secure Payment */}
-                <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-4 w-full sm:w-auto">
-                    <FaShieldAlt className="text-3xl text-black mb-2 sm:mb-0" />
-                    <div>
-                        <h4 className="text-sm font-semibold text-black">Secure Payment</h4>
-                        <p className="text-sm text-gray-600">100% Safe Checkout</p>
-                    </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">{feature.title}</h4>
+                  <p className="text-gray-600">{feature.description}</p>
                 </div>
+              </div>
             </div>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default InfoBanner;

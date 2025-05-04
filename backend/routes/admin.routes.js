@@ -1,170 +1,3 @@
-// import express from 'express'
-
-
-
-// import cloudinary, { cloudinaryConnect } from '../config/cloudinary.js';
-// import upload from '../middleware/multer.js'
-// import productModel from '../models/product.model.js';
-// import userModel from '../models/user.model.js';
-
-
-
-// const app = express();
-// cloudinaryConnect();
-
-
-// // Helper function to upload images to Cloudinary
-// const uploadImgsToCloudinary = async (files) => {
-//     try {
-//         const uploadPromises = files.map(file =>
-//             cloudinary.uploader.upload(file.path)  // Uploading each file to Cloudinary
-//         );
-//         const results = await Promise.all(uploadPromises);  // Wait for all uploads to finish
-//         return results.map(result => result.secure_url);  // Return the secure URLs of uploaded images
-//     } catch (error) {
-//         console.error('Error uploading images:', error);
-//     }
-// };
-// const verifyAdmin = (req, res, next) => {
-//     try {
-//         const token = req.cookies.token;
-//         if (!token) return res.status(401).json({ message: "Unauthorized" });
-
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//         if (decoded.role !== "admin") return res.status(403).json({ message: "Forbidden" });
-
-//         req.user = decoded;
-//         next();
-//     } catch (err) {
-//         res.status(401).json({ message: "Invalid token" });
-//     }
-// };
-
-
-// app.get('/test', (req, res) => {
-//     res.send("the route is working ")
-// })
-
-// // product routes
-
-
-// app.post('/add-product', upload.array('image'), async (req, res) => {
-//     try {
-//         console.log("Received body:", req.body); // Debugging
-
-//         const { name, description, price, stock, color, size, SKU, category, tag } = req.body;
-
-//         if (!name || !price || !stock) {
-//             return res.status(400).json({ message: 'Name, price, and stock are required' });
-//         }
-
-//         // Ensure `color` is an array, remove empty values
-//         const colors = Array.isArray(color)
-//             ? color.map(c => c.trim()).filter(c => c !== "")
-//             : [];
-
-//         const imageUrls = req.files?.length ? await uploadImgsToCloudinary(req.files) : [];
-
-//         const product = new productModel({
-//             name,
-//             description,
-//             price: Number(price),
-//             stock: Number(stock),
-//             color: colors,
-//             images: imageUrls,
-//             size,
-//             SKU,
-//             category,
-//             tag,
-//         });
-
-//         await product.save();
-//         res.status(201).json({ message: 'Product created successfully', product });
-//     } catch (error) {
-//         console.error('Error creating product:', error);
-//         res.status(500).json({ message: 'Internal Server Error', error: error.message });
-//     }
-// });
-
-
-
-// app.delete('/delete-product/:id', async (req, res) => {
-//     try {
-//         const id = req.params.id;
-//         const product = await productModel.findByIdAndDelete(id);
-
-//         if (!product) {
-//             return res.status(404).json({ message: "Product not found" });
-//         }
-
-//         res.status(200).json({ message: "Product deleted", product });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-// app.get('/get-product/:id', async (req, res) => {
-//     try {
-//         const id = req.params.id;
-//         const product = await productModel.findById(id);
-//         if (!product) {
-//             return res.status(404).json({ message: "product not found" })
-//         }
-//         res.json({ message: "Product found", product });
-//     }
-//     catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-// app.put('/edit-product/:id', upload.array('images', 5), async (req, res) => {
-//     try {
-//         const { name, description, price, stock, color, size, SKU, category, tag } = req.body;
-
-
-//         let imageUrls = req.body.images || [];
-//         if (req.files && req.files.length > 0) {
-//             const uploadedImages = await uploadImgsToCloudinary(req.files);
-//             imageUrls = [...imageUrls, ...uploadedImages];
-//         }
-
-//         // Ensure `color` is an array, remove empty values
-//         const colors = Array.isArray(color)
-//             ? color.map(c => c.trim()).filter(c => c !== "")
-//             : color ? color.split(',').map(c => c.trim()).filter(c => c !== "") : [];
-
-
-//         const updatedProduct = await productModel.findByIdAndUpdate(
-//             req.params.id,
-//             { name, description, price, stock, color: colors, images: imageUrls, size, category, tag, SKU },
-//             { new: true, runValidators: true }
-//         );
-
-//         if (!updatedProduct) {
-//             return res.status(404).json({ message: "Product not found" });
-//         }
-
-//         res.status(200).json({ message: "Product updated successfully", product: updatedProduct });
-//     } catch (error) {
-//         console.error('Error while updating product:', error);
-//         res.status(500).json({ message: "Error while updating the product", error: error.message });
-//     }
-// });
-
-
-// //user routes
-// app.post('/add-user', async (req, res) => {
-//     const { name, email, password, role } = req.body;
-//     const user = new userModel({
-//         name,
-//         email,
-//         password,
-//         role,
-//     })
-//     await user.save();
-//     res.status(200).json({ message: "User created Successfully", user })
-// })
-
-// export default app;
-
 
 
 import express from 'express';
@@ -177,7 +10,7 @@ import verifyAdmin from '../middleware/verifyAdmin.js';
 import bcrypt from 'bcrypt'
 
 
-const app = express();
+const router = express();
 cloudinaryConnect();
 
 // Helper function to upload images to Cloudinary
@@ -194,12 +27,13 @@ const uploadImgsToCloudinary = async (files) => {
 };
 
 
+``
 
-
-app.post('/add-product', verifyAdmin, upload.array('productImages'), async (req, res) => {
+router.post('/add-product', verifyAdmin, upload.array('images'), async (req, res) => {
     try {
         // Parse the product data from the JSON string
         const productData = JSON.parse(req.body.productData);
+        console.log(productData)
 
         // Validate required fields
         if (!productData.name || !productData.price || !productData.description ||
@@ -236,7 +70,7 @@ app.post('/add-product', verifyAdmin, upload.array('productImages'), async (req,
     }
 });
 // Product routes (Protected)
-app.post('/add-product2', verifyAdmin, upload.array('image'), async (req, res) => {
+router.post('/add-product2', verifyAdmin, upload.array('image'), async (req, res) => {
     try {
         const { name, tagline, price, discountPrice, description, stock, size, SKU, category, tag } = req.body;
 
@@ -267,7 +101,7 @@ app.post('/add-product2', verifyAdmin, upload.array('image'), async (req, res) =
     }
 });
 
-app.delete('/delete-product/:id', verifyAdmin, async (req, res) => {
+router.delete('/delete-product/:id', verifyAdmin, async (req, res) => {
     try {
         const product = await productModel.findByIdAndDelete(req.params.id);
 
@@ -281,37 +115,68 @@ app.delete('/delete-product/:id', verifyAdmin, async (req, res) => {
     }
 });
 
-app.put('/edit-product/:id', verifyAdmin, upload.array('images', 5), async (req, res) => {
+router.post('/edit-product/:id', verifyAdmin, upload.array('images', 5), async (req, res) => {
     try {
-        const { name, description, price, stock, color, size, SKU, category, tag } = req.body;
 
+        const productData = JSON.parse(req.body.productData);
+        // Destructure the required fields
+        const { name, tagline, price, discountPrice, description, stock, size, SKU, category, tag, color, technicalSpecs, features } = productData;
+
+        // Handle the images coming in the form
         let imageUrls = req.body.images || [];
         if (req.files && req.files.length > 0) {
-            const uploadedImages = await uploadImgsToCloudinary(req.files);
+            const uploadedImages = await uploadImgsToCloudinary(req.files);  // Assume this uploads images to Cloudinary
             imageUrls = [...imageUrls, ...uploadedImages];
         }
 
+        // Handle color format: frontend sends an array of objects { name, hex }
         const colors = Array.isArray(color)
-            ? color.map(c => c.trim()).filter(c => c !== "")
-            : color ? color.split(',').map(c => c.trim()).filter(c => c !== "") : [];
+            ? color.map(c => c.trim()).filter(c => c !== "")  // If color is an array, handle it
+            : color ? color.split(',').map(c => c.trim()).filter(c => c !== "") : [];  // If it's a string, split and trim it
 
+        // Handling image removal (if any)
+        let existingImages = JSON.parse(req.body.existingImages || '[]');
+        let imagesToRemove = JSON.parse(req.body.imagesToRemove || '[]');
+
+        // Filter out images to remove from the existing images array
+        imageUrls = existingImages.filter(img => !imagesToRemove.includes(img));
+
+        // Update the product in the database
         const updatedProduct = await productModel.findByIdAndUpdate(
             req.params.id,
-            { name, description, price, stock, color: colors, images: imageUrls, size, category, tag, SKU },
-            { new: true, runValidators: true }
+            {
+                name,
+                description,
+                price,
+                stock,
+                color: colors,  // Update color
+                images: imageUrls,  // Update images (including uploaded and removed ones)
+                size,
+                category,
+                tag,
+                SKU,
+                tagline,  // New field to save tagline
+                technicalSpecs,  // New field to save technical specs
+                features,  // New field to save features
+                discountPrice,  // New field to save discount price
+            },
+            { new: true }
         );
-
+console.log(updatedProduct)
+        // Check if product is found
         if (!updatedProduct) {
             return res.status(404).json({ message: "Product not found" });
         }
 
+        // Send the updated product details
         res.status(200).json({ message: "Product updated successfully", product: updatedProduct });
     } catch (error) {
         res.status(500).json({ message: "Error while updating the product", error: error.message });
     }
 });
 
-app.post('/add-user', verifyAdmin, async (req, res) => {
+
+router.post('/add-user', verifyAdmin, async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
 
@@ -345,7 +210,7 @@ app.post('/add-user', verifyAdmin, async (req, res) => {
     }
 });
 
-app.post('/delete-user/:id', async (req, res) => {
+router.post('/delete-user/:id', async (req, res) => {
     const userId = req.params.id;
     try {
         const user = await userModel.findByIdAndDelete(userId);
@@ -358,7 +223,7 @@ app.post('/delete-user/:id', async (req, res) => {
         res.status(500).json({ message: `An error occurred: ${error.message}` });
     }
 });
-app.delete('/cancel-order/:id', async (req, res) => {
+router.delete('/cancel-order/:id', async (req, res) => {
     const orderId = req.params.id;
     console.log(orderId)
     try {
@@ -376,4 +241,4 @@ app.delete('/cancel-order/:id', async (req, res) => {
 
 
 
-export default app;
+export default router;

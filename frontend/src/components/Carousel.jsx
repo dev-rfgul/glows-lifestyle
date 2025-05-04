@@ -91,9 +91,10 @@ import "slick-carousel/slick/slick-theme.css";
 
 const ImageCarouselWithStaticBanner = () => {
     const carouselImages = [
+        "./images/carousel/banner-4.jpeg",
         "./images/carousel/banner-1.jpeg",
-        "./images/carousel/banner-2.jpeg",
-        "./images/carousel/banner-3.jpeg",
+        // "./images/carousel/banner-2.jpeg",
+        // "./images/carousel/banner-3.jpeg",
    
     ];
 
@@ -130,7 +131,7 @@ const ImageCarouselWithStaticBanner = () => {
                 {/* Static Banner (right) */}
                 <div className="h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] rounded-md overflow-hidden">
                     <img
-                        src="./images/carousel/static-banner.png"
+                        src="./images/carousel/static-banner.jpeg"
                         alt="static banner"
                         className="w-full h-full object-cover"
                     />

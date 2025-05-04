@@ -62,15 +62,18 @@
 // export default Footer;
 
 import React from 'react';
-import { FaFacebook, FaInstagram, FaPinterest } from 'react-icons/fa';
-
+import { FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
+const socials = [
+{ icon: FaTiktok, name: "Tiktok", link: "https://www.tiktok.com/@glowzlifestyle1" },
+{ icon: FaFacebook, name: "Facebook", link: "https://www.facebook.com/profile.php?id=61558535894505" },
+{ icon: FaInstagram, name: "Instagram", link: "https://www.instagram.com/glowzlifestyle/" },]
 const Footer = () => {
     return (
         <footer className="text-white bg-black w-full py-10">
             <div className="max-w-6xl mx-auto px-6 md:px-20 lg:px-32">
                 {/* Main Content: Links and Social */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
+
                     {/* Quick Links */}
                     <div className="text-center md:text-left">
                         <h4 className="text-2xl font-semibold mb-4">Quick Links</h4>
@@ -87,14 +90,16 @@ const Footer = () => {
                     <div className="text-center md:text-left">
                         <h4 className="text-2xl font-semibold mb-4">Get Social</h4>
                         <ul className="flex flex-col md:flex-row md:justify-start items-center space-y-3 md:space-y-0 md:space-x-6 text-lg">
-                            {[{icon: FaFacebook, name: "Facebook", link:"https://www.facebook.com/profile.php?id=61558535894505"}, {icon: FaInstagram, name: "Instagram", link:"https://www.instagram.com/glowzlifestyle/"},].map(({icon: Icon, name ,link:link}, index) => (
-                                <li key={index}>
-                                    <a href={link} className="flex items-center space-x-2 hover:text-yellow-300">
-                                        <Icon className="text-xl" />
-                                        <span>{name}</span>
-                                    </a>
-                                </li>
-                            ))}
+                            {
+
+                                socials.map(({ icon: Icon, name, link: link }, index) => (
+                                    <li key={index}>
+                                        <a href={link} className="flex items-center space-x-2 hover:text-yellow-300">
+                                            <Icon className="text-xl" />
+                                            <span>{name}</span>
+                                        </a>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                 </div>
