@@ -988,7 +988,10 @@ const ProductManagement = () => {
                 tagline: formData.tagline || '',
                 discountPrice: formData.discountPrice ? Number(formData.discountPrice) : null,
                 technicalSpecs: formData.technicalSpecs || {},
-                color: formData.colors.map(color => color.name),
+                color: formData.colors.map(color => ({
+                    name: color.name,  // Name of the color
+                    hex: color.hex     // Hex value of the color (make sure it's passed here)
+                })),
                 features: formData.features.filter(feature => feature.trim() !== '') || [],
             };
 

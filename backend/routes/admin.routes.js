@@ -27,13 +27,12 @@ const uploadImgsToCloudinary = async (files) => {
 };
 
 
-``
-
 router.post('/add-product', verifyAdmin, upload.array('images'), async (req, res) => {
     try {
         // Parse the product data from the JSON string
         const productData = JSON.parse(req.body.productData);
-        console.log(productData)
+
+        console.log("Product Data received from frontend:", productData);
 
         // Validate required fields
         if (!productData.name || !productData.price || !productData.description ||
@@ -43,17 +42,45 @@ router.post('/add-product', verifyAdmin, upload.array('images'), async (req, res
             });
         }
 
+        // Check if 'color' exists in the incoming data and rename it to 'colors'
+        if (productData.color) {
+            productData.colors = productData.color;
+            delete productData.color;  // Remove the old 'color' field
+        }
 
-        // Upload images to Cloudinary
+        // Validate colors array (check if each color has both name and hex)
+        if (productData.colors && Array.isArray(productData.colors)) {
+            productData.colors.forEach(color => {
+                if (!color.name || !color.hex) {
+                    return res.status(400).json({
+                        message: 'Each color must have both a name and a hex value'
+                    });
+                }
+
+                // Validate hex format (optional)
+                const hexRegex = /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/;
+                if (!hexRegex.test(color.hex)) {
+                    return res.status(400).json({
+                        message: `Invalid hex value for color: ${color.name}`
+                    });
+                }
+            });
+        } else {
+            return res.status(400).json({
+                message: 'Colors must be an array of color objects with name and hex fields'
+            });
+        }
+
+        // Upload images to Cloudinary (if any)
         const imageUrls = req.files?.length ? await uploadImgsToCloudinary(req.files) : [];
 
         // Create new product document
         const newProduct = new productModel({
             ...productData,
-            img: imageUrls // Make sure this matches your schema
+            img: imageUrls // Include the image URLs in the product document
         });
 
-        // Save product to database
+        // Save the new product to the database
         const savedProduct = await newProduct.save();
 
         // Return success response
@@ -69,6 +96,9 @@ router.post('/add-product', verifyAdmin, upload.array('images'), async (req, res
         });
     }
 });
+
+
+
 // Product routes (Protected)
 router.post('/add-product2', verifyAdmin, upload.array('image'), async (req, res) => {
     try {
@@ -117,10 +147,46 @@ router.delete('/delete-product/:id', verifyAdmin, async (req, res) => {
 
 router.post('/edit-product/:id', verifyAdmin, upload.array('images', 5), async (req, res) => {
     try {
-
+        // Parse the product data from the JSON string
         const productData = JSON.parse(req.body.productData);
-        // Destructure the required fields
-        const { name, tagline, price, discountPrice, description, stock, size, SKU, category, tag, color, technicalSpecs, features } = productData;
+        console.log("Received product data:", productData);
+
+        // Validate required fields
+        if (!productData.name || !productData.price || !productData.description ||
+            !productData.stock || !productData.category) {
+            return res.status(400).json({
+                message: 'Name, price, stock, and description are required fields'
+            });
+        }
+
+        // Check if 'color' exists in the incoming data and rename it to 'colors'
+        if (productData.color) {
+            productData.colors = productData.color;
+            delete productData.color;  // Remove the old 'color' field
+        }
+
+        // Validate colors array (check if each color has both name and hex)
+        if (productData.colors && Array.isArray(productData.colors)) {
+            productData.colors.forEach(color => {
+                if (!color.name || !color.hex) {
+                    return res.status(400).json({
+                        message: 'Each color must have both a name and a hex value'
+                    });
+                }
+
+                // Validate hex format (optional)
+                const hexRegex = /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/;
+                if (!hexRegex.test(color.hex)) {
+                    return res.status(400).json({
+                        message: `Invalid hex value for color: ${color.name}`
+                    });
+                }
+            });
+        } else {
+            return res.status(400).json({
+                message: 'Colors must be an array of color objects with name and hex fields'
+            });
+        }
 
         // Handle the images coming in the form
         let imageUrls = req.body.images || [];
@@ -128,11 +194,6 @@ router.post('/edit-product/:id', verifyAdmin, upload.array('images', 5), async (
             const uploadedImages = await uploadImgsToCloudinary(req.files);  // Assume this uploads images to Cloudinary
             imageUrls = [...imageUrls, ...uploadedImages];
         }
-
-        // Handle color format: frontend sends an array of objects { name, hex }
-        const colors = Array.isArray(color)
-            ? color.map(c => c.trim()).filter(c => c !== "")  // If color is an array, handle it
-            : color ? color.split(',').map(c => c.trim()).filter(c => c !== "") : [];  // If it's a string, split and trim it
 
         // Handling image removal (if any)
         let existingImages = JSON.parse(req.body.existingImages || '[]');
@@ -145,24 +206,12 @@ router.post('/edit-product/:id', verifyAdmin, upload.array('images', 5), async (
         const updatedProduct = await productModel.findByIdAndUpdate(
             req.params.id,
             {
-                name,
-                description,
-                price,
-                stock,
-                color: colors,  // Update color
+                ...productData,
                 images: imageUrls,  // Update images (including uploaded and removed ones)
-                size,
-                category,
-                tag,
-                SKU,
-                tagline,  // New field to save tagline
-                technicalSpecs,  // New field to save technical specs
-                features,  // New field to save features
-                discountPrice,  // New field to save discount price
             },
             { new: true }
         );
-console.log(updatedProduct)
+
         // Check if product is found
         if (!updatedProduct) {
             return res.status(404).json({ message: "Product not found" });
@@ -171,9 +220,12 @@ console.log(updatedProduct)
         // Send the updated product details
         res.status(200).json({ message: "Product updated successfully", product: updatedProduct });
     } catch (error) {
+        console.error("Error while updating the product:", error);
         res.status(500).json({ message: "Error while updating the product", error: error.message });
     }
 });
+
+
 
 
 router.post('/add-user', verifyAdmin, async (req, res) => {
