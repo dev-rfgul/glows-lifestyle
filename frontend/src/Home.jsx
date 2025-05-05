@@ -18,15 +18,13 @@ const Home = () => {
             <Heading heading={"Explore"} subHeading={"Explore our wide range of products"} />
             <Explore />
             <Heading heading={"Featured Products"} subHeading={"Check out our Featured Products"} />
-            {/* <FeaturedProducts /> */}
+            <ProductCarousel />
             <img
                 src="/images/carousel/banner-5.jpeg"
                 alt="Slim Banner"
-                class="w-full h-[80px] sm:h-[100px] md:h-[120px] lg:h-[200px] object-cover"
+                class=" mt-4  mb-4 w-full h-[80px] sm:h-[100px] md:h-[120px] lg:h-[200px] object-cover"
             />
-
-
-            <ProductCarousel />
+            <FeaturedProducts />
 
 
         </>
