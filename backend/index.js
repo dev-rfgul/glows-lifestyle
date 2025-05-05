@@ -34,15 +34,27 @@ if (process.env.FRONT_END_URL) {
 }
 
 const corsOptions = {
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            "https://glowslifestyle.onrender.com",
+            "https://www.glowzlifestyle.shop",
+            "https://glows-lifestyle.vercel.app",
+            "https://glows-lifestyle-chi.vercel.app",
+            "http://localhost:5173"
+        ];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ Includes OPTIONS for preflight
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-// Apply CORS middleware
-app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // ✅ Handle preflight requests for all routes
 app.options('*', cors(corsOptions));
