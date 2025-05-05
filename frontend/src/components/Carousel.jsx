@@ -66,7 +66,7 @@ const ImageCarouselWithStaticBanner = () => {
     const carouselImages = [
         "/images/carousel/banner-4.jpeg",
         "/images/carousel/banner-1.jpeg",
-        // "/images/carousel/banner-2.jpeg",
+        "/images/carousel/banner-8.jpeg",
         // "/images/carousel/banner-3.jpeg",
     ];
 

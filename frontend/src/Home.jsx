@@ -19,8 +19,15 @@ const Home = () => {
             <Explore />
             <Heading heading={"Featured Products"} subHeading={"Check out our Featured Products"} />
             {/* <FeaturedProducts /> */}
+            <img
+                src="/images/carousel/banner-5.jpeg"
+                alt="Slim Banner"
+                class="w-full h-[80px] sm:h-[100px] md:h-[120px] lg:h-[200px] object-cover"
+            />
+
+
             <ProductCarousel />
-        
+
 
         </>
     )
