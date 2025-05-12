@@ -122,15 +122,17 @@ const Signup = () => {
                     </svg>
                     Sign up with Google
                 </button>
+                <button
+                    onClick={handleGuestAcct}
+                    className="w-full flex justify-center items-center gap-2 py-3 px-4 bg-blue-600 text-white rounded-lg mb-4 hover:bg-blue-700 transition-colors"
+                >Continue wihtout account</button>
+
 
                 <div className="relative flex py-4 items-center">
                     <div className="flex-grow border-t border-gray-200"></div>
                     <span className="flex-shrink mx-4 text-gray-400 text-sm">or sign up with email</span>
                     <div className="flex-grow border-t border-gray-200"></div>
                 </div>
-                <button
-                    onClick={handleGuestAcct}
-                    className="bg-red-700  ">signup without acct</button>
 
                 {/* Regular Signup Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
