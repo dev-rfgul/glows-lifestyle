@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 // import logo from "../images/logo.png";
 
 {/* <AlertMessage logoUrl={logo} /> */ }
@@ -34,6 +35,7 @@ const EarbudsProductDisplay = () => {
     const [selectedImage, setSelectedImage] = useState(null); // Initialize as null
     const [showGuestSign, setShowGuestSignin] = useState(false)
 
+    const navigate = useNavigate();
 
     // Alert state
     const [alertProps, setAlertProps] = useState({
