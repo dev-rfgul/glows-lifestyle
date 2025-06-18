@@ -35,7 +35,7 @@ const ImageCarouselWithStaticBanner = () => {
                                 <img
                                     src={img}
                                     alt={`slide-${index}`}
-                                    className="absolute top-0 left-0 w-full h-full object-contain"
+                                    className="absolute top-0 left-0 w-full h-full lg:object-cover "
                                 />
                             </div>
                         ))}
