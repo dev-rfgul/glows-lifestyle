@@ -136,7 +136,9 @@ const Navbar = () => {
                     <Link to="/profile" className="relative group">
                         <FontAwesomeIcon icon={faShoppingCart} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
                     </Link>
-                    <FontAwesomeIcon icon={faUser} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
+                    <Link to="/profile">
+                        <FontAwesomeIcon icon={faUser} className="text-white text-lg group-hover:text-lime-500 transition-colors" />
+                    </Link>
                 </div>
             </div>
 
