@@ -20,7 +20,8 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const location = useLocation();
 
-    // Get cart items from Redux store
+    const user = JSON.parse(localStorage.getItem("user"));
+
     const cartItems = useSelector((state) => state.cart.items);
     const cartLength = cartItems?.length || 0;
     const wishlistItems = useSelector((state) => state.wishlist?.items || []);
@@ -92,31 +93,42 @@ const Navbar = () => {
                     {/* User Account */}
                     <div className="flex items-center space-x-2 group">
                         <div>
-                            <Link
-                                to="/profile"
-                                className="text-white text-sm hover:text-lime-500 transition-colors"
-                            >
-                                My Account
-                            </Link>
-                            {!isAuthenticated ? (
-                                <nav>
+                            {user ? (
+                                <div>
+
                                     <Link
-                                        to="/signup"
-                                        className="text-white font-semibold text-sm hover:text-lime-500 transition-colors"
+                                        to="/profile"
+                                        className="text-white text-sm hover:text-lime-500 transition-colors"
                                     >
-                                        Signup
+                                        My Account
                                     </Link>
-                                    <span className="mx-2 text-gray-300">|</span>
-                                    <Link
-                                        to="/login"
-                                        className="text-white font-semibold text-sm hover:text-lime-500 transition-colors"
-                                    >
-                                        Login
-                                    </Link>
-                                </nav>
+                                </div>
                             ) : (
-                                <p className="text-sm text-lime-600">Welcome back!</p>
+                                <div>
+                                    {!isAuthenticated ? (
+                                        <nav>
+                                            <Link
+                                                to="/signup"
+                                                className="text-white font-semibold text-sm hover:text-lime-500 transition-colors"
+                                            >
+                                                Signup
+                                            </Link>
+                                            <span className="mx-2 text-gray-300">|</span>
+                                            <Link
+                                                to="/login"
+                                                className="text-white font-semibold text-sm hover:text-lime-500 transition-colors"
+                                            >
+                                                Login
+                                            </Link>
+                                        </nav>
+                                    ) : (
+                                        <p className="text-sm text-lime-600">Welcome back!</p>
+                                    )}
+                                </div>
                             )}
+
+
+
                         </div>
                     </div>
 
