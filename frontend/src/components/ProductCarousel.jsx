@@ -127,14 +127,14 @@ const ProductCarousel = () => {
     const settings = {
         infinite: true,
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 0,
         slidesToShow: 6, // Show 6 products on laptop screens
         slidesToScroll: 1, // Scroll one at a time for smoother continuous movement
-        speed: 500,
+        speed: 2000,
         arrows: false, // Remove arrows to save space
         dots: false, // Remove dots to save space
         cssEase: 'linear', // Linear for smoother continuous motion
-        pauseOnHover: false, // Don't pause on hover to keep it always moving
+        pauseOnHover: true, // Don't pause on hover to keep it always moving
         responsive: [
             {
                 breakpoint: 1536, // 2xl
