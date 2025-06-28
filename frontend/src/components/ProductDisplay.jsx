@@ -148,6 +148,12 @@ const EarbudsProductDisplay = () => {
             // If buying now, redirect to cart page
             if (buyNow) {
                 setTimeout(() => {
+                    window.location.href = '/checkout';
+                }, 2000); // Give time for the alert to be visible
+            }
+            else {
+                // If just adding to cart, you can update the cart state or show a success message
+                setTimeout(() => {
                     window.location.href = '/profile';
                 }, 2000); // Give time for the alert to be visible
             }
@@ -170,7 +176,7 @@ const EarbudsProductDisplay = () => {
 
     const renderTechnicalSpecs = () => (
 
-       
+
         <div className="p-6 rounded-xl shadow-lg">
             <h3 className="text-xl font-bold text-black mb-4 flex items-center">
                 <FaBolt className="mr-2 text-blue-600" /> Technical Specifications

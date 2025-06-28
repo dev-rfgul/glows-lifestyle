@@ -62,7 +62,7 @@ const Navbar = () => {
                 >
                     <img
                         className="w-22 md:w-22 h-auto object-contain"
-                        src="./images/logo.png"
+                        src="./images/logo.jpeg"
                         alt="Glowz Lifestyel Logo"
                         loading="eager"
                     />
