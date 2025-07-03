@@ -17,6 +17,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Checkout from './components/Checkout'
 import Analytics from './components/Analytics'
 import WhatsAppButton from './components/WhatsappBtn'
+import NotificationPopup from './components/Notification'
 
 const App = () => {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
@@ -40,11 +41,12 @@ const App = () => {
   };
   useEffect(() => {
     updateVisitCount()
-  },[])
+  }, [])
   return (
     <div className='overflow-hidden'>
       {/* <Launch /> */}
       <WhatsAppButton />
+      <NotificationPopup />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<Signup />} />
