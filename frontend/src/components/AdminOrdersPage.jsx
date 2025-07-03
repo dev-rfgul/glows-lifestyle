@@ -348,7 +348,7 @@ const AdminOrdersPage = () => {
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500">Contact</p>
-                                        <p className="font-medium text-xs">{selectedOrder.email || 'N/A'}</p>
+                                        <p className="font-medium text-xs">{selectedOrder.phone || 'N/A'}</p>
                                     </div>
                                 </div>
                             </div>
