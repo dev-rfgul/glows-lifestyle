@@ -1,39 +1,43 @@
 import express from 'express';
-import Notification from "../models/notification.model";
-
+import Notification from '../models/notification.model.js'; // Adjust the path as needed
 
 const router = express.Router();
 
-router.get('/getNotification', async (req, res) => {
+// ✅ Create or Update Notification (Upsert)
+router.post('/notification', async (req, res) => {
     try {
-        const notifications = await Notification.find();
-        res.status(200).json(notifications);
+        const { message, type, timer } = req.body;
+        const notification = await Notification.findByIdAndUpdate(
+            'singleton',
+            { message, type, timer },
+            { upsert: true, new: true }
+        );
+        res.status(200).json(notification);
     } catch (error) {
-        console.error('Error fetching notifications:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-router.post('/addNotification', async (req, res) => {
-    const { message, timer, type } = req.body;
-
-    if (!message || !timer || !type) {
-        return res.status(400).json({ message: 'All fields are required' });
-    }
-
-    try {
-        const newNotification = new Notification({
-            message,
-            timer,
-            type
-        });
-
-        await newNotification.save();
-        res.status(201).json({ message: 'Notification added successfully' });
-    } catch (error) {
-        console.error('Error adding notification:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Failed to create or update notification' });
     }
 });
 
+// ✅ Get the current notification
+router.get('/notification', async (req, res) => {
+    try {
+        const notification = await Notification.findById('singleton');
+        if (!notification) return res.status(404).json({ message: 'No notification set' });
+        res.status(200).json(notification);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to get notification' });
+    }
+});
+
+// ✅ Delete the current notification
+router.delete('/notification', async (req, res) => {
+    try {
+        const deleted = await Notification.findByIdAndDelete('singleton');
+        if (!deleted) return res.status(404).json({ message: 'No notification to delete' });
+        res.status(200).json({ message: 'Notification deleted' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete notification' });
+    }
+});
 
 export default router;

@@ -1,20 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const notificationSchema=new Schema({
+const notificationSchema = new Schema({
+    _id: {
+        type: String,
+        default: 'singleton'
+    },
     message: {
         type: String,
         required: true
     },
-    timer:{
+    timer: {
         type: Number,
-        default: 3000 // Default to 3 seconds
+        default: 3000
     },
-    type:{
+    type: {
         type: String,
-        enum: ['info', 'sale', 'warning',],
-        default: 'info' // Default type
+        enum: ['info', 'sale', 'warning'],
+        default: 'info'
     }
+});
 
-})
-const Notification=mongoose.model('Notification',notificationSchema);
+const Notification = mongoose.model('Notification', notificationSchema);
 export default Notification;
