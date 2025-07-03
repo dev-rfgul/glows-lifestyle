@@ -16,6 +16,7 @@ import { cloudinaryConnect } from './config/cloudinary.js';
 import CheckoutRoutes from './routes/checkout.routes.js';
 import VisitCounter from './models/visitCount.model.js';
 import visitCounter from './models/visitCount.model.js';
+import notificationRoutes from './routes/notification.routes.js';
 
 // Initialize app and services
 const app = express();
@@ -91,6 +92,8 @@ app.use('/admin', adminRoutes);
 app.use('/payment', paymentRoutes);
 app.use('/analytics', AnalyticsRoutes);
 app.use('/checkout', CheckoutRoutes);
+app.use('/notification', notificationRoutes);
+
 
 // Global visit counter routes
 app.get('/globalVisitCount', async (req, res) => {

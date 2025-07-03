@@ -18,6 +18,7 @@ import Checkout from './components/Checkout'
 import Analytics from './components/Analytics'
 import WhatsAppButton from './components/WhatsappBtn'
 import NotificationPopup from './components/Notification'
+import AddNotification from './components/AddNotification'
 
 const App = () => {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
@@ -66,6 +67,7 @@ const App = () => {
         <Route path='/edit-product/:id' element={<ProtectedRoute role={role} requiredRole="admin"><EditProduct /></ProtectedRoute>} />
         <Route path='/orders' element={<ProtectedRoute role={role} requiredRole="admin"><AdminOrdersPage /></ProtectedRoute>} />
         <Route path='/analytics' element={<ProtectedRoute role={role} requiredRole="admin"><Analytics /></ProtectedRoute>} />
+        <Route path='/notification' element={<ProtectedRoute role={role} requiredRole="admin"><AddNotification /></ProtectedRoute>} />
         {/* Redirect unknown routes to home */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

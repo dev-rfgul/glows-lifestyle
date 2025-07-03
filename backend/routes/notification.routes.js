@@ -4,7 +4,7 @@ import Notification from '../models/notification.model.js'; // Adjust the path a
 const router = express.Router();
 
 // ✅ Create or Update Notification (Upsert)
-router.post('/notification', async (req, res) => {
+router.post('/add-notification', async (req, res) => {
     try {
         const { message, type, timer } = req.body;
         const notification = await Notification.findByIdAndUpdate(
@@ -30,7 +30,7 @@ router.get('/notification', async (req, res) => {
 });
 
 // ✅ Delete the current notification
-router.delete('/notification', async (req, res) => {
+router.delete('/delete-notification', async (req, res) => {
     try {
         const deleted = await Notification.findByIdAndDelete('singleton');
         if (!deleted) return res.status(404).json({ message: 'No notification to delete' });
