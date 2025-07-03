@@ -7,19 +7,21 @@ import { useNavigate } from 'react-router-dom'; // Added missing import
 const validateForm = (data) => {
     const errors = {};
     if (!data.name.trim()) errors.name = 'Name is required';
-
     if (!data.email.trim()) {
         errors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(data.email)) {
         errors.email = 'Email is invalid';
     }
-
+    // Normalize the phone number
+    if (data.phone.startsWith('0')) {
+        data.phone = data.phone.replace(/^0/, '+92');
+    }
+    // Validation
     if (!data.phone.trim()) {
         errors.phone = 'Phone number is required';
-    } else if (!/^\+?[0-9\s-()]{7,}$/.test(data.phone)) {
-        errors.phone = 'Please enter a valid phone number';
+    } else if (!/^\+92[0-9\s-()]{7,}$/.test(data.phone)) {
+        errors.phone = 'Please enter a valid phone number starting with +92';
     }
-
     if (!data.address.trim()) errors.address = 'Address is required';
     if (!data.city.trim()) errors.city = 'City is required';
     if (!data.postalCode.trim()) errors.postalCode = 'Postal code is required';
@@ -73,8 +75,8 @@ const PaymentInfoCard = () => {
         if (userData) {
             setFormData(prevData => ({
                 ...prevData,
-                name:  '',
-                email:  '',
+                name: '',
+                email: '',
                 phone: userData.phone || '',
                 address: userData.address || '',
                 city: userData.city || '',
@@ -84,7 +86,7 @@ const PaymentInfoCard = () => {
             }));
         }
     }, [userData]);
-    console.log("cart products",cartProducts)
+    console.log("cart products", cartProducts)
 
     // Calculate order total when cart products change
     useEffect(() => {
@@ -319,7 +321,7 @@ const PaymentInfoCard = () => {
                     productName: p.name,
                     productColor: p.color || p.colors[0].name,
                     productQuantity: p.quantity || 1,
-                    productPrice: p.discountPrice,  
+                    productPrice: p.discountPrice,
                     productImg: p.img,
                 })),
                 orderTotal,
@@ -488,7 +490,7 @@ const PaymentInfoCard = () => {
                             </div>
                         </div>
                     )}
-{/* //just help me in changing the autofill up of name and email to make it empty so that user can manually entery his name and email */}
+                    {/* //just help me in changing the autofill up of name and email to make it empty so that user can manually entery his name and email */}
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
