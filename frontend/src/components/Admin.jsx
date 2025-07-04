@@ -138,7 +138,7 @@ const Admin = () => {
         { path: "/add-users", label: "Users", icon: "👥" },
         { path: "/analytics", label: "Analytics", icon: "📊" },
         { path: "/orders", label: "Orders", icon: "🛒" },
-        { path: "/notification", label: "Settings", icon: "⚙️" }
+        { path: "/notification", label: "Notification", icon: "⚙️" }
     ];
 
     const isActive = (path) => {
