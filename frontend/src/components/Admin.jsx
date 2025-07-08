@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Admin = () => {
@@ -7,8 +6,6 @@ const Admin = () => {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState();
-    const [orders, setOrders] = useState([]);
 
     // Dashboard data states
     const [dashboardData, setDashboardData] = useState({
@@ -18,7 +15,7 @@ const Admin = () => {
         pendingOrders: 0,
         completedOrders: 0,
         dispatchedOrders: 0,
-        productsData: []
+        recentOrders: [] // Fixed naming
     });
 
     // Format currency
@@ -68,25 +65,26 @@ const Admin = () => {
                 ordersResponse.json()
             ]);
 
-            // Process orders data
-            const orders = ordersData.orders || [];
+            // Process orders data with validation
+            const orders = ordersData?.orders || [];
             let pending = 0, dispatched = 0, completed = 0;
 
             orders.forEach(order => {
-                if (order.orderStatus === "pending") pending++;
-                else if (order.orderStatus === "dispatched") dispatched++;
-                else if (order.orderStatus === "completed") completed++;
+                const status = order?.orderStatus?.toLowerCase();
+                if (status === "pending") pending++;
+                else if (status === "dispatched") dispatched++;
+                else if (status === "completed") completed++;
             });
 
             // Update state with all data
             setDashboardData({
-                usersCount: usersData.length || 0,
-                productCount: productsData.products?.length || 0,
-                revenue: revenueData.totalRevenue || 0,
-                pendingOrders: pending || 0,
-                completedOrders: completed || 0,
-                dispatchedOrders: dispatched || 0,
-                productsData: orders
+                usersCount: usersData?.length || 0,
+                productCount: productsData?.products?.length || 0,
+                revenue: revenueData?.totalRevenue || 0,
+                pendingOrders: pending,
+                completedOrders: completed,
+                dispatchedOrders: dispatched,
+                recentOrders: orders // Fixed naming
             });
 
         } catch (error) {
@@ -95,7 +93,7 @@ const Admin = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, []); // Dependencies are stable
 
     // Responsive sidebar handler
     useEffect(() => {
@@ -115,8 +113,8 @@ const Admin = () => {
     useEffect(() => {
         fetchData();
 
-        // Optional: Set up polling for real-time updates
-        const intervalId = setInterval(fetchData, 300000); // Refresh every 5 minutes
+        // Optional: Set up polling for real-time updates (increased to 10 minutes)
+        const intervalId = setInterval(fetchData, 600000);
 
         return () => clearInterval(intervalId);
     }, [fetchData]);
@@ -138,7 +136,7 @@ const Admin = () => {
         { path: "/add-users", label: "Users", icon: "👥" },
         { path: "/analytics", label: "Analytics", icon: "📊" },
         { path: "/orders", label: "Orders", icon: "🛒" },
-        { path: "/notification", label: "Notification", icon: "⚙️" }
+        { path: "/notification", label: "Settings", icon: "⚙️" }
     ];
 
     const isActive = (path) => {
@@ -168,6 +166,7 @@ const Admin = () => {
             <button
                 className="fixed z-20 bottom-4 right-4 lg:hidden bg-blue-600 text-white p-2 rounded-full shadow-lg"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
+                aria-label="Toggle sidebar"
             >
                 {sidebarOpen ? '✕' : '☰'}
             </button>
@@ -254,10 +253,8 @@ const Admin = () => {
                         </div>
                     )}
 
-                    {/* Recent Activity & Tasks */}
-                    {/* Recent Activity & Tasks */}
-                    <div className="grid grid-cols-1 lg:grid-cols gap-8">
-                        {/* Recent Activity */}
+                    {/* Recent Activity */}
+                    <div className="grid grid-cols-1 gap-8">
                         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                                 <h3 className="text-lg font-medium">Recent Activity</h3>
@@ -267,46 +264,71 @@ const Admin = () => {
                             </div>
 
                             {isLoading ? (
-                                <div className="flex space-x-4 p-6">
-                                    {[1, 2, 3, 4].map((item) => (
-                                        <div key={item} className="w-48 h-32 bg-gray-200 animate-pulse rounded-lg">
-                                        </div>
-                                    ))}
+                                <div className="p-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {[1, 2, 3].map((item) => (
+                                            <div key={item} className="h-32 bg-gray-200 animate-pulse rounded-lg"></div>
+                                        ))}
+                                    </div>
                                 </div>
                             ) : (
-                                <div className="flex space-x-4 p-6 ">
-                                    {dashboardData.productsData.slice(0, 5).map((item, index) => (
-                                        <div key={item._id || index} className="flex-shrink-0 w-64 p-4 bg-white rounded-lg shadow-lg space-y-4 border-2 border-gray-400">
-                                            <div className="flex items-center space-x-4">
-                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white ${item.orderStatus === 'pending' ? 'bg-yellow-500' :
-                                                    item.orderStatus === 'dispatched' ? 'bg-blue-500' : 'bg-green-500'
-                                                    }`}>
-                                                    {item.orderStatus === 'pending' ? '⏳' :
-                                                        item.orderStatus === 'dispatched' ? '🚚' : '✅'}
-                                                </div>
-                                                <div className="flex-1">
-                                                    <p className="text-xl font-semibold text-gray-800">New order from: <span className="font-bold text-blue-600">{item.name}</span></p>
-                                                    <p className="text-lg text-gray-700">Total Amount: <span className="text-green-600">{item.orderTotal}</span></p>
-                                                    <p className="text-lg text-gray-700">From: <span className="italic text-gray-600">{item.city}</span></p>
-
-                                                    <p className="text-sm text-gray-500">
-                                                        {formatDate(item.orderDate || new Date())} - <span className={`font-medium ${item.orderStatus === 'Completed' ? 'text-green-500' : 'text-red-500'}`}>{item.orderStatus}</span>
-                                                    </p>
-
+                                <div className="p-6">
+                                    {dashboardData.recentOrders.length > 0 ? (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {dashboardData.recentOrders.slice(0, 6).map((item, index) => (
+                                                <div key={item._id || index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                    <div className="flex items-center space-x-3 mb-3">
+                                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm ${
+                                                            item.orderStatus === 'pending' ? 'bg-yellow-500' :
+                                                            item.orderStatus === 'dispatched' ? 'bg-blue-500' : 'bg-green-500'
+                                                        }`}>
+                                                            {item.orderStatus === 'pending' ? '⏳' :
+                                                             item.orderStatus === 'dispatched' ? '🚚' : '✅'}
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <p className="font-semibold text-gray-800 text-sm">
+                                                                Order from: <span className="text-blue-600">{item.name}</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div className="space-y-1 text-sm">
+                                                        <p className="text-gray-700">
+                                                            Amount: <span className="font-medium text-green-600">{formatCurrency(item.orderTotal)}</span>
+                                                        </p>
+                                                        <p className="text-gray-700">
+                                                            From: <span className="italic">{item.city}</span>
+                                                        </p>
+                                                        <p className="text-gray-500">
+                                                            {formatDate(item.orderDate || new Date())}
+                                                        </p>
+                                                        <p className="text-gray-500">
+                                                            Status: <span className={`font-medium ${
+                                                                item.orderStatus === 'completed' ? 'text-green-500' : 
+                                                                item.orderStatus === 'dispatched' ? 'text-blue-500' : 'text-yellow-500'
+                                                            }`}>
+                                                                {item.orderStatus}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                    
                                                     <Link to={'/orders'}>
-                                                        <button
-                                                            className="text-indigo-600 hover:text-indigo-900"
-                                                        >View Order</button>
+                                                        <button className="mt-3 text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                                                            View Order
+                                                        </button>
                                                     </Link>
                                                 </div>
-                                            </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                    ) : (
+                                        <div className="text-center py-8 text-gray-500">
+                                            No recent orders found
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
                     </div>
-
                 </div>
             </main>
         </div>
