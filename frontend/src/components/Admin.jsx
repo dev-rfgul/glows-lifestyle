@@ -22,7 +22,7 @@ const Admin = () => {
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'PKR',
             minimumFractionDigits: 2
         }).format(amount);
     };
