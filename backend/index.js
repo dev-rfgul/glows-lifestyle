@@ -23,8 +23,8 @@ const app = express();
 
 // Properly handle CORS origins
 const allowedOrigins = [
-    "https://glowslifestyle.onrender.com",
     "https://www.glowzlifestyle.shop",
+    "https://glowzlifestyle.shop",
     "https://glows-lifestyle.vercel.app",
     "https://glows-lifestyle-chi.vercel.app",
     "http://localhost:5173"

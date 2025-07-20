@@ -8,7 +8,7 @@ const NotificationForm = () => {
     const [currentNotification, setCurrentNotification] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const API_URL = `${import.meta.env.VITE_BACKEND_URL}/notification/`; // Adjust if needed
+    const API_URL = `${import.meta.env.VITE_BACKEND_URL}/notification`; // Adjust if needed
     // alert(`API URL: ${API_URL}`); // Debugging line to check API URL
     // Fetch current notification
     useEffect(() => {
@@ -28,7 +28,12 @@ const NotificationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${API_URL}/add-notification`, { message, type, timer });
+            const res = await axios.post(`${API_URL}/notification/add-notification`, {
+                message, type, timer
+            }, {
+                withCredentials: true
+            });
+
             setCurrentNotification(res.data);
             console.log('Notification saved:', res.data);
             alert('Notification saved successfully');
