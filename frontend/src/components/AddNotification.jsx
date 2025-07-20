@@ -28,7 +28,7 @@ const NotificationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${API_URL}/notification/add-notification`, {
+            const res = await axios.post(`${API_URL}/add-notification`, {
                 message, type, timer
             }, {
                 withCredentials: true
