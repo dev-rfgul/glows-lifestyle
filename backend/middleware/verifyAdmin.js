@@ -1,34 +1,3 @@
-// import jwt from 'jsonwebtoken';
-
-// const verifyAdmin = (req, res, next) => {
-//     try {
-//         const token = req.cookies.token;
-//         console.log("🔹 Token received:", token); // Log the token
-
-//         if (!token) {
-//             console.log("⛔ No token found! Unauthorized access.");
-//             return res.status(401).json({ message: "Unauthorized" });
-//         }
-
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//         console.log("✅ Decoded Token:", decoded); // Log decoded token
-
-//         if (decoded.role !== "admin") {
-//             console.log(`⛔ User "${decoded.email}" is not an admin. Access Denied!`);
-//             return res.status(403).json({ message: "Forbidden" });
-//         }
-
-//         req.user = decoded;
-//         console.log(`✅ Admin "${decoded.email}" verified successfully!`);
-//         next();
-//     } catch (err) {
-//         console.log("⛔ Invalid token:", err.message);
-//         res.status(401).json({ message: "Invalid token" });
-//     }
-// };
-
-// export default verifyAdmin;
-
 import jwt from 'jsonwebtoken';
 
 const verifyAdmin = (req, res, next) => {
@@ -44,6 +13,15 @@ const verifyAdmin = (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
+        // Check if JWT_SECRET is properly loaded
+        if (!process.env.JWT_SECRET) {
+            console.log("⛔ JWT_SECRET not found in environment variables!");
+            return res.status(500).json({ message: "Server configuration error" });
+        }
+
+        console.log("🔑 JWT_SECRET exists:", !!process.env.JWT_SECRET);
+        console.log("🔑 JWT_SECRET length:", process.env.JWT_SECRET?.length);
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log("✅ Decoded Token:", decoded);
 
@@ -56,8 +34,16 @@ const verifyAdmin = (req, res, next) => {
         console.log(`✅ Admin "${decoded.email}" verified successfully!`);
         next();
     } catch (err) {
-        console.log("⛔ Invalid token:", err.message);
-        res.status(401).json({ message: "Invalid token" });
+        console.log("⛔ JWT Verification Error:", err.message);
+        console.log("⛔ Error Type:", err.name);
+        
+        if (err.name === 'JsonWebTokenError') {
+            console.log("🚨 This usually means JWT_SECRET mismatch!");
+        } else if (err.name === 'TokenExpiredError') {
+            console.log("🚨 Token has expired!");
+        }
+        
+        res.status(401).json({ message: "Invalid token", error: err.message });
     }
 };
 
