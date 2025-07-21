@@ -19,6 +19,7 @@ import Analytics from './components/Analytics'
 import WhatsAppButton from './components/WhatsappBtn'
 import NotificationPopup from './components/Notification'
 import AddNotification from './components/AddNotification'
+import RandomOrder from './components/random/RandomOrder'
 
 const App = () => {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
@@ -46,6 +47,7 @@ const App = () => {
   return (
     <div className='overflow-hidden'>
       {/* <Launch /> */}
+      <RandomOrder/>
       <WhatsAppButton />
       <NotificationPopup />
       <Routes>
