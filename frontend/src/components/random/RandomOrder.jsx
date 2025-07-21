@@ -3,13 +3,27 @@ import { useEffect, useState, useCallback } from "react";
 const names = [
     "Ahmed", "Ayesha", "Hassan", "Fatima", "Bilal", "Zainab",
     "Usman", "Maryam", "Ali", "Noor", "Ibrahim", "Hina",
-    "Omar", "Khadija", "Tariq", "Saima", "Waleed", "Amina"
+    "Omar", "Khadija", "Tariq", "Saima", "Waleed", "Amina","Shahryar","Moeed","Saleem",
+    "Sana", "Faisal", "Zara", "Asad", "Nida", "Rehan",
+    "Sadia", "Bilqis", "Yasir", "Hira", "Saqib", "Nazia", "Tariq", "Areeba", "Hamza", "Sadia", "Raza", "Adeel", "Nazia", "Sami", "Hafsa", "Zeeshan", "Rabia", "Fahad", "Saira", "Bilal", "Ayesha", "Hassan", "Fatima", "Bilal", "Zainab",
+    "Usman", "Maryam", "Ali", "Noor", "Ibrahim", "Hina",
+    "Omar",
 ];
 
 const locations = [
     "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Peshawar",
     "Multan", "Faisalabad", "Hyderabad", "Quetta", "Sialkot",
-    "Gujranwala", "Bahawalpur", "Sargodha", "Sahiwal"
+    "Gujranwala", "Bahawalpur", "Sargodha", "Sahiwal", "Gujrat",
+    "Mardan", "Abbottabad", "Mirpur", "Skardu", "Muzaffarabad",
+    "Gilgit", "Swat", "Bannu", "Dera Ismail Khan", "Kohat", "Nowshera",
+    "Chitral", "Dera Ghazi Khan", "Jhelum", "Attock", "Multan",
+    "Rahim Yar Khan", "Okara", "Kasur", "Larkana", "Jacobabad",
+    "Sukkur", "Nawabshah", "Khairpur", "Tando Adam", "Mithi",
+    "Dadu", "Thatta", "Badin", "Ghotki", "Shikarpur",
+    "Layyyah", "Bhakkar", "Mianwali", "Jhang", "Toba Tek Singh",
+    "Chiniot", "Sargodha", "Khanewal", "Vehari", "Pakpattan", "Sahiwal", "Layyah", "Bhakkar", "Mianwali", "Jhang", "Toba Tek Singh",
+    "Chiniot", "Sargodha", "Khanewal", "Vehari", "Pakpattan", "Sahiwal", "Layyah", "Bhakkar", "Mianwali", "Jhang", "Toba Tek Singh",
+    "Chiniot",
 ];
 
 const actions = [
