@@ -26,6 +26,7 @@ const App = () => {
   const role = user?.role || null;
   const isUserLoggedIn = !!user && !!role;
   const [visitor, setVisitor] = useState(0)
+  
   useEffect(() => {
     setVisitor((prevVisitor) => prevVisitor + 1);
   }, [])
@@ -36,20 +37,28 @@ const App = () => {
       const response = await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/updateGlobalVisitCount`,
       );
-      console.log('Updated Visit Count:', response.data); // log the response
+      console.log('Updated Visit Count:', response.data);
     } catch (error) {
-      console.error('Error updating visit count:', error); // log the error
+      console.error('Error updating visit count:', error);
     }
   };
+  
   useEffect(() => {
     updateVisitCount()
   }, [])
+
   return (
     <div className='overflow-hidden'>
-      {/* <Launch /> */}
-      <RandomOrder/>
-      <WhatsAppButton />
-      <NotificationPopup />
+      {/* Show these components only for non-admin users */}
+      {role !== "admin" && (
+        console.log("🔵 Non-admin user detected, showing RandomOrder and WhatsAppButton"),
+        <>
+          <RandomOrder />
+          <WhatsAppButton />
+          <NotificationPopup />
+        </>
+      )}
+
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<Signup />} />
@@ -70,6 +79,7 @@ const App = () => {
         <Route path='/orders' element={<ProtectedRoute role={role} requiredRole="admin"><AdminOrdersPage /></ProtectedRoute>} />
         <Route path='/analytics' element={<ProtectedRoute role={role} requiredRole="admin"><Analytics /></ProtectedRoute>} />
         <Route path='/notification' element={<ProtectedRoute role={role} requiredRole="admin"><AddNotification /></ProtectedRoute>} />
+        
         {/* Redirect unknown routes to home */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
