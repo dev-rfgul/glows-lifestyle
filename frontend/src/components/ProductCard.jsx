@@ -229,7 +229,7 @@ const ProductImageSection = ({ product, onAddToCart, isAddingToCart }) => (
             </div>
 
             {/* Price */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">   
                 <span className="text-sm font-bold text-gray-900">PKR :{product.discountPrice}</span>
                 {product.price > product.discountPrice && (
                     <span className="text-xs text-gray-500 line-through">PKR :{product.price}</span>
