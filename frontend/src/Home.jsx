@@ -6,13 +6,15 @@ import Heading from './components/Heading'
 import FeaturedProducts from './components/FeaturedProducts'
 import FeatureSection from './components/Features'
 import ProductCarousel from './components/ProductCarousel'
-
+import CardCarousel from './components/CardCarousel'
 const Home = () => {
     return (
         < >
 
             <Carousel />
             <Heading heading={"Flash Sale"} subHeading={"Purchase It, Before it run out of stock "} />
+
+          <CardCarousel/>
             <ProductCarousel />
             <FeatureSection />
             <Heading heading={"Explore"} subHeading={"Explore our wide range of products"} />
