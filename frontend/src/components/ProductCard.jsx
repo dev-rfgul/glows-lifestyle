@@ -178,10 +178,6 @@ const ProductImageSection = ({ product, onAddToCart, isAddingToCart }) => (
                     loading="lazy"
                 />
 
-                {/* Tagline */}
-                <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-0.5 rounded-full text-xs font-medium z-10">
-                    {product.tagline || "Top Pick"}
-                </div>
 
                 {/* Discount Badge */}
                 {product.price > product.discountPrice && (
@@ -234,9 +230,9 @@ const ProductImageSection = ({ product, onAddToCart, isAddingToCart }) => (
 
             {/* Price */}
             <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-gray-900">₹{product.discountPrice}</span>
+                <span className="text-sm font-bold text-gray-900">PKR :{product.discountPrice}</span>
                 {product.price > product.discountPrice && (
-                    <span className="text-xs text-gray-500 line-through">₹{product.price}</span>
+                    <span className="text-xs text-gray-500 line-through">PKR :{product.price}</span>
                 )}
             </div>
 
