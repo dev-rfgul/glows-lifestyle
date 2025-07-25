@@ -177,92 +177,79 @@ const ProductCardSkeleton = () => (
 // Component for product image section with badges
 const ProductImageSection = ({ product }) => (
     <Link to={`/product/${product._id}`} className="block">
-        <div className=" m-2 relative overflow-hidden">
-            {/* Full Image that covers the card */}
+        <div className="product-card m-2 relative overflow-hidden border border-gray-200 rounded-2xl shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
+            {/* Product Image */}
             <div className="relative w-full h-32 sm:h-48 md:h-64">
                 <img
                     src={product.img[0]}
                     alt={product.name}
-                    className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-95"
+                    className="w-full h-full object-cover rounded-t-2xl"
                 />
 
-                {/* Stock status indicators */}
+       
+                {/* Discount Badge */}
+                {product.price > product.discountPrice && (
+                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-medium z-10">
+                        -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
+                    </div>
+                )}
+
+                {/* Stock Status */}
                 {product.stock <= 5 && product.stock > 0 && (
-                    <div className="absolute top-1 right-1 bg-amber-500 text-white px-2 py-0.5 text-xs font-semibold rounded-full shadow-md">
+                    <div className="absolute bottom-2 right-2 bg-amber-500 text-white px-2 py-0.5 text-xs font-semibold rounded-full shadow-md">
                         Only {product.stock} left
                     </div>
                 )}
                 {product.stock === 0 && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-t-2xl">
                         <span className="text-white text-sm font-bold">Out of Stock</span>
                     </div>
                 )}
             </div>
 
-            {/* Product Information */}
-            <div className="p-4">
-                {/* Product Name */}
-                <h3 className="md:text-md text-sm font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
+            {/* Product Info */}
+            <div className="p-4 space-y-2">
+                {/* Category */}
+                {product.category && (
+                    <p className="text-xs uppercase text-gray-500 font-medium">{product.category}</p>
+                )}
 
-                {/* Price Section */}
-                <div className="flex items-center gap-2 mt-2">
-                    <span className="text-gray-500 line-through text-sm">{product.price}</span>
-                    <span className="text-black-600 font-bold text-sm">RS {product.discountPrice}</span>
+                {/* Name */}
+                <h3 className="text-base font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
+
+                {/* Rating */}
+                <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                        <svg
+                            key={i}
+                            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M12 .587l3.668 7.568L24 9.75l-6 5.85L19.336 24 12 19.938 4.664 24 6 15.6 0 9.75l8.332-1.595z" />
+                        </svg>
+                    ))}
+                    <span className="text-sm text-gray-600 ml-1">5.0</span>
                 </div>
 
-                {/* Tagline */}
-                <p className="mt-2 text-gray-700 text-sm line-clamp-1">{product.tagline}</p>
-            </div>
+                {/* Price */}
+                <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-gray-900">₹{product.discountPrice}</span>
+                    {product.price > product.discountPrice && (
+                        <span className="text-sm text-gray-500 line-through">₹{product.price}</span>
+                    )}
+                </div>
 
+                {/* CTA */}
+                <button className="w-full mt-2 bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                    Add to Cart
+                </button>
+            </div>
         </div>
+
     </Link>
 
 );
 
-// Button components for cart actions
-const AddToCartButton = ({ onClick, isLoading, disabled }) => (
-    <button
-        onClick={onClick}
-        disabled={isLoading || disabled}
-        className={`w-full text-black text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${disabled
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-gray-100 border-2 border-black text-black hover:bg-black hover:text-white"
-            }`}
-    >
-        {isLoading ? (
-            <LoadingSpinner text="Adding..." />
-        ) : (
-            "ADD TO CART"
-        )}
-    </button>
-);
 
-const BuyNowButton = ({ onClick, isLoading, disabled }) => (
-    <button
-        onClick={onClick}
-        disabled={isLoading || disabled}
-        className={`w-full text-white text-md px-5 py-2 rounded-lg shadow-md transition-all active:scale-95 ${disabled
-            ? "bg-blue-300 cursor-not-allowed"
-            : "bg-black hover:bg-gray-800"
-            }`}
-    >
-        {isLoading ? (
-            <LoadingSpinner text="Processing..." />
-        ) : (
-            "BUY NOW"
-        )}
-    </button>
-);
-
-// Reusable loading spinner component
-const LoadingSpinner = ({ text }) => (
-    <span className="flex items-center justify-center">
-        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        {text}
-    </span>
-);
 
 export default ProductCard;

@@ -93,22 +93,8 @@ export const CardCarousel = ({
             <style>{css}</style>
             <div className="mx-auto w-full max-w-6xl rounded-[24px] border border-black/5 p-4 shadow-sm md:rounded-t-[44px]">
                 <div className="relative mx-auto flex w-full flex-col rounded-[24px] border border-black/5 bg-neutral-800/5 p-4 shadow-sm md:items-start md:gap-8 md:rounded-b-[20px] md:rounded-t-[40px] md:p-6">
-                    <Badge
-                        variant="outline"
-                        className="absolute left-4 top-6 rounded-[14px] border border-black/10 text-base md:left-6 z-10"
-                    >
-                        <SparklesIcon className="fill-[#EEBDE0] stroke-1 text-neutral-800 mr-2" />
-                        Ecommerce Store
-                    </Badge>
+
                     <div className="flex flex-col justify-center pb-2 pl-4 pt-14 md:items-center">
-                        <div className="flex gap-2">
-                            <div className="text-center">
-                                <h3 className="text-4xl opacity-85 font-bold tracking-tight">
-                                    Product Showcase
-                                </h3>
-                                <p className="text-gray-600 mt-2">Discover amazing products with seamless carousel experience.</p>
-                            </div>
-                        </div>
                     </div>
                     {loading && <p className="text-center text-gray-500">Loading products...</p>}
                     {error && <p className="text-center text-red-500">{error}</p>}
