@@ -1,6 +1,5 @@
-"use client"
-
 import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import "swiper/css/effect-coverflow"
@@ -73,11 +72,9 @@ export const CardCarousel = ({
             setLoading(true);
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/product/get-products`);
-
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
                 const result = await response.json();
                 setData(result.products || []);
                 setError(null);
@@ -89,10 +86,8 @@ export const CardCarousel = ({
                 setLoading(false);
             }
         };
-
         fetchProducts();
     }, []);
-
     return (
         <section className="w-full space-y-4">
             <style>{css}</style>
@@ -105,7 +100,6 @@ export const CardCarousel = ({
                         <SparklesIcon className="fill-[#EEBDE0] stroke-1 text-neutral-800 mr-2" />
                         Ecommerce Store
                     </Badge>
-
                     <div className="flex flex-col justify-center pb-2 pl-4 pt-14 md:items-center">
                         <div className="flex gap-2">
                             <div className="text-center">
@@ -116,10 +110,8 @@ export const CardCarousel = ({
                             </div>
                         </div>
                     </div>
-
                     {loading && <p className="text-center text-gray-500">Loading products...</p>}
                     {error && <p className="text-center text-red-500">{error}</p>}
-
                     {!loading && !error && (
                         <div className="flex w-full items-center justify-center gap-4">
                             <div className="w-full">
@@ -154,61 +146,62 @@ export const CardCarousel = ({
                                 >
                                     {data.map((product) => (
                                         <SwiperSlide key={product._id}>
-                                            <div className="product-card">
-                                                <div className="relative">
-                                                    <img
-                                                        src={product.img?.[0]}
-                                                        alt={product.name}
-                                                        className="w-full h-48 object-cover"
-                                                    />
-                                                    <div className="absolute top-3 left-3 px-2 py-1 rounded-full text-white text-xs font-medium bg-blue-500">
-                                                        {product.tagline || "Top Pick"}
-                                                    </div>
-                                                    {product.price > product.discountPrice && (
-                                                        <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                                                            -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
+                                            <Link to={`/product/${product._id}`} className="block">
+                                                <div className="product-card">
+                                                    <div className="relative">
+                                                        <img
+                                                            src={product.img?.[0]}
+                                                            alt={product.name}
+                                                            className="w-full h-48 object-cover"
+                                                        />
+                                                        <div className="absolute top-3 left-3 px-2 py-1 rounded-full text-white text-xs font-medium bg-blue-500">
+                                                            {product.tagline || "Top Pick"}
                                                         </div>
-                                                    )}
-                                                </div>
-
-                                                <div className="p-4 flex flex-col justify-between h-56">
-                                                    <div>
-                                                        <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{product.category}</p>
-                                                        <h4 className="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h4>
-
-                                                        <div className="flex items-center mb-3">
-                                                            <div className="flex items-center">
-                                                                {[...Array(5)].map((_, i) => (
-                                                                    <Star
-                                                                        key={i}
-                                                                        size={14}
-                                                                        className={`fill-yellow-400 text-yellow-400`}
-                                                                    />
-                                                                ))}
+                                                        {product.price > product.discountPrice && (
+                                                            <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                                                                -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
                                                             </div>
-                                                            <span className="text-sm text-gray-600 ml-2">
-                                                                5.0 (100+)
-                                                            </span>
-                                                        </div>
+                                                        )}
                                                     </div>
-
-                                                    <div>
-                                                        <div className="flex items-center justify-between mb-3">
-                                                            <div className="flex items-center gap-2">
-                                                                <span className="text-xl font-bold text-gray-900">PKR :{product.discountPrice}</span>
-                                                                {product.price > product.discountPrice && (
-                                                                    <span className="text-sm text-gray-500 line-through">PKR: {product.price}</span>
-                                                                )}
+                                                    <div className="p-4 flex flex-col justify-between h-56">
+                                                        <div>
+                                                            <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{product.category}</p>
+                                                            <h4 className="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h4>
+                                                            <div className="flex items-center mb-3">
+                                                                <div className="flex items-center">
+                                                                    {[...Array(5)].map((_, i) => (
+                                                                        <Star
+                                                                            key={i}
+                                                                            size={14}
+                                                                            className={`fill-yellow-400 text-yellow-400`}
+                                                                        />
+                                                                    ))}
+                                                                </div>
+                                                                <span className="text-sm text-gray-600 ml-2">
+                                                                    5.0 (100+)
+                                                                </span>
                                                             </div>
                                                         </div>
-
-                                                        <button className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-                                                            <ShoppingCart size={16} />
-                                                            Add to Cart
-                                                        </button>
+                                                        <div>
+                                                            <div className="flex items-center justify-between mb-3">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="text-xl font-bold text-gray-900">PKR :{product.discountPrice}</span>
+                                                                    {product.price > product.discountPrice && (
+                                                                        <span className="text-sm text-gray-500 line-through">PKR: {product.price}</span>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                            <Link to={`/product/${product._id}`} className="block">
+                                                                {console.log("🔵 Rendering product:", product.name)}
+                                                                <button className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+                                                                    <ShoppingCart size={16} />
+                                                                    Visit Product
+                                                                </button>
+                                                            </Link>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </Link>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
