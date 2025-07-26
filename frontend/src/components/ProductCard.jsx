@@ -133,8 +133,8 @@ const ProductCard = ({ product, loading }) => {
             )}
 
             {/* Product Card - Simplified for responsive grid */}
-            <ProductImageSection 
-                product={product} 
+            <ProductImageSection
+                product={product}
                 onAddToCart={() => addToCart(product._id)}
                 isAddingToCart={isAddingToCart}
             />
@@ -167,7 +167,7 @@ const ProductCardSkeleton = () => (
 
 // Component for product image section with badges
 const ProductImageSection = ({ product, onAddToCart, isAddingToCart }) => (
-    <div className="w-full rounded-2xl border border-gray-200 shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg overflow-hidden bg-white">
+    <div className="w-full rounded-2xl border border-gray-800 shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg overflow-hidden bg-white">
         {/* Product Image */}
         <Link to={`/product/${product._id}`} className="block">
             <div className="relative w-full h-40 sm:h-44 md:h-48 lg:h-52">
@@ -178,22 +178,28 @@ const ProductImageSection = ({ product, onAddToCart, isAddingToCart }) => (
                     loading="lazy"
                 />
 
+                {/* Tagline - Positioned at top-left */}
+                <div className="absolute top-2 left-2 px-2 py-1 rounded-full text-white text-xs font-medium bg-blue-500 z-20 shadow-md">
+                    {product.tagline || "Top Pick"}
+                </div>
 
-                {/* Discount Badge */}
+                {/* Discount Badge - Positioned at top-right */}
                 {product.price > product.discountPrice && (
-                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-medium z-10">
+                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium z-20 shadow-md">
                         -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
                     </div>
                 )}
 
-                {/* Stock Status */}
+                {/* Stock Status - Positioned at bottom-right */}
                 {product.stock <= 5 && product.stock > 0 && (
-                    <div className="absolute bottom-2 right-2 bg-amber-500 text-white px-2 py-0.5 text-xs font-semibold rounded-full shadow-md">
+                    <div className="absolute bottom-2 right-2 bg-amber-500 text-white px-2 py-1 text-xs font-semibold rounded-full shadow-md z-20">
                         Only {product.stock} left
                     </div>
                 )}
+
+                {/* Out of Stock Overlay */}
                 {product.stock === 0 && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
                         <span className="text-white text-sm font-bold">Out of Stock</span>
                     </div>
                 )}
@@ -229,15 +235,15 @@ const ProductImageSection = ({ product, onAddToCart, isAddingToCart }) => (
             </div>
 
             {/* Price */}
-            <div className="flex items-center gap-2">   
-                <span className="text-sm font-bold text-gray-900">PKR :{product.discountPrice}</span>
+            <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-gray-900">PKR: {product.discountPrice}</span>
                 {product.price > product.discountPrice && (
-                    <span className="text-xs text-gray-500 line-through">PKR :{product.price}</span>
+                    <span className="text-xs text-gray-500 line-through">PKR: {product.price}</span>
                 )}
             </div>
 
             {/* CTA Button */}
-            <button 
+            <button
                 onClick={onAddToCart}
                 disabled={product.stock === 0 || isAddingToCart}
                 className="w-full mt-2 bg-black text-white py-2 text-xs rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

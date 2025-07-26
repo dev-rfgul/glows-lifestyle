@@ -97,7 +97,7 @@ const ProductCarousel = () => {
     return (
         <div className="carousel-container w-full mx-auto">
             <Slider {...settings}>
-                {data.map((product, index) => (
+                {data.map((product) => (
                     <div key={product._id} className="px-2">
                         <Link to={`/product/${product._id}`} className="block">
                             <ProductCard product={product} />

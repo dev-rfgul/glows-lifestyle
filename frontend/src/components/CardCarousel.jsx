@@ -13,7 +13,7 @@ import {
     Pagination,
 } from "swiper/modules"
 import { Badge } from "./Badge"
-
+import ProductCard from "./ProductCard"
 export const CardCarousel = ({
     autoplayDelay = 3000,
     showPagination = true,
@@ -133,60 +133,7 @@ export const CardCarousel = ({
                                     {data.map((product) => (
                                         <SwiperSlide key={product._id}>
                                             <Link to={`/product/${product._id}`} className="block">
-                                                <div className="product-card">
-                                                    <div className="relative">
-                                                        <img
-                                                            src={product.img?.[0]}
-                                                            alt={product.name}
-                                                            className="w-full h-48 object-cover"
-                                                        />
-                                                        <div className="absolute top-3 left-3 px-2 py-1 rounded-full text-white text-xs font-medium bg-blue-500">
-                                                            {product.tagline || "Top Pick"}
-                                                        </div>
-                                                        {product.price > product.discountPrice && (
-                                                            <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                                                                -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <div className="p-4 flex flex-col justify-between h-56">
-                                                        <div>
-                                                            <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{product.category}</p>
-                                                            <h4 className="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h4>
-                                                            <div className="flex items-center mb-3">
-                                                                <div className="flex items-center">
-                                                                    {[...Array(5)].map((_, i) => (
-                                                                        <Star
-                                                                            key={i}
-                                                                            size={14}
-                                                                            className={`fill-yellow-400 text-yellow-400`}
-                                                                        />
-                                                                    ))}
-                                                                </div>
-                                                                <span className="text-sm text-gray-600 ml-2">
-                                                                    5.0 (100+)
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <div className="flex items-center justify-between mb-3">
-                                                                <div className="flex items-center gap-2">
-                                                                    <span className="text-xl font-bold text-gray-900">PKR :{product.discountPrice}</span>
-                                                                    {product.price > product.discountPrice && (
-                                                                        <span className="text-sm text-gray-500 line-through">PKR: {product.price}</span>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                            <Link to={`/product/${product._id}`} className="block">
-                                                                {console.log("🔵 Rendering product:", product.name)}
-                                                                <button className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-                                                                    <ShoppingCart size={16} />
-                                                                    Visit Product
-                                                                </button>
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <ProductCard product={product} />
                                             </Link>
                                         </SwiperSlide>
                                     ))}
