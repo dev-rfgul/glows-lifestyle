@@ -12,19 +12,25 @@ import {
     faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
-    // const [isScrolled, setIsScrolled] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
     const location = useLocation();
 
     const user = JSON.parse(localStorage.getItem("user"));
 
+    const cartItems = useSelector((state) => state.cart.items);
+    const cartLength = cartItems?.length || 0;
+    const wishlistItems = useSelector((state) => state.wishlist?.items || []);
+    const isAuthenticated = useSelector((state) => state.auth?.isAuthenticated);
 
     // Listen for scroll events to apply shadow/background change
     useEffect(() => {
         const handleScroll = () => {
-            // setIsScrolled(window.scrollY > 50);
+            setIsScrolled(window.scrollY > 50);
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -37,7 +43,9 @@ const Navbar = () => {
     }, [location.pathname]);
 
     // Navbar menu items for better maintainability
+    const navItems = [
 
+    ];
 
     return (
         <header className={`bg-black text-blue-100 transition-all duration-300`}>
@@ -171,7 +179,7 @@ const Navbar = () => {
                         <div className="relative">
                             <FontAwesomeIcon icon={faShoppingCart} className="text-black text-lg mb-1" />
                             <span className="absolute -top-2 -right-2 bg-lime-500 text-black text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                                
+                                {cartLength}
                             </span>
                         </div>
                         <span className="text-xs">Cart</span>
