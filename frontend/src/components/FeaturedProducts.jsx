@@ -150,13 +150,7 @@ const ProductGrid = () => {
         return result;
     }, [products, filters, searchTerm]);
 
-    // Handle price range change
-    const handlePriceRangeChange = (min, max) => {
-        setFilters(prev => ({
-            ...prev,
-            priceRange: [parseInt(min), parseInt(max)]
-        }));
-    };
+
     const handleGuestAcct = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/guest-signup`);

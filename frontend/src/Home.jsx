@@ -27,7 +27,7 @@ const Home = () => {
             <img
                 src="/images/carousel/banner-5.jpeg"
                 alt="Slim Banner"
-                class=" mt-4  mb-4 w-full h-[80px] sm:h-[100px] md:h-[120px] lg:h-[200px] object-cover"
+                className=" mt-4  mb-4 w-full h-[80px] sm:h-[100px] md:h-[120px] lg:h-[200px] object-cover"
             />
             <FeaturedProducts />
 
