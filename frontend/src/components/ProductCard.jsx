@@ -178,10 +178,6 @@ const ProductImageSection = ({ product, onAddToCart, isAddingToCart }) => (
                     loading="lazy"
                 />
 
-                {/* Tagline - Positioned at top-left */}
-                <div className="absolute top-2 left-2 px-2 py-1 rounded-full text-white text-xs font-medium bg-blue-500 z-20 shadow-md">
-                    {product.tagline || "Top Pick"}
-                </div>
 
                 {/* Discount Badge - Positioned at top-right */}
                 {product.price > product.discountPrice && (
