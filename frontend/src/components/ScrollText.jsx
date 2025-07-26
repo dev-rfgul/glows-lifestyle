@@ -11,7 +11,7 @@ import {
   useVelocity,
 } from "framer-motion"
 
-import{cn}from '../lib/utils.js'
+import { cn } from '../lib/utils.js'
 
 // Utility function
 export const wrap = (min, max, v) => {
@@ -19,7 +19,34 @@ export const wrap = (min, max, v) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
 }
 
-export const TextScroll = ({ text, default_velocity = 5, className }) => {
+export const TextScroll = ({
+  text="Welcome to Glow's Lifestyle",
+  default_velocity = 5,
+  className,
+  responsive = true
+}) => {
+  const [windowWidth, setWindowWidth] = useState(0)
+
+  useEffect(() => {
+    const updateWindowWidth = () => {
+      setWindowWidth(window.innerWidth)
+    }
+
+    updateWindowWidth()
+    window.addEventListener('resize', updateWindowWidth)
+    return () => window.removeEventListener('resize', updateWindowWidth)
+  }, [])
+
+  // Responsive velocity based on screen size
+  const getResponsiveVelocity = () => {
+    if (!responsive) return default_velocity
+
+    if (windowWidth < 640) return default_velocity * 0.6 // Mobile - slower
+    if (windowWidth < 768) return default_velocity * 0.75 // Tablet - medium
+    if (windowWidth < 1024) return default_velocity * 0.9 // Small desktop
+    return default_velocity // Large desktop - normal speed
+  }
+
   const ParallaxText = ({ children, baseVelocity = 100, className }) => {
     const baseX = useMotionValue(0)
     const { scrollY } = useScroll()
@@ -42,16 +69,29 @@ export const TextScroll = ({ text, default_velocity = 5, className }) => {
         if (containerRef.current && textRef.current) {
           const containerWidth = containerRef.current.offsetWidth
           const textWidth = textRef.current.offsetWidth
-          const newRepetitions = Math.ceil(containerWidth / textWidth) + 2
-          setRepetitions(newRepetitions)
+
+          // Ensure minimum repetitions for smooth scrolling
+          const minRepetitions = Math.max(3, Math.ceil(containerWidth / textWidth) + 2)
+          setRepetitions(minRepetitions)
         }
       }
 
-      calculateRepetitions()
+      // Delay calculation to ensure proper rendering
+      const timeoutId = setTimeout(calculateRepetitions, 100)
+
+      const resizeObserver = new ResizeObserver(calculateRepetitions)
+      if (containerRef.current) {
+        resizeObserver.observe(containerRef.current)
+      }
 
       window.addEventListener("resize", calculateRepetitions)
-      return () => window.removeEventListener("resize", calculateRepetitions)
-    }, [children])
+
+      return () => {
+        clearTimeout(timeoutId)
+        resizeObserver.disconnect()
+        window.removeEventListener("resize", calculateRepetitions)
+      }
+    }, [children, windowWidth])
 
     const x = useTransform(baseX, (v) => `${wrap(-100 / repetitions, 0, v)}%`)
 
@@ -71,10 +111,24 @@ export const TextScroll = ({ text, default_velocity = 5, className }) => {
     })
 
     return (
-      <div className="w-full overflow-hidden whitespace-nowrap" ref={containerRef}>
-        <motion.div className={cn("inline-block", className)} style={{ x }}>
+      <div
+        className="w-full overflow-hidden whitespace-nowrap"
+        ref={containerRef}
+        style={{
+          willChange: 'transform',
+          contain: 'layout style paint'
+        }}
+      >
+        <motion.div
+          className={cn("inline-block will-change-transform", className)}
+          style={{ x }}
+        >
           {Array.from({ length: repetitions }).map((_, i) => (
-            <span key={i} ref={i === 0 ? textRef : null}>
+            <span
+              key={i}
+              ref={i === 0 ? textRef : null}
+              className="inline-block"
+            >
               {children}{" "}
             </span>
           ))}
@@ -83,14 +137,39 @@ export const TextScroll = ({ text, default_velocity = 5, className }) => {
     )
   }
 
+  const responsiveVelocity = getResponsiveVelocity()
+
   return (
-    <section className="relative w-full">
-      <ParallaxText baseVelocity={default_velocity} className={className}>
-        {text}
-      </ParallaxText>
-      <ParallaxText baseVelocity={-default_velocity} className={className}>
-        {text}
-      </ParallaxText>
+    <section className="relative w-full min-h-0 overflow-hidden">
+      {/* First scrolling text */}
+      <div className="py-2 sm:py-3 md:py-4">
+        <ParallaxText
+          baseVelocity={responsiveVelocity}
+          className={cn(
+            "text-8xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold",
+            "tracking-tight leading-none    text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-center my-4",
+            className
+          )}
+        >
+          {text}
+        </ParallaxText>
+      </div>
+
+      {/* Second scrolling text (opposite direction) */}
+      <div className="py-2 sm:py-3 md:py-4">
+        <ParallaxText
+          baseVelocity={-responsiveVelocity}
+          className={cn(
+            "text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold",
+            "tracking-tight leading-none opacity-60 text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-center my-4",
+            className
+          )}
+        >
+          {text}
+        </ParallaxText>
+      </div>
     </section>
   )
 }
+
+export default TextScroll
