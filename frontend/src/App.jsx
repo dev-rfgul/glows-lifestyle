@@ -20,6 +20,7 @@ import WhatsAppButton from './components/WhatsappBtn'
 import NotificationPopup from './components/Notification'
 import AddNotification from './components/AddNotification'
 import RandomOrder from './components/random/RandomOrder'
+import { TextScroll } from './components/ScrollText'
 
 const App = () => {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;

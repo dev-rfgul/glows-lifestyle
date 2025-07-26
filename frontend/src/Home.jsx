@@ -7,6 +7,7 @@ import FeaturedProducts from './components/FeaturedProducts'
 import FeatureSection from './components/Features'
 import ProductCarousel from './components/ProductCarousel'
 import CardCarousel from './components/CardCarousel'
+import { TextScroll } from './components/ScrollText'
 const Home = () => {
 
 
@@ -24,11 +25,7 @@ const Home = () => {
             <Explore />
             <Heading heading={"Featured Products"} subHeading={"Check out our Featured Products"} />
             <ProductCarousel />
-            <img
-                src="/images/carousel/banner-5.jpeg"
-                alt="Slim Banner"
-                className=" mt-4  mb-4 w-full h-[80px] sm:h-[100px] md:h-[120px] lg:h-[200px] object-cover"
-            />
+            <TextScroll text="Shop Now Pay Later , No Fee" default_velocity={3} className="text-8xl font-bold text-center my-4" />
             <FeaturedProducts />
 
 
