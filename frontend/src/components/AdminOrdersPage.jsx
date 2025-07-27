@@ -162,8 +162,9 @@ const AdminOrdersPage = () => {
                 >
                     <option value="all">All Statuses</option>
                     <option value="pending">Pending</option>
-                    <option value="dispatched">Dispatched</option>
-                    <option value="completed">Completed</option>
+                    <option value="packing">Packing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
                 </select>
             </div>
 
@@ -258,8 +259,9 @@ const AdminOrdersPage = () => {
                                             onClick={(e) => e.stopPropagation()}
                                         >
                                             <option value="pending">Pending</option>
-                                            <option value="dispatched">Dispatched</option>
-                                            <option value="completed">Completed</option>
+                                            <option value="packing">Packing</option>
+                                            <option value="shipped">Shipped</option>
+                                            <option value="delivered">Delivered</option>
                                         </select>
                                         {statusMessages[order._id] && (
                                             <p className="text-xs text-green-500 mt-1">{statusMessages[order._id]}</p>
