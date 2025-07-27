@@ -20,7 +20,7 @@ export const wrap = (min, max, v) => {
 }
 
 export const TextScroll = ({
-  text="Welcome to Glow's Lifestyle",
+  text=" Welcome to Glow's Lifestyle!!! ",
   default_velocity = 5,
   className,
   responsive = true
@@ -144,10 +144,10 @@ export const TextScroll = ({
       {/* First scrolling text */}
       <div className="py-2 sm:py-3 md:py-4">
         <ParallaxText
-          baseVelocity={responsiveVelocity}
+          baseVelocity={-responsiveVelocity}
           className={cn(
             "text-8xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold",
-            "tracking-tight leading-none    text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-center my-4",
+            "tracking-tight leading-none  text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-center my-4",
             className
           )}
         >
@@ -158,10 +158,10 @@ export const TextScroll = ({
       {/* Second scrolling text (opposite direction) */}
       <div className="py-2 sm:py-3 md:py-4">
         <ParallaxText
-          baseVelocity={-responsiveVelocity}
+          baseVelocity={responsiveVelocity}
           className={cn(
-            "text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold",
-            "tracking-tight leading-none opacity-60 text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-center my-4",
+            "text-8xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold",
+            "tracking-tight leading-none  text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-center my-4",
             className
           )}
         >
