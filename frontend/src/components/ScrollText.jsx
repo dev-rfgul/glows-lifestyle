@@ -20,7 +20,7 @@ export const wrap = (min, max, v) => {
 }
 
 export const TextScroll = ({
-  text=" Welcome to Glow's Lifestyle!!! ",
+  text=" Welcome to Glowz Lifestyle!!! ",
   default_velocity = 5,
   className,
   responsive = true
