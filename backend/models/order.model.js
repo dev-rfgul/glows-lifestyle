@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
     customer_email: String,
     orderStatus: {
         type: String,
-        enum: ['pending', 'dispatched', 'completed',],
+        enum: ['pending', 'packing', 'shipped', 'delivered', 'cancelled'],
         default: 'pending'
     },
     // Shipping information with more specific structure
