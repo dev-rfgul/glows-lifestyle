@@ -365,7 +365,7 @@ const ReviewCard = ({ review }) => {
   );
 };
 
-const Reviews = ({ selectedProduct = "Hoco EQ2 earbuds" }) => {
+const Reviews = ({ selectedProduct  }) => {
   const [reviews, setReviews] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(selectedProduct);
   const [stats, setStats] = useState({
