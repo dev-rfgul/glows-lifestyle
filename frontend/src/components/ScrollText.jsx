@@ -167,6 +167,7 @@ export const TextScroll = ({
         >
           {text}
         </ParallaxText>
+        
       </div>
     </section>
   )
