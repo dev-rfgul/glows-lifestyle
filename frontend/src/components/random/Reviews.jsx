@@ -5,277 +5,278 @@ import { Star, StarHalf, Headphones } from "lucide-react";
 const productReviews = {
   "Lenovo GM2 Pro Wireless Bluetooth Headset": [
     {
-      name: "Alex Johnson",
+      name: "Ali Khan",
       review: "Crystal clear audio quality! The bass is incredible and highs are crisp. Perfect for my morning runs.",
       rating: 5.0,
-      location: "New York, NY",
+      location: "Lahore, Punjab",
       daysAgo: 5,
       verified: true
     },
     {
-      name: "Maria Rodriguez",
+      name: "Fatima Ahmed",
       review: "Battery life is outstanding - lasted me 8 hours straight during work. Highly recommend!",
       rating: 4.5,
-      location: "Los Angeles, CA",
+      location: "Karachi, Sindh",
       daysAgo: 12,
       verified: true
     },
     {
-      name: "John Smith",
+      name: "Hamza Malik",
       review: "Noise cancellation works like magic. I can focus completely in noisy environments.",
       rating: 5.0,
-      location: "Chicago, IL",
+      location: "Islamabad, Capital Territory",
       daysAgo: 8,
       verified: false
     },
     {
-      name: "Sophia Chen",
+      name: "Ayesha Siddiqui",
       review: "Comfortable fit even after hours of use. The ergonomic design is spot on.",
       rating: 4.5,
-      location: "Houston, TX",
+      location: "Faisalabad, Punjab",
       daysAgo: 15,
       verified: true
     }
   ],
   "Hoco EQ2 earbuds": [
     {
-      name: "Liam Thompson",
+      name: "Bilal Shah",
       review: "Bluetooth connectivity is seamless. Pairs instantly with my iPhone and Android.",
       rating: 4.5,
-      location: "Phoenix, AZ",
+      location: "Rawalpindi, Punjab",
       daysAgo: 3,
       verified: true
     },
     {
-      name: "Emma Wilson",
+      name: "Zainab Javed",
       review: "Sound quality rivals my expensive over-ear headphones. Amazing value for money!",
       rating: 5.0,
-      location: "Philadelphia, PA",
+      location: "Multan, Punjab",
       daysAgo: 18,
       verified: true
     },
     {
-      name: "Noah Davis",
+      name: "Usman Raza",
       review: "Touch controls are intuitive and responsive. Love the gesture-based volume control.",
       rating: 4.0,
-      location: "San Antonio, TX",
+      location: "Peshawar, KPK",
       daysAgo: 7,
       verified: false
     },
     {
-      name: "Olivia Brown",
+      name: "Mariam Qureshi",
       review: "Waterproof rating is legit - survived my intense gym sessions and rain.",
       rating: 4.5,
-      location: "San Diego, CA",
+      location: "Gujranwala, Punjab",
       daysAgo: 22,
       verified: true
     }
   ],
   "Glowz-A6S TWS Headset Wireless Earphones Bluetooth Headphones": [
     {
-      name: "Ethan Martinez",
+      name: "Ahmad Sheikh",
       review: "The charging case is compact yet powerful. Quick charge feature is a lifesaver.",
       rating: 4.5,
-      location: "Dallas, TX",
+      location: "Sialkot, Punjab",
       daysAgo: 4,
       verified: true
     },
     {
-      name: "Ava Taylor",
+      name: "Noor Fatima",
       review: "Audio latency is minimal for gaming and videos. No sync issues whatsoever.",
       rating: 5.0,
-      location: "Austin, TX",
+      location: "Bahawalpur, Punjab",
       daysAgo: 11,
       verified: true
     },
     {
-      name: "Michael Lee",
+      name: "Saad Ali",
       review: "Deep bass without muddying the mids. Perfect for electronic and hip-hop music.",
       rating: 4.5,
-      location: "New York, NY",
+      location: "Quetta, Balochistan",
       daysAgo: 16,
       verified: false
     },
     {
-      name: "Sarah Miller",
+      name: "Hina Rizvi",
       review: "Call quality is excellent - crystal clear voice on both ends during conferences.",
       rating: 4.0,
-      location: "Los Angeles, CA",
+      location: "Hyderabad, Sindh",
       daysAgo: 9,
       verified: true
     }
   ],
   "Glowz - 895B  Bluetooth TWS Wireless  Earphone": [
     {
-      name: "David Garcia",
+      name: "Talha Yousaf",
       review: "Lightweight design makes me forget I'm wearing them. Truly wireless freedom!",
       rating: 4.5,
-      location: "Chicago, IL",
+      location: "Sargodha, Punjab",
       daysAgo: 6,
       verified: true
     },
     {
-      name: "Jessica White",
+      name: "Areeba Shahid",
       review: "Quick pairing with multiple devices. Seamless switching between phone and laptop.",
       rating: 4.5,
-      location: "Houston, TX",
+      location: "Abbottabad, KPK",
       daysAgo: 14,
       verified: true
     },
     {
-      name: "Ryan Anderson",
+      name: "Moiz Rehman",
       review: "Premium build quality with sleek aesthetics. Looks as good as it sounds.",
       rating: 5.0,
-      location: "Phoenix, AZ",
+      location: "Mardan, KPK",
       daysAgo: 20,
       verified: false
     },
     {
-      name: "Alex Johnson",
+      name: "Ali Khan",
       review: "Exceptional bass response for electronic music. These earbuds deliver powerful low-end.",
       rating: 4.5,
-      location: "New York, NY",
+      location: "Lahore, Punjab",
       daysAgo: 13,
       verified: true
     }
   ],
   "Glowz-A9 Pro Touch Screen Airpods": [
     {
-      name: "Maria Rodriguez",
+      name: "Fatima Ahmed",
       review: "Voice clarity is unmatched for calls. My colleagues say I sound like I'm in the room.",
       rating: 5.0,
-      location: "Los Angeles, CA",
+      location: "Karachi, Sindh",
       daysAgo: 2,
       verified: true
     },
     {
-      name: "John Smith",
+      name: "Hamza Malik",
       review: "High-definition audio makes every song sound like a live performance.",
       rating: 4.5,
-      location: "Chicago, IL",
+      location: "Islamabad, Capital Territory",
       daysAgo: 17,
       verified: true
     },
     {
-      name: "Sophia Chen",
+      name: "Ayesha Siddiqui",
       review: "Crystal clear trebles without any harshness. Perfect for classical music.",
       rating: 4.5,
-      location: "Houston, TX",
+      location: "Faisalabad, Punjab",
       daysAgo: 10,
       verified: false
     },
     {
-      name: "Liam Thompson",
+      name: "Bilal Shah",
       review: "Impressive sound stage for earbuds. Each instrument is clearly separated.",
       rating: 4.0,
-      location: "Phoenix, AZ",
+      location: "Rawalpindi, Punjab",
       daysAgo: 25,
       verified: true
     }
   ],
   "Air31 Tws Earbuds": [
     {
-      name: "Emma Wilson",
+      name: "Zainab Javed",
       review: "Perfect for workouts! Stays secure during intense training sessions.",
       rating: 5.0,
-      location: "Philadelphia, PA",
+      location: "Multan, Punjab",
       daysAgo: 1,
       verified: true
     },
     {
-      name: "Noah Davis",
+      name: "Usman Raza",
       review: "Sweat-resistant and durable. Been using them daily at the gym for months.",
       rating: 4.5,
-      location: "San Antonio, TX",
+      location: "Peshawar, KPK",
       daysAgo: 19,
       verified: true
     },
     {
-      name: "Olivia Brown",
+      name: "Mariam Qureshi",
       review: "Motivating bass beats keep me energized during my runs. Love the secure fit!",
       rating: 4.5,
-      location: "San Diego, CA",
+      location: "Gujranwala, Punjab",
       daysAgo: 8,
       verified: false
     },
     {
-      name: "Ethan Martinez",
+      name: "Ahmad Sheikh",
       review: "No more wires getting in the way during exercises. Complete workout freedom!",
       rating: 4.0,
-      location: "Dallas, TX",
+      location: "Sialkot, Punjab",
       daysAgo: 21,
       verified: true
     }
   ],
   "Acer OHR 503  Wireless Earbuds": [
     {
-      name: "Ava Taylor",
+      name: "Noor Fatima",
       review: "Professional-grade audio quality. Perfect for my music production work.",
       rating: 5.0,
-      location: "Austin, TX",
+      location: "Bahawalpur, Punjab",
       daysAgo: 7,
       verified: true
     },
     {
-      name: "Michael Lee",
+      name: "Saad Ali",
       review: "Flat frequency response makes mixing so much easier. Highly recommend for producers.",
       rating: 4.5,
-      location: "New York, NY",
+      location: "Quetta, Balochistan",
       daysAgo: 12,
       verified: true
     },
     {
-      name: "Sarah Miller",
+      name: "Hina Rizvi",
       review: "Studio-quality sound in a wireless package. These are game-changers!",
       rating: 4.5,
-      location: "Los Angeles, CA",
+      location: "Hyderabad, Sindh",
       daysAgo: 24,
       verified: false
     },
     {
-      name: "David Garcia",
+      name: "Talha Yousaf",
       review: "Accurate sound reproduction across all frequencies. Perfect for critical listening.",
       rating: 4.0,
-      location: "Chicago, IL",
+      location: "Sargodha, Punjab",
       daysAgo: 16,
       verified: true
     }
   ],
   "H9 Pro Max Series 9 Smart Watch": [
     {
-      name: "Emma Wilson",
+      name: "Areeba Shahid",
       review: "Excellent smartwatch for fitness tracking. Love the accurate heart rate monitor and stylish look.",
       rating: 5.0,
-      location: "Philadelphia, PA",
+      location: "Abbottabad, KPK",
       daysAgo: 3,
       verified: true
     },
     {
-      name: "Noah Davis",
+      name: "Moiz Rehman",
       review: "Battery lasts longer than expected. Easy to sync with both Android and iOS.",
       rating: 4.5,
-      location: "San Antonio, TX",
+      location: "Mardan, KPK",
       daysAgo: 10,
       verified: true
     },
     {
-      name: "Olivia Brown",
+      name: "Ali Khan",
       review: "Tracks sleep and steps precisely. Sleek design goes with any outfit.",
       rating: 4.0,
-      location: "San Diego, CA",
+      location: "Lahore, Punjab",
       daysAgo: 7,
       verified: false
     },
     {
-      name: "Ethan Martinez",
+      name: "Fatima Ahmed",
       review: "Notifications and calls right on my wrist. Great value for a smart watch!",
       rating: 4.5,
-      location: "Dallas, TX",
+      location: "Karachi, Sindh",
       daysAgo: 6,
       verified: true
     }
   ]
 };
+
 
 
 const getProductReviews = (productName ) => {
