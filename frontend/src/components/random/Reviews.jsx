@@ -414,25 +414,7 @@ const Reviews = ({ selectedProduct  }) => {
         </p>
       </div>
 
-      {/* Product Selector */}
-      <div className="mb-8">
-        <div className="flex flex-wrap justify-center gap-3">
-          {productNames.map((product) => (
-            <button
-              key={product}
-              onClick={() => setCurrentProduct(product)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                currentProduct === product
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
-              }`}
-            >
-              <Headphones size={14} className="inline mr-1" />
-              {product}
-            </button>
-          ))}
-        </div>
-      </div>
+
 
       {/* Current Product Header */}
       <div className="text-center mb-8">
