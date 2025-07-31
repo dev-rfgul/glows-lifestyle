@@ -407,24 +407,13 @@ const Reviews = ({ selectedProduct  }) => {
       {/* Header Section */}
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">
-          What Our Customers Say
+          What Our Customers Say About {currentProduct}
         </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Read authentic reviews from satisfied customers who have experienced premium audio quality
-        </p>
       </div>
 
 
 
-      {/* Current Product Header */}
-      <div className="text-center mb-8">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-          Reviews for {currentProduct}
-        </h3>
-        <p className="text-gray-600">
-          Consistent reviews from verified customers for this specific product
-        </p>
-      </div>
+
 
       {/* Stats Section */}
       <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
