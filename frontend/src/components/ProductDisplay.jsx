@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import Reviews from "./random/Reviews"; // Import the Reviews component
 // import logo from "../images/logo.png";
 
 {/* <AlertMessage logoUrl={logo} /> */ }
@@ -426,6 +427,9 @@ const EarbudsProductDisplay = () => {
                     />
                 </div>
             )}
+
+            {/* ratings and reviews */}
+            <Reviews/>
         </div>
     );
 };
