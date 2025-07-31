@@ -1,75 +1,285 @@
 import React, { useEffect, useState } from "react";
 import { Star, StarHalf, Headphones } from "lucide-react";
 
-const sampleNames = [
-  "Alex Johnson",
-  "Maria Rodriguez", 
-  "John Smith",
-  "Sophia Chen",
-  "Liam Thompson",
-  "Emma Wilson",
-  "Noah Davis",
-  "Olivia Brown",
-  "Ethan Martinez",
-  "Ava Taylor",
-  "Michael Lee",
-  "Sarah Miller",
-  "David Garcia",
-  "Jessica White",
-  "Ryan Anderson"
-];
+// Predefined reviews for each product to ensure consistency
+const productReviews = {
+  "Lenovo GM2 Pro Wireless Bluetooth Headset": [
+    {
+      name: "Alex Johnson",
+      review: "Crystal clear audio quality! The bass is incredible and highs are crisp. Perfect for my morning runs.",
+      rating: 5.0,
+      location: "New York, NY",
+      daysAgo: 5,
+      verified: true
+    },
+    {
+      name: "Maria Rodriguez",
+      review: "Battery life is outstanding - lasted me 8 hours straight during work. Highly recommend!",
+      rating: 4.5,
+      location: "Los Angeles, CA",
+      daysAgo: 12,
+      verified: true
+    },
+    {
+      name: "John Smith",
+      review: "Noise cancellation works like magic. I can focus completely in noisy environments.",
+      rating: 5.0,
+      location: "Chicago, IL",
+      daysAgo: 8,
+      verified: false
+    },
+    {
+      name: "Sophia Chen",
+      review: "Comfortable fit even after hours of use. The ergonomic design is spot on.",
+      rating: 4.5,
+      location: "Houston, TX",
+      daysAgo: 15,
+      verified: true
+    }
+  ],
+  "Hoco EQ2 earbuds": [
+    {
+      name: "Liam Thompson",
+      review: "Bluetooth connectivity is seamless. Pairs instantly with my iPhone and Android.",
+      rating: 4.5,
+      location: "Phoenix, AZ",
+      daysAgo: 3,
+      verified: true
+    },
+    {
+      name: "Emma Wilson",
+      review: "Sound quality rivals my expensive over-ear headphones. Amazing value for money!",
+      rating: 5.0,
+      location: "Philadelphia, PA",
+      daysAgo: 18,
+      verified: true
+    },
+    {
+      name: "Noah Davis",
+      review: "Touch controls are intuitive and responsive. Love the gesture-based volume control.",
+      rating: 4.0,
+      location: "San Antonio, TX",
+      daysAgo: 7,
+      verified: false
+    },
+    {
+      name: "Olivia Brown",
+      review: "Waterproof rating is legit - survived my intense gym sessions and rain.",
+      rating: 4.5,
+      location: "San Diego, CA",
+      daysAgo: 22,
+      verified: true
+    }
+  ],
+  "Glowz-A6S TWS Headset Wireless Earphones Bluetooth Headphones": [
+    {
+      name: "Ethan Martinez",
+      review: "The charging case is compact yet powerful. Quick charge feature is a lifesaver.",
+      rating: 4.5,
+      location: "Dallas, TX",
+      daysAgo: 4,
+      verified: true
+    },
+    {
+      name: "Ava Taylor",
+      review: "Audio latency is minimal for gaming and videos. No sync issues whatsoever.",
+      rating: 5.0,
+      location: "Austin, TX",
+      daysAgo: 11,
+      verified: true
+    },
+    {
+      name: "Michael Lee",
+      review: "Deep bass without muddying the mids. Perfect for electronic and hip-hop music.",
+      rating: 4.5,
+      location: "New York, NY",
+      daysAgo: 16,
+      verified: false
+    },
+    {
+      name: "Sarah Miller",
+      review: "Call quality is excellent - crystal clear voice on both ends during conferences.",
+      rating: 4.0,
+      location: "Los Angeles, CA",
+      daysAgo: 9,
+      verified: true
+    }
+  ],
+  "Glowz - 895B  Bluetooth TWS Wireless  Earphone": [
+    {
+      name: "David Garcia",
+      review: "Lightweight design makes me forget I'm wearing them. Truly wireless freedom!",
+      rating: 4.5,
+      location: "Chicago, IL",
+      daysAgo: 6,
+      verified: true
+    },
+    {
+      name: "Jessica White",
+      review: "Quick pairing with multiple devices. Seamless switching between phone and laptop.",
+      rating: 4.5,
+      location: "Houston, TX",
+      daysAgo: 14,
+      verified: true
+    },
+    {
+      name: "Ryan Anderson",
+      review: "Premium build quality with sleek aesthetics. Looks as good as it sounds.",
+      rating: 5.0,
+      location: "Phoenix, AZ",
+      daysAgo: 20,
+      verified: false
+    },
+    {
+      name: "Alex Johnson",
+      review: "Exceptional bass response for electronic music. These earbuds deliver powerful low-end.",
+      rating: 4.5,
+      location: "New York, NY",
+      daysAgo: 13,
+      verified: true
+    }
+  ],
+  "Glowz-A9 Pro Touch Screen Airpods": [
+    {
+      name: "Maria Rodriguez",
+      review: "Voice clarity is unmatched for calls. My colleagues say I sound like I'm in the room.",
+      rating: 5.0,
+      location: "Los Angeles, CA",
+      daysAgo: 2,
+      verified: true
+    },
+    {
+      name: "John Smith",
+      review: "High-definition audio makes every song sound like a live performance.",
+      rating: 4.5,
+      location: "Chicago, IL",
+      daysAgo: 17,
+      verified: true
+    },
+    {
+      name: "Sophia Chen",
+      review: "Crystal clear trebles without any harshness. Perfect for classical music.",
+      rating: 4.5,
+      location: "Houston, TX",
+      daysAgo: 10,
+      verified: false
+    },
+    {
+      name: "Liam Thompson",
+      review: "Impressive sound stage for earbuds. Each instrument is clearly separated.",
+      rating: 4.0,
+      location: "Phoenix, AZ",
+      daysAgo: 25,
+      verified: true
+    }
+  ],
+  "Air31 Tws Earbuds": [
+    {
+      name: "Emma Wilson",
+      review: "Perfect for workouts! Stays secure during intense training sessions.",
+      rating: 5.0,
+      location: "Philadelphia, PA",
+      daysAgo: 1,
+      verified: true
+    },
+    {
+      name: "Noah Davis",
+      review: "Sweat-resistant and durable. Been using them daily at the gym for months.",
+      rating: 4.5,
+      location: "San Antonio, TX",
+      daysAgo: 19,
+      verified: true
+    },
+    {
+      name: "Olivia Brown",
+      review: "Motivating bass beats keep me energized during my runs. Love the secure fit!",
+      rating: 4.5,
+      location: "San Diego, CA",
+      daysAgo: 8,
+      verified: false
+    },
+    {
+      name: "Ethan Martinez",
+      review: "No more wires getting in the way during exercises. Complete workout freedom!",
+      rating: 4.0,
+      location: "Dallas, TX",
+      daysAgo: 21,
+      verified: true
+    }
+  ],
+  "Acer OHR 503  Wireless Earbuds": [
+    {
+      name: "Ava Taylor",
+      review: "Professional-grade audio quality. Perfect for my music production work.",
+      rating: 5.0,
+      location: "Austin, TX",
+      daysAgo: 7,
+      verified: true
+    },
+    {
+      name: "Michael Lee",
+      review: "Flat frequency response makes mixing so much easier. Highly recommend for producers.",
+      rating: 4.5,
+      location: "New York, NY",
+      daysAgo: 12,
+      verified: true
+    },
+    {
+      name: "Sarah Miller",
+      review: "Studio-quality sound in a wireless package. These are game-changers!",
+      rating: 4.5,
+      location: "Los Angeles, CA",
+      daysAgo: 24,
+      verified: false
+    },
+    {
+      name: "David Garcia",
+      review: "Accurate sound reproduction across all frequencies. Perfect for critical listening.",
+      rating: 4.0,
+      location: "Chicago, IL",
+      daysAgo: 16,
+      verified: true
+    }
+  ],
+  "H9 Pro Max Series 9 Smart Watch": [
+    {
+      name: "Emma Wilson",
+      review: "Excellent smartwatch for fitness tracking. Love the accurate heart rate monitor and stylish look.",
+      rating: 5.0,
+      location: "Philadelphia, PA",
+      daysAgo: 3,
+      verified: true
+    },
+    {
+      name: "Noah Davis",
+      review: "Battery lasts longer than expected. Easy to sync with both Android and iOS.",
+      rating: 4.5,
+      location: "San Antonio, TX",
+      daysAgo: 10,
+      verified: true
+    },
+    {
+      name: "Olivia Brown",
+      review: "Tracks sleep and steps precisely. Sleek design goes with any outfit.",
+      rating: 4.0,
+      location: "San Diego, CA",
+      daysAgo: 7,
+      verified: false
+    },
+    {
+      name: "Ethan Martinez",
+      review: "Notifications and calls right on my wrist. Great value for a smart watch!",
+      rating: 4.5,
+      location: "Dallas, TX",
+      daysAgo: 6,
+      verified: true
+    }
+  ]
+};
 
-const earbudsReviews = [
-  "Crystal clear audio quality! The bass is incredible and highs are crisp. Perfect for my morning runs.",
-  "Battery life is outstanding - lasted me 8 hours straight during work. Highly recommend!",
-  "Noise cancellation works like magic. I can focus completely in noisy environments.",
-  "Comfortable fit even after hours of use. The ergonomic design is spot on.",
-  "Bluetooth connectivity is seamless. Pairs instantly with my iPhone and Android.",
-  "Sound quality rivals my expensive over-ear headphones. Amazing value for money!",
-  "Touch controls are intuitive and responsive. Love the gesture-based volume control.",
-  "Waterproof rating is legit - survived my intense gym sessions and rain.",
-  "The charging case is compact yet powerful. Quick charge feature is a lifesaver.",
-  "Audio latency is minimal for gaming and videos. No sync issues whatsoever.",
-  "Deep bass without muddying the mids. Perfect for electronic and hip-hop music.",
-  "Call quality is excellent - crystal clear voice on both ends during conferences.",
-  "Lightweight design makes me forget I'm wearing them. Truly wireless freedom!",
-  "Quick pairing with multiple devices. Seamless switching between phone and laptop.",
-  "Premium build quality with sleek aesthetics. Looks as good as it sounds."
-];
 
-const productTypes = [
-  "TWS Pro Max",
-  "AirFlow Elite", 
-  "SoundWave X1",
-  "BassBoost Pro",
-  "ClearTone HD",
-  "SportBeat Active",
-  "StudioPro Wireless"
-];
-
-const locations = [
-  "New York, NY",
-  "Los Angeles, CA", 
-  "Chicago, IL",
-  "Houston, TX",
-  "Phoenix, AZ",
-  "Philadelphia, PA",
-  "San Antonio, TX",
-  "San Diego, CA",
-  "Dallas, TX",
-  "Austin, TX"
-];
-
-const generateRandomReview = () => {
-  const name = sampleNames[Math.floor(Math.random() * sampleNames.length)];
-  const review = earbudsReviews[Math.floor(Math.random() * earbudsReviews.length)];
-  const product = productTypes[Math.floor(Math.random() * productTypes.length)];
-  const location = locations[Math.floor(Math.random() * locations.length)];
-  const rating = Math.round((Math.random() * 1.5 + 3.5) * 2) / 2; // 3.5 to 5 stars (more realistic for good products)
-  const daysAgo = Math.floor(Math.random() * 30) + 1; // 1-30 days ago
-  const verified = Math.random() > 0.3; // 70% chance of verified purchase
-  
-  return { name, review, rating, product, location, daysAgo, verified };
+const getProductReviews = (productName ) => {
+  return productReviews[productName] || [];
 };
 
 const StarRating = ({ rating }) => {
@@ -155,36 +365,41 @@ const ReviewCard = ({ review }) => {
   );
 };
 
-const RandomReviews = () => {
+const Reviews = ({ selectedProduct = "Hoco EQ2 earbuds" }) => {
   const [reviews, setReviews] = useState([]);
+  const [currentProduct, setCurrentProduct] = useState(selectedProduct);
   const [stats, setStats] = useState({
     totalReviews: 0,
     averageRating: 0,
     ratingDistribution: [0, 0, 0, 0, 0]
   });
 
+  const productNames = Object.keys(productReviews);
+
   useEffect(() => {
-    const generated = Array.from({ length: 8 }, generateRandomReview);
-    setReviews(generated);
+    const productReviewsData = getProductReviews(currentProduct);
+    setReviews(productReviewsData);
     
-    // Calculate stats
-    const total = generated.length;
-    const avgRating = generated.reduce((sum, rev) => sum + rev.rating, 0) / total;
-    const distribution = [0, 0, 0, 0, 0];
-    
-    generated.forEach(rev => {
-      const starIndex = Math.floor(rev.rating) - 1;
-      if (starIndex >= 0 && starIndex < 5) {
-        distribution[starIndex]++;
-      }
-    });
-    
-    setStats({
-      totalReviews: total + Math.floor(Math.random() * 1000) + 500, // Simulate more reviews
-      averageRating: avgRating,
-      ratingDistribution: distribution
-    });
-  }, []);
+    // Calculate stats for the current product
+    if (productReviewsData.length > 0) {
+      const total = productReviewsData.length;
+      const avgRating = productReviewsData.reduce((sum, rev) => sum + rev.rating, 0) / total;
+      const distribution = [0, 0, 0, 0, 0];
+      
+      productReviewsData.forEach(rev => {
+        const starIndex = Math.floor(rev.rating) - 1;
+        if (starIndex >= 0 && starIndex < 5) {
+          distribution[starIndex]++;
+        }
+      });
+      
+      setStats({
+        totalReviews: total + Math.floor(Math.random() * 500) + 200, // Simulate more reviews
+        averageRating: avgRating,
+        ratingDistribution: distribution
+      });
+    }
+  }, [currentProduct]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 bg-gray-50">
@@ -194,7 +409,37 @@ const RandomReviews = () => {
           What Our Customers Say
         </h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Join thousands of satisfied customers who have experienced premium audio quality with our wireless earbuds
+          Read authentic reviews from satisfied customers who have experienced premium audio quality
+        </p>
+      </div>
+
+      {/* Product Selector */}
+      <div className="mb-8">
+        <div className="flex flex-wrap justify-center gap-3">
+          {productNames.map((product) => (
+            <button
+              key={product}
+              onClick={() => setCurrentProduct(product)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                currentProduct === product
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
+              }`}
+            >
+              <Headphones size={14} className="inline mr-1" />
+              {product}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Current Product Header */}
+      <div className="text-center mb-8">
+        <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+          Reviews for {currentProduct}
+        </h3>
+        <p className="text-gray-600">
+          Consistent reviews from verified customers for this specific product
         </p>
       </div>
 
@@ -217,7 +462,7 @@ const RandomReviews = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Rating Distribution</h3>
             {[5, 4, 3, 2, 1].map((star) => {
               const count = stats.ratingDistribution[star - 1] || 0;
-              const percentage = stats.totalReviews > 0 ? (count / reviews.length) * 100 : 0;
+              const percentage = reviews.length > 0 ? (count / reviews.length) * 100 : 0;
               
               return (
                 <div key={star} className="flex items-center gap-3 mb-2">
@@ -243,7 +488,7 @@ const RandomReviews = () => {
       {/* Reviews Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {reviews.map((review, idx) => (
-          <ReviewCard key={idx} review={review} />
+          <ReviewCard key={`${currentProduct}-${idx}`} review={{...review, product: currentProduct}} />
         ))}
       </div>
 
@@ -255,7 +500,7 @@ const RandomReviews = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button className="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
-            Shop Now
+            Shop {currentProduct}
           </button>
           <button className="border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-colors">
             View All Reviews
@@ -266,4 +511,4 @@ const RandomReviews = () => {
   );
 };
 
-export default RandomReviews;
+export default Reviews;

@@ -429,7 +429,7 @@ const EarbudsProductDisplay = () => {
             )}
 
             {/* ratings and reviews */}
-            <Reviews/>
+            <Reviews selectedProduct={product.title}/>
         </div>
     );
 };
