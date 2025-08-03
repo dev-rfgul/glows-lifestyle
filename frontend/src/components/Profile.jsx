@@ -341,7 +341,7 @@ const UserProfile = () => {
                                     </div>
                                     <div className="mt-2 text-sm sm:text-base text-gray-600">
                                         <p>Date: {new Date(order.products.orderDate).toLocaleDateString()}</p>
-                                        <p>Total: <span className="font-semibold text-green-600">${order.products.orderTotal}</span></p>
+                                        <p>Total: <span className="font-semibold text-green-600">PKR{order.products.orderTotal}</span></p>
                                     </div>
                                 </div>
 
