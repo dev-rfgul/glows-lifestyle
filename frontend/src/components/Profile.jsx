@@ -341,7 +341,7 @@ const UserProfile = () => {
                                     </div>
                                     <div className="mt-2 text-sm sm:text-base text-gray-600">
                                         <p>Date: {new Date(order.products.orderDate).toLocaleDateString()}</p>
-                                        <p>Total: <span className="font-semibold text-green-600">PKR{order.products.orderTotal}</span></p>
+                                        <p>Total: <span className="font-semibold text-green-600">PKR {order.products.orderTotal}</span></p>
                                     </div>
                                 </div>
 
@@ -361,7 +361,7 @@ const UserProfile = () => {
                                                     <h5 className="font-semibold text-gray-800 mb-2">{product.productName || "Product Name"}</h5>
                                                     <div className="text-sm text-gray-600 flex flex-col space-y-1">
                                                         <p>Product ID: <span className="font-medium">{product.productId || "N/A"}</span></p>
-                                                        <p>Price: <span className="font-medium text-green-600">${product.productPrice}</span></p>
+                                                        <p>Price: <span className="font-medium text-green-600">PKR {product.productPrice}</span></p>
                                                         <p>Quantity: <span className="font-medium">{product.productQuantity}</span></p>
                                                         {product.productColor && (
                                                             <p>Color: <span className="font-medium">{product.productColor}</span></p>
