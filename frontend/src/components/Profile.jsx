@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { FaShoppingCart, FaTrash, FaSpinner, FaUser, FaHistory, FaBox, FaSignOutAlt, FaStore } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { loadStripe } from "@stripe/stripe-js";
 
 const UserProfile = () => {
     const [userData, setUserData] = useState(null);
@@ -83,48 +82,6 @@ const UserProfile = () => {
         }
     };
 
-    const makePayment = async () => {
-        if (cartProducts.length === 0) {
-            return;
-        }
-
-        setIsProcessingPayment(true);
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/payment/makepayment`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: userId,
-                    products: cartProducts.map(product => ({
-                        _id: product._id,
-                        name: product.name,
-                        price: product.price,
-                        images: product.images && product.images.length > 0
-                            ? [product.images[0]]
-                            : ["https://www.dewnor.com/wp-content/uploads/2021/01/cropped-cropped-logo.png"]
-                    })),
-                }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok || !data.sessionId) {
-                throw new Error(data.message || "Failed to create payment session");
-            }
-
-            const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-            const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
-
-            if (error) {
-                throw new Error(error.message);
-            }
-        } catch (error) {
-            console.error("Payment Error:", error);
-        } finally {
-            setIsProcessingPayment(false);
-        }
-    };
 
     const fetchOrder = async () => {
         const orderHistory = userData?.orderHistory;
@@ -164,6 +121,7 @@ const UserProfile = () => {
         }
     }, [userData]);
     console.log("orderd prods", orderedProducts)
+
     const handleLogout = async () => {
         try {
             await axios.post(
