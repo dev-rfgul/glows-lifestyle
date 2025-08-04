@@ -8,7 +8,8 @@ const UserProfile = () => {
     const [cartProducts, setCartProducts] = useState([]);
     const [userId, setUserId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+    // const [isProcessingPayment, ] = useState(false);
+    const isProcessingPayment = false; // Placeholder for payment processing state
     const [error, setError] = useState(null);
     const [orderedProducts, setOrderedProducts] = useState({ orderedProducts: [] });
     const [activeTab, setActiveTab] = useState("cart"); // "cart", "orders"
