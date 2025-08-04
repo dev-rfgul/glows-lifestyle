@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Carousel from './components/Carousel'
 import Explore from './components/Explore'
 import Heading from './components/Heading'

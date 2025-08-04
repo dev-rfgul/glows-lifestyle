@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import "swiper/css/effect-coverflow"
 import "swiper/css/pagination"
-import "swiper/css/navigation"
-import { SparklesIcon, ShoppingCart, Star } from "lucide-react"
 import {
     Autoplay,
     EffectCoverflow,
     Navigation,
     Pagination,
 } from "swiper/modules"
-import { Badge } from "./Badge"
 import ProductCard from "./ProductCard"
 export const CardCarousel = ({
     autoplayDelay = 3000,

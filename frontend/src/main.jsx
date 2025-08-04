@@ -1,13 +1,9 @@
-import React from 'react';  // ✅ Add this line
-import { StrictMode } from 'react';
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store/store.js';
 import { Auth0Provider } from '@auth0/auth0-react';
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 
 import './index.css';
@@ -27,9 +23,9 @@ createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <BrowserRouter >
           <Navbar />
-          <Elements stripe={stripePromise}>
+          {/* <Elements stripe={stripePromise}> */}
             <App />
-          </Elements>
+          {/* </Elements> */}
           <Footer />
         </BrowserRouter>
       </Provider>

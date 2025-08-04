@@ -1,6 +1,5 @@
 
-import React, { useState, useEffect, useCallback, memo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import AlertMessage from "./Alert";
 import ProductCard from './ProductCard'
@@ -19,7 +18,7 @@ const ProductGrid = () => {
         category: "all",
         priceRange: [0, 100000]
     });
-    const [categories, setCategories] = useState([]);
+    // const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -98,10 +97,11 @@ const ProductGrid = () => {
             return Promise.resolve(response.data);
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message;
-            // setGlobalAlert({
-            //     message: "Error adding product to cart: " + errorMessage,
-            //     type: "error",
-            // });
+            
+            setGlobalAlert({
+                message: "Error adding product to cart: " + errorMessage,
+                type: "error",
+            });
             // return Promise.reject(error);
         }
     }, [userId]);
@@ -158,8 +158,6 @@ const ProductGrid = () => {
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
                 console.log("Guest account created:", user);
-                handleClose(); // Close alert after successful guest login
-                navigate('/');
             } else {
                 console.error("No user returned from guest-signup API");
             }
