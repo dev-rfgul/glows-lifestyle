@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, StarHalf, Headphones } from "lucide-react";
+import PropTypes from 'prop-types';
 
 // Predefined reviews for each product to ensure consistency
 const productReviews = {
@@ -307,6 +308,11 @@ const StarRating = ({ rating }) => {
   );
 };
 
+// Props validation
+StarRating.propTypes = {
+  rating: PropTypes.number.isRequired
+};
+
 const ReviewCard = ({ review }) => {
   return (
     <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -366,16 +372,27 @@ const ReviewCard = ({ review }) => {
   );
 };
 
-const Reviews = ({ selectedProduct  }) => {
+// Props validation for ReviewCard
+ReviewCard.propTypes = {
+  review: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    daysAgo: PropTypes.number.isRequired,
+    product: PropTypes.string.isRequired,
+    verified: PropTypes.bool.isRequired,
+    review: PropTypes.string.isRequired
+  }).isRequired
+};
+
+const Reviews = ({ selectedProduct }) => {
   const [reviews, setReviews] = useState([]);
-  const [currentProduct, setCurrentProduct] = useState(selectedProduct);
+  const [currentProduct] = useState(selectedProduct);
   const [stats, setStats] = useState({
     totalReviews: 0,
     averageRating: 0,
     ratingDistribution: [0, 0, 0, 0, 0]
   });
-
-  const productNames = Object.keys(productReviews);
 
   useEffect(() => {
     const productReviewsData = getProductReviews(currentProduct);
@@ -481,6 +498,16 @@ const Reviews = ({ selectedProduct  }) => {
       </div>
     </div>
   );
+};
+
+// Props validation for Reviews component
+Reviews.propTypes = {
+  selectedProduct: PropTypes.string
+};
+
+// Default props
+Reviews.defaultProps = {
+  selectedProduct: "Lenovo GM2 Pro Wireless Bluetooth Headset"
 };
 
 export default Reviews;
