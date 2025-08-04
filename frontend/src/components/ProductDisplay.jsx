@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Reviews from "./random/Reviews"; // Import the Reviews component
 // import logo from "../images/logo.png";
@@ -9,24 +9,21 @@ import Reviews from "./random/Reviews"; // Import the Reviews component
 import {
     FaShoppingCart,
     FaBolt,
-    FaHeadphones,
     FaCheckCircle,
-    FaPause,
-    FaPlay,
     FaExpand
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import AlertMessage from "./Alert"; // Import the AlertMessage component
-import DynamicProductSchema from "./DynamicProductScheme";
+// import DynamicProductSchema from "./DynamicProductScheme";
 
 const EarbudsProductDisplay = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedColor, setSelectedColor] = useState('black');
     const [quantity, setQuantity] = useState(1);
-    const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
+    // const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
     const [isFullScreenImage, setIsFullScreenImage] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

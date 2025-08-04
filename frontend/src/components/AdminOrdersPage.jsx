@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AdminOrdersPage = () => {
@@ -69,7 +69,8 @@ const AdminOrdersPage = () => {
                 minute: '2-digit',
                 hour12: true,
             });
-        } catch (e) {
+        } catch (error) {
+            console.log(error)
             return dateString;
         }
     };
@@ -118,6 +119,7 @@ const AdminOrdersPage = () => {
             const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/admin/cancel-order/${orderId}`)
             console.log(response.data)
         } catch (error) {
+            console.log(error)
             console.log("error occured while deleting the order")
         }
     }
